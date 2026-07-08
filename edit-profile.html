@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings — The Quad</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8E%93</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <input type="checkbox" id="sidebarToggle" class="sidebar-toggle-checkbox">
+  <aside class="app-sidebar">
+    <a href="dashboard.html" class="logo">
+      <span class="logo-mark"><span>🎓</span></span>
+      The Quad <small>Assam downtown University</small>
+    </a>
+    <nav class="side-nav">
+      <a href="dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+      <a href="directory.html"><i class="fa-solid fa-users"></i> Directory</a>
+      <a href="events.html"><i class="fa-solid fa-calendar-days"></i> Events</a>
+      <a href="jobs.html"><i class="fa-solid fa-briefcase"></i> Jobs Board</a>
+      <a href="messages.html"><i class="fa-solid fa-comment-dots"></i> Messages</a>
+      <a href="#"><i class="fa-solid fa-handshake-angle"></i> Mentorship</a>
+
+      <div class="nav-label">Account</div>
+      <a href="profile.html"><i class="fa-solid fa-id-badge"></i> My Profile</a>
+      <a href="edit-profile.html" class="active"><i class="fa-solid fa-gear"></i> Settings</a>
+
+      <div class="nav-label">Admin</div>
+      <a href="admin.html"><i class="fa-solid fa-shield-halved"></i> Admin Panel</a>
+    </nav>
+    <div class="sidebar-user">
+      <img src="https://i.pravatar.cc/80?img=33" alt="Ishanu Sharma">
+      <div>
+        <div class="name">Ishanu Sharma</div>
+        <div class="role">Class of 2024</div>
+      </div>
+      <a href="index.html" style="margin-left:auto; color:rgba(251,246,238,.6);" title="Log out"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+    </div>
+  </aside>
+
+  <div class="app-main">
+    <header class="app-topbar">
+      <label for="sidebarToggle" class="sidebar-toggle-label"><i class="fa-solid fa-bars"></i></label>
+      <div class="topbar-search input-icon">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" placeholder="Search alumni, events, jobs...">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" aria-label="Notifications"><i class="fa-solid fa-bell"></i><span class="badge-dot"></span></button>
+        <button class="icon-btn" aria-label="Messages"><i class="fa-solid fa-comment-dots"></i></button>
+        <a href="profile.html" class="user-chip">
+          <img src="https://i.pravatar.cc/80?img=33" alt="">
+          <div><div class="name">Ishanu Sharma</div><div class="role">Class of 2024</div></div>
+        </a>
+      </div>
+    </header>
+
+    <div class="app-content">
+      <div class="page-head">
+        <h2>Settings</h2>
+        <p class="text-soft">Keep your profile current — it's how the rest of your batch finds you.</p>
+      </div>
+
+      <div class="profile-layout">
+        <form id="editProfileForm">
+          <div class="card card--pad-lg" id="photo" style="margin-bottom:24px;">
+            <h4 style="margin-bottom:20px;">Profile Photo</h4>
+            <div class="flex gap-md" style="align-items:center;">
+              <img src="https://i.pravatar.cc/160?img=33" alt="Current profile photo" style="width:88px; height:88px; border-radius:50%; object-fit:cover;">
+              <div class="flex gap-sm flex-wrap">
+                <label class="btn btn-secondary btn-sm" style="cursor:pointer;">
+                  Upload New Photo
+                  <input type="file" accept="image/*" style="display:none;">
+                </label>
+                <button type="button" class="btn btn-ghost btn-sm">Remove</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card card--pad-lg" id="basic-info" style="margin-bottom:24px;">
+            <h4 style="margin-bottom:20px;">Basic Information</h4>
+            <div class="field-row">
+              <div class="field">
+                <label for="editName">Full name</label>
+                <input type="text" id="editName" name="fullName" value="Ishanu Sharma">
+              </div>
+              <div class="field">
+                <label for="editHeadline">Headline</label>
+                <input type="text" id="editHeadline" name="headline" value="Freelancer">
+              </div>
+            </div>
+            <div class="field">
+              <label for="editLocation">Location</label>
+              <input type="text" id="editLocation" name="location" value="Assam, India">
+            </div>
+            <div class="field">
+              <label for="editBio">Bio</label>
+              <textarea id="editBio" name="bio">UX Researcher who fell into research after four years of product design. Currently leading user research for Nimbus Health's patient app.</textarea>
+              <span class="hint">Shown on your public profile. Keep it under 400 characters.</span>
+            </div>
+          </div>
+
+          <div class="card card--pad-lg" id="education" style="margin-bottom:24px;">
+            <h4 style="margin-bottom:20px;">Education</h4>
+            <div class="field-row">
+              <div class="field">
+                <label for="editYear">Graduation year</label>
+                <select id="editYear" name="gradYear">
+                  <option>2026</option><option>2022</option>
+                  <option selected>2024</option><option>2016</option>
+                  <option>2013</option><option>2011</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="editDept">Department</label>
+                <select id="editDept" name="department">
+                  <option>Computer Science &amp; Engineering</option>
+                  <option>Electronics &amp; Communication</option>
+                  <option>Mechanical Engineering</option>
+                  <option>Business Administration</option>
+                  <option selected>Design</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="card card--pad-lg" id="work" style="margin-bottom:24px;">
+            <h4 style="margin-bottom:20px;">Current Role</h4>
+            <div class="field-row">
+              <div class="field">
+                <label for="editCompany">Company</label>
+                <input type="text" id="editCompany" name="company" value="Nimbus Health">
+              </div>
+              <div class="field">
+                <label for="editTitle">Job title</label>
+                <input type="text" id="editTitle" name="jobTitle" value="UX Researcher">
+              </div>
+            </div>
+            <div class="field">
+              <label for="editIndustry">Industry</label>
+              <select id="editIndustry" name="industry">
+                <option>Technology</option>
+                <option selected>Healthcare</option>
+                <option>Finance</option>
+                <option>Design &amp; Creative</option>
+                <option>Marketing</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="card card--pad-lg" id="social" style="margin-bottom:24px;">
+            <h4 style="margin-bottom:20px;">Social Links</h4>
+            <div class="field">
+              <label for="editLinkedin">LinkedIn</label>
+              <div class="input-icon"><i class="fa-brands fa-linkedin-in"></i><input type="url" id="editLinkedin" name="linkedin" value="https://linkedin.com/in/ishanusharma-ux"></div>
+            </div>
+            <div class="field">
+              <label for="editWebsite">Portfolio / Website</label>
+              <div class="input-icon"><i class="fa-solid fa-globe"></i><input type="url" id="editWebsite" name="website" placeholder="https://"></div>
+            </div>
+          </div>
+
+          <div class="card card--pad-lg" id="privacy" style="margin-bottom:24px;">
+            <h4 style="margin-bottom:6px;">Privacy</h4>
+            <p class="text-faint" style="font-size:.85rem; margin-bottom:18px;">Control what other alumni can see.</p>
+            <label class="checkbox-row" style="margin-bottom:14px;"><input type="checkbox" checked> Show my email on my public profile</label>
+            <label class="checkbox-row" style="margin-bottom:14px;"><input type="checkbox" checked> Show my profile in directory search</label>
+            <label class="checkbox-row"><input type="checkbox"> Allow messages from current students</label>
+          </div>
+
+          <div class="card card--pad-lg" id="notifications" style="margin-bottom:24px;">
+            <h4 style="margin-bottom:6px;">Notification Preferences</h4>
+            <p class="text-faint" style="font-size:.85rem; margin-bottom:18px;">Choose what lands in your inbox.</p>
+            <label class="checkbox-row" style="margin-bottom:14px;"><input type="checkbox" checked> New messages</label>
+            <label class="checkbox-row" style="margin-bottom:14px;"><input type="checkbox" checked> Upcoming events near me</label>
+            <label class="checkbox-row"><input type="checkbox" checked> Job matches from my network</label>
+          </div>
+
+          <div class="flex gap-sm">
+            <button type="submit" class="btn btn-primary btn-lg">Save Changes</button>
+            <a href="profile.html" class="btn btn-ghost btn-lg">Cancel</a>
+          </div>
+        </form>
+
+        <div>
+          <div class="widget">
+            <h4>On This Page</h4>
+            <a href="#photo" class="text-soft" style="display:block; padding:8px 0; font-size:.88rem;">Profile Photo</a>
+            <a href="#basic-info" class="text-soft" style="display:block; padding:8px 0; font-size:.88rem;">Basic Information</a>
+            <a href="#education" class="text-soft" style="display:block; padding:8px 0; font-size:.88rem;">Education</a>
+            <a href="#work" class="text-soft" style="display:block; padding:8px 0; font-size:.88rem;">Current Role</a>
+            <a href="#social" class="text-soft" style="display:block; padding:8px 0; font-size:.88rem;">Social Links</a>
+            <a href="#privacy" class="text-soft" style="display:block; padding:8px 0; font-size:.88rem;">Privacy</a>
+            <a href="#notifications" class="text-soft" style="display:block; padding:8px 0; font-size:.88rem;">Notifications</a>
+          </div>
+          <div class="widget" style="border-color:var(--peach-300);">
+            <h4 style="color:var(--orange-700);">Danger Zone</h4>
+            <p class="text-faint" style="font-size:.84rem; margin-bottom:16px;">Deactivating hides your profile from the directory. You can reactivate anytime by logging back in.</p>
+            <button type="button" class="btn btn-secondary btn-sm btn-block" style="border-color:var(--orange-500); color:var(--orange-700);">Deactivate Account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

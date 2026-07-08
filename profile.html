@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ishanu Sharma — Profile — The Quad</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8E%93</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <input type="checkbox" id="sidebarToggle" class="sidebar-toggle-checkbox">
+  <aside class="app-sidebar">
+    <a href="dashboard.html" class="logo">
+      <span class="logo-mark"><span>🎓</span></span>
+      The Quad <small>Assam downtown University</small>
+    </a>
+    <nav class="side-nav">
+      <a href="dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+      <a href="directory.html"><i class="fa-solid fa-users"></i> Directory</a>
+      <a href="events.html"><i class="fa-solid fa-calendar-days"></i> Events</a>
+      <a href="jobs.html"><i class="fa-solid fa-briefcase"></i> Jobs Board</a>
+      <a href="messages.html"><i class="fa-solid fa-comment-dots"></i> Messages</a>
+      <a href="#"><i class="fa-solid fa-handshake-angle"></i> Mentorship</a>
+
+      <div class="nav-label">Account</div>
+      <a href="profile.html" class="active"><i class="fa-solid fa-id-badge"></i> My Profile</a>
+      <a href="edit-profile.html"><i class="fa-solid fa-gear"></i> Settings</a>
+
+      <div class="nav-label">Admin</div>
+      <a href="admin.html"><i class="fa-solid fa-shield-halved"></i> Admin Panel</a>
+    </nav>
+    <div class="sidebar-user">
+      <img src="https://i.pravatar.cc/80?img=33" alt="Ishanu Sharma">
+      <div>
+        <div class="name">Ishanu Sharma</div>
+        <div class="role">Class of 2024</div>
+      </div>
+      <a href="index.html" style="margin-left:auto; color:rgba(251,246,238,.6);" title="Log out"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+    </div>
+  </aside>
+
+  <div class="app-main">
+    <header class="app-topbar">
+      <label for="sidebarToggle" class="sidebar-toggle-label"><i class="fa-solid fa-bars"></i></label>
+      <div class="topbar-search input-icon">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" placeholder="Search alumni, events, jobs...">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" aria-label="Notifications"><i class="fa-solid fa-bell"></i><span class="badge-dot"></span></button>
+        <button class="icon-btn" aria-label="Messages"><i class="fa-solid fa-comment-dots"></i></button>
+        <a href="profile.html" class="user-chip">
+          <img src="https://i.pravatar.cc/80?img=33" alt="">
+          <div><div class="name">Ishanu Sharma</div><div class="role">Class of 2024</div></div>
+        </a>
+      </div>
+    </header>
+
+    <div class="app-content">
+      <div class="profile-banner">
+        <div class="profile-banner__cover"></div>
+        <div class="profile-banner__body">
+          <div class="profile-banner__head">
+            <div class="flex gap-md" style="align-items:flex-end;">
+              <img class="profile-banner__avatar" src="https://i.pravatar.cc/200?img=33" alt="Ishanu Sharma">
+              <div>
+                <h2 style="display:flex; align-items:center; gap:10px;">Ishanu Sharma <span class="class-ring class-ring--sm"><span class="class-ring__gem">'24</span></span></h2>
+                <p class="text-soft">Freelancer</p>
+              </div>
+            </div>
+            <div class="profile-banner__actions">
+              <a href="edit-profile.html" class="btn btn-secondary"><i class="fa-solid fa-pen"></i> Edit Profile</a>
+              <button class="btn btn-primary"><i class="fa-solid fa-share-nodes"></i> Share Profile</button>
+            </div>
+          </div>
+          <div class="profile-banner__meta">
+            <span><i class="fa-solid fa-location-dot"></i> Assam, India</span>
+            <span><i class="fa-solid fa-graduation-cap"></i> Design, Class of 2024</span>
+            <span><i class="fa-solid fa-briefcase"></i> Freelancer</span>
+            <span><i class="fa-solid fa-calendar-plus"></i> Joined The Quad in 2026</span>
+          </div>
+          <div class="skill-tag-row">
+            <span class="tag">UX Research</span>
+            <span class="tag">Figma</span>
+            <span class="tag">Design Systems</span>
+            <span class="tag">User Interviews</span>
+            <span class="tag">Prototyping</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-layout">
+        <div class="tabs">
+          <input type="radio" name="profile-tabs" id="tab-about" checked>
+          <input type="radio" name="profile-tabs" id="tab-experience">
+          <input type="radio" name="profile-tabs" id="tab-education">
+          <input type="radio" name="profile-tabs" id="tab-posts">
+
+          <div class="tab-labels">
+            <label for="tab-about">About</label>
+            <label for="tab-experience">Experience</label>
+            <label for="tab-education">Education</label>
+            <label for="tab-posts">Posts</label>
+          </div>
+
+          <div class="tab-content">
+            <div class="tab-panel panel-about">
+              <div class="card card--pad-lg">
+                <h4 style="margin-bottom:14px;">About</h4>
+                <p class="text-soft" style="margin-bottom:24px;">UX Researcher who fell into research after four years of product design. Currently leading user research for Nimbus Health's patient app. Always happy to talk about qualitative research methods, or about Adtu's design club, which I'm fairly sure no longer exists.</p>
+                <div class="grid-2" style="gap:16px;">
+                  <div class="contact-info-card" style="border:none; padding:0;">
+                    <i class="fa-solid fa-envelope"></i>
+                    <div><div class="text-faint" style="font-size:.78rem;">Email</div><div>ishanu.sharma@adtu.in</div></div>
+                  </div>
+                  <div class="contact-info-card" style="border:none; padding:0;">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                    <div><div class="text-faint" style="font-size:.78rem;">LinkedIn</div><div>/in/ishanusharma-ux</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-panel panel-experience">
+              <div class="card card--pad-lg">
+                <h4 style="margin-bottom:24px;">Experience</h4>
+                <div class="thread">
+                  <div class="thread-item">
+                    <h4>UX Researcher</h4>
+                    <p class="text-soft">Nimbus Health · 2023 — Present · Pune</p>
+                    <p style="margin-top:8px;">Leads end-to-end research for the patient-facing mobile app; runs 15+ interviews a quarter.</p>
+                  </div>
+                  <div class="thread-item">
+                    <h4>Product Designer</h4>
+                    <p class="text-soft">Loop Studio · 2021 — 2023 · Bangalore</p>
+                    <p style="margin-top:8px;">Owned design for two B2B dashboards from wireframe to shipped feature.</p>
+                  </div>
+                  <div class="thread-item">
+                    <h4>Design Intern</h4>
+                    <p class="text-soft">Adtu Design Lab · Summer 2018 · Campus</p>
+                    <p style="margin-top:8px;">First real design job — a campus wayfinding app that three people still use.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-panel panel-education">
+              <div class="card card--pad-lg">
+                <h4 style="margin-bottom:24px;">Education</h4>
+                <div class="thread">
+                  <div class="thread-item">
+                    <h4>B.Des, Design</h4>
+                    <p class="text-soft">Assam downtown University · 2015 — 2019</p>
+                  </div>
+                  <div class="thread-item">
+                    <h4>Certificate in User Research</h4>
+                    <p class="text-soft">Nielsen Norman Group · 2022</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-panel panel-posts">
+              <div class="card feed-card" style="margin-bottom:18px;">
+                <div class="feed-card__head">
+                  <img src="https://i.pravatar.cc/80?img=48" alt="">
+                  <div><div class="name">Ishanu Sharma</div><div class="meta">3 days ago</div></div>
+                </div>
+                <p class="body-text">Running a free 30-minute "how to break into UX research" session for any Adtu batch. Comment or message me if you want a slot.</p>
+                <div class="feed-card__actions">
+                  <button><i class="fa-regular fa-thumbs-up"></i> 56 Likes</button>
+                  <button><i class="fa-regular fa-comment"></i> 18 Comments</button>
+                  <button><i class="fa-solid fa-share"></i> Share</button>
+                </div>
+              </div>
+              <div class="card feed-card">
+                <div class="feed-card__head">
+                  <img src="https://i.pravatar.cc/80?img=48" alt="">
+                  <div><div class="name">Ishanu Sharma</div><div class="meta">1 month ago</div></div>
+                </div>
+                <p class="body-text">Homecoming planning committee, assemble. Who's helping with the design-batch reunion booth this year?</p>
+                <div class="feed-card__actions">
+                  <button><i class="fa-regular fa-thumbs-up"></i> 24 Likes</button>
+                  <button><i class="fa-regular fa-comment"></i> 7 Comments</button>
+                  <button><i class="fa-solid fa-share"></i> Share</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="widget">
+            <h4>Batchmates · Class of 2019</h4>
+            <div class="widget-list-item">
+              <img src="https://i.pravatar.cc/80?img=39" alt="">
+              <div class="info"><div class="name">Fatima Sheikh</div><div class="sub">Marketing, Bloom &amp; Co.</div></div>
+            </div>
+            <div class="widget-list-item">
+              <img src="https://i.pravatar.cc/80?img=26" alt="">
+              <div class="info"><div class="name">Vivaan Kapoor</div><div class="sub">Finance, Solace Cloud</div></div>
+            </div>
+            <div class="widget-list-item">
+              <img src="https://i.pravatar.cc/80?img=57" alt="">
+              <div class="info"><div class="name">Neha Joshi</div><div class="sub">Product, Klaro</div></div>
+            </div>
+          </div>
+          <div class="widget">
+            <h4>Mutual Connections</h4>
+            <div class="avatar-stack" style="margin-bottom:10px;">
+              <img src="https://i.pravatar.cc/80?img=33" alt="">
+              <img src="https://i.pravatar.cc/80?img=45" alt="">
+              <img src="https://i.pravatar.cc/80?img=21" alt="">
+              <span class="more">12+</span>
+            </div>
+            <p class="text-faint" style="font-size:.82rem;">Including Rohan Bhatt and Priya Menon.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

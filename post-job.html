@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post a Job — The Quad</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8E%93</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <input type="checkbox" id="sidebarToggle" class="sidebar-toggle-checkbox">
+  <aside class="app-sidebar">
+    <a href="dashboard.html" class="logo">
+      <span class="logo-mark"><span>🎓</span></span>
+      The Quad <small>Assam downtown University</small>
+    </a>
+    <nav class="side-nav">
+      <a href="dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+      <a href="directory.html"><i class="fa-solid fa-users"></i> Directory</a>
+      <a href="events.html"><i class="fa-solid fa-calendar-days"></i> Events</a>
+      <a href="jobs.html" class="active"><i class="fa-solid fa-briefcase"></i> Jobs Board</a>
+      <a href="messages.html"><i class="fa-solid fa-comment-dots"></i> Messages</a>
+      <a href="#"><i class="fa-solid fa-handshake-angle"></i> Mentorship</a>
+
+      <div class="nav-label">Account</div>
+      <a href="profile.html"><i class="fa-solid fa-id-badge"></i> My Profile</a>
+      <a href="edit-profile.html"><i class="fa-solid fa-gear"></i> Settings</a>
+
+      <div class="nav-label">Admin</div>
+      <a href="admin.html"><i class="fa-solid fa-shield-halved"></i> Admin Panel</a>
+    </nav>
+    <div class="sidebar-user">
+      <img src="https://i.pravatar.cc/80?img=33" alt="Ishanu Sharma">
+      <div>
+        <div class="name">Ishanu Sharma</div>
+        <div class="role">Class of 2024</div>
+      </div>
+      <a href="index.html" style="margin-left:auto; color:rgba(251,246,238,.6);" title="Log out"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+    </div>
+  </aside>
+
+  <div class="app-main">
+    <header class="app-topbar">
+      <label for="sidebarToggle" class="sidebar-toggle-label"><i class="fa-solid fa-bars"></i></label>
+      <div class="topbar-search input-icon">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" placeholder="Search alumni, events, jobs...">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" aria-label="Notifications"><i class="fa-solid fa-bell"></i><span class="badge-dot"></span></button>
+        <button class="icon-btn" aria-label="Messages"><i class="fa-solid fa-comment-dots"></i></button>
+        <a href="profile.html" class="user-chip">
+          <img src="https://i.pravatar.cc/80?img=33" alt="Ishanu Sharma">
+          <div><div class="name">Ishanu Sharma</div><div class="role">Class of 2024</div></div>
+        </a>
+      </div>
+    </header>
+
+    <div class="app-content">
+      <a href="jobs.html" class="text-soft" style="display:inline-flex; align-items:center; gap:8px; margin-bottom:20px; font-size:.88rem; font-weight:600;"><i class="fa-solid fa-arrow-left"></i> Back to Jobs Board</a>
+
+      <div class="page-head">
+        <h2>Post a Job</h2>
+        <p class="text-soft">Hiring, or know someone who is? A referral from an alum carries real weight.</p>
+      </div>
+
+      <div class="post-job-layout">
+        <form id="postJobForm">
+          <div class="card card--pad-lg">
+            <div class="field-row">
+              <div class="field">
+                <label for="pjTitle">Job title</label>
+                <input type="text" id="pjTitle" name="jobTitle" placeholder="e.g. Product Designer" required>
+              </div>
+              <div class="field">
+                <label for="pjCompany">Company</label>
+                <input type="text" id="pjCompany" name="company" placeholder="e.g. Nimbus Health" required>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="pjLocation">Location</label>
+                <input type="text" id="pjLocation" name="location" placeholder="City, or Remote" required>
+              </div>
+              <div class="field">
+                <label for="pjType">Job type</label>
+                <select id="pjType" name="jobType" required>
+                  <option value="" selected disabled>Select type</option>
+                  <option>Full-time</option>
+                  <option>Internship</option>
+                  <option>Contract</option>
+                  <option>Part-time</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="pjExperience">Experience level</label>
+                <select id="pjExperience" name="experience">
+                  <option>Entry-level / Fresher</option>
+                  <option>1–3 years</option>
+                  <option>3–6 years</option>
+                  <option>6+ years</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="pjSalary">Salary range <span class="text-faint" style="font-weight:400;">(optional)</span></label>
+                <input type="text" id="pjSalary" name="salary" placeholder="e.g. ₹12–18 LPA">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="pjDescription">Job description</label>
+              <textarea id="pjDescription" name="description" placeholder="Responsibilities, requirements, and what makes this role worth a referral..." required></textarea>
+            </div>
+
+            <div class="field">
+              <label for="pjLink">Application link or email</label>
+              <div class="input-icon">
+                <i class="fa-solid fa-link"></i>
+                <input type="text" id="pjLink" name="applyLink" placeholder="https:// or careers@company.com" required>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="pjNote">A note from you <span class="text-faint" style="font-weight:400;">(optional)</span></label>
+              <textarea id="pjNote" name="referralNote" placeholder="e.g. Happy to refer directly — just message me first."></textarea>
+            </div>
+
+            <label class="checkbox-row" style="margin-bottom:26px;">
+              <input type="checkbox" checked> I'm open to alumni messaging me directly about this role
+            </label>
+
+            <div class="flex gap-sm">
+              <button type="submit" class="btn btn-primary btn-lg">Post Job</button>
+              <a href="jobs.html" class="btn btn-ghost btn-lg">Cancel</a>
+            </div>
+          </div>
+        </form>
+
+        <div class="widget">
+          <h4>Tips for a Great Job Post</h4>
+          <ul class="tips-list">
+            <li><i class="fa-solid fa-circle-check"></i> Be specific about the role — "Backend Engineer, Payments team" beats "Engineer wanted."</li>
+            <li><i class="fa-solid fa-circle-check"></i> Mention if you can personally refer applicants — it's the whole point of posting here.</li>
+            <li><i class="fa-solid fa-circle-check"></i> Include a real application link or email, not just "DM me."</li>
+            <li><i class="fa-solid fa-circle-check"></i> Add the expected experience level to save everyone's time.</li>
+            <li><i class="fa-solid fa-circle-check"></i> Listings are reviewed by the Alumni Office before they go live.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

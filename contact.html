@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About &amp; Contact — The Quad</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8E%93</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href="index.html" class="logo">
+      <span class="logo-mark"><span>🎓</span></span>
+      The Quad <small>Assam downtown University Alumni Network</small>
+    </a>
+    <input type="checkbox" id="navToggle" class="nav-toggle-checkbox">
+    <label for="navToggle" class="nav-toggle-label"><i class="fa-solid fa-bars"></i></label>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="directory.html">Directory</a>
+      <a href="events.html">Events</a>
+      <a href="jobs.html">Jobs</a>
+      <a href="contact.html" class="active">About &amp; Contact</a>
+    </nav>
+    <div class="header-actions">
+      <a href="login.html" class="btn btn-ghost btn-sm">Log In</a>
+      <a href="register.html" class="btn btn-primary btn-sm">Join the Network</a>
+    </div>
+  </div>
+</header>
+
+<section class="section-sm">
+  <div class="container">
+    <div class="section-head" style="margin-bottom:60px;">
+      <p class="eyebrow">Get in touch</p>
+      <h1>About &amp; Contact</h1>
+      <p class="lede">The Quad is built and maintained by the Assam downtown University Alumni Relations Office. Questions, feedback, or a reunion idea? You'll reach a real team here, not a ticket queue.</p>
+    </div>
+
+    <div class="contact-layout">
+      <div>
+        <h3 style="margin-bottom:20px;">Send us a message</h3>
+        <form id="contactForm">
+          <div class="field-row">
+            <div class="field">
+              <label for="cName">Full name</label>
+              <input type="text" id="cName" name="name" placeholder="Your name" required>
+            </div>
+            <div class="field">
+              <label for="cEmail">Email address</label>
+              <input type="email" id="cEmail" name="email" placeholder="you@example.com" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="cSubject">Subject</label>
+            <select id="cSubject" name="subject" required>
+              <option value="" selected disabled>Select a topic</option>
+              <option>General Inquiry</option>
+              <option>Report an Issue</option>
+              <option>Event Idea or Proposal</option>
+              <option>Partnership / Sponsorship</option>
+              <option>Profile Verification Help</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="cMessage">Message</label>
+            <textarea id="cMessage" name="message" placeholder="Tell us what's on your mind..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+        </form>
+      </div>
+
+      <div>
+        <h3 style="margin-bottom:20px;">Reach us directly</h3>
+        <div class="contact-info-card">
+          <i class="fa-solid fa-location-dot"></i>
+          <div>
+            <h4 style="font-size:1rem;">Visit Us</h4>
+            <p class="text-soft">Alumni Relations Office, Block B, Adtu Campus, Assam downtown University, Assam 781026</p>
+          </div>
+        </div>
+        <div class="contact-info-card">
+          <i class="fa-solid fa-phone"></i>
+          <div>
+            <h4 style="font-size:1rem;">Call Us</h4>
+            <p class="text-soft">+91 20 4567 8900</p>
+          </div>
+        </div>
+        <div class="contact-info-card">
+          <i class="fa-solid fa-envelope"></i>
+          <div>
+            <h4 style="font-size:1rem;">Email Us</h4>
+            <p class="text-soft">alumni@adtu.in</p>
+          </div>
+        </div>
+        <div class="contact-info-card">
+          <i class="fa-solid fa-clock"></i>
+          <div>
+            <h4 style="font-size:1rem;">Office Hours</h4>
+            <p class="text-soft">Monday – Friday, 10:00 AM – 6:00 PM IST</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo" style="color:#fff;">
+          <span class="logo-mark"><span>🎓</span></span>
+          The Quad
+        </a>
+        <p>The Quad is Assam downtown University's home for graduates to reconnect, mentor, hire, and give back — long after the caps stop flying.</p>
+        <div class="social-icons">
+          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <a href="directory.html">Directory</a>
+        <a href="events.html">Events</a>
+        <a href="jobs.html">Jobs Board</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="messages.html">Messages</a>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <a href="#">Mentorship</a>
+        <a href="#">Give Back</a>
+        <a href="#">Success Stories</a>
+        <a href="#">City Chapters</a>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a href="contact.html">Contact Us</a>
+        <a href="#">Help Center</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Assam downtown University Alumni Relations Office. All rights reserved.</span>
+      <span>Built with pride by the Class of 2026.</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

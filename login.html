@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log In — The Quad</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8E%93</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="auth-shell">
+  <div class="auth-visual">
+    <div class="rings-deco">
+      <div class="class-ring class-ring--lg" style="top:8%; left:12%;"><div class="class-ring__gem">'14</div></div>
+      <div class="class-ring" style="top:55%; left:65%;"><div class="class-ring__gem">'19</div></div>
+      <div class="class-ring class-ring--sm" style="top:75%; left:20%;"><div class="class-ring__gem">'22</div></div>
+    </div>
+    <div class="auth-visual__content">
+      <a href="index.html" class="logo" style="color:#fff; margin-bottom:60px; display:inline-flex;">
+        <span class="logo-mark"><span>🎓</span></span> The Quad
+      </a>
+      <blockquote>&ldquo;I hadn't logged in for two years. Came back for one reunion RSVP and ended up finding my current job.&rdquo;</blockquote>
+      <p class="attribution">— Karan Verma, Class of 2013 · Data Lead, Verto Analytics</p>
+    </div>
+    <p style="position:relative; z-index:1; color:rgba(251,246,238,.6); font-size:.85rem;">Assam downtown University Alumni Relations Office</p>
+  </div>
+
+  <div class="auth-form-side">
+    <div class="auth-card animate-in">
+      <a href="index.html" class="logo" style="display:none;"></a>
+      <h1>Welcome back</h1>
+      <p class="lede">Log in to catch up on your feed, your messages, and whoever's hiring this week.</p>
+
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label for="email">Email address</label>
+          <div class="input-icon">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" id="email" name="email" placeholder="you@adtu.in" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="input-icon">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+          </div>
+        </div>
+        <div class="flex-between" style="margin-bottom:26px;">
+          <label class="checkbox-row">
+            <input type="checkbox" name="remember">
+            Remember me
+          </label>
+          <a href="#" style="font-size:.88rem; font-weight:600; color:var(--teal-700);">Forgot password?</a>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg">Log In</button>
+      </form>
+
+      <div class="form-divider">or continue with</div>
+      <div class="flex gap-sm">
+        <button class="btn btn-secondary btn-block" type="button"><i class="fa-brands fa-google"></i> Google</button>
+        <button class="btn btn-secondary btn-block" type="button"><i class="fa-brands fa-linkedin-in"></i> LinkedIn</button>
+      </div>
+
+      <p class="auth-footer-link">New to The Quad? <a href="register.html">Create an account</a></p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

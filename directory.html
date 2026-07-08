@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alumni Directory — The Quad</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8E%93</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <input type="checkbox" id="sidebarToggle" class="sidebar-toggle-checkbox">
+  <aside class="app-sidebar">
+    <a href="dashboard.html" class="logo">
+      <span class="logo-mark"><span>🎓</span></span>
+      The Quad <small>Assam downtown University</small>
+    </a>
+    <nav class="side-nav">
+      <a href="dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+      <a href="directory.html" class="active"><i class="fa-solid fa-users"></i> Directory</a>
+      <a href="events.html"><i class="fa-solid fa-calendar-days"></i> Events</a>
+      <a href="jobs.html"><i class="fa-solid fa-briefcase"></i> Jobs Board</a>
+      <a href="messages.html"><i class="fa-solid fa-comment-dots"></i> Messages</a>
+      <a href="#"><i class="fa-solid fa-handshake-angle"></i> Mentorship</a>
+
+      <div class="nav-label">Account</div>
+      <a href="profile.html"><i class="fa-solid fa-id-badge"></i> My Profile</a>
+      <a href="edit-profile.html"><i class="fa-solid fa-gear"></i> Settings</a>
+
+      <div class="nav-label">Admin</div>
+      <a href="admin.html"><i class="fa-solid fa-shield-halved"></i> Admin Panel</a>
+    </nav>
+    <div class="sidebar-user">
+      <img src="https://i.pravatar.cc/80?img=33" alt="Ishanu Sharma">
+      <div>
+        <div class="name">Ishanu Sharma</div>
+        <div class="role">Class of 2024</div>
+      </div>
+      <a href="index.html" style="margin-left:auto; color:rgba(251,246,238,.6);" title="Log out"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+    </div>
+  </aside>
+
+  <div class="app-main">
+    <header class="app-topbar">
+      <label for="sidebarToggle" class="sidebar-toggle-label"><i class="fa-solid fa-bars"></i></label>
+      <div class="topbar-search input-icon">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" placeholder="Search alumni, events, jobs...">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" aria-label="Notifications"><i class="fa-solid fa-bell"></i><span class="badge-dot"></span></button>
+        <button class="icon-btn" aria-label="Messages"><i class="fa-solid fa-comment-dots"></i></button>
+        <a href="profile.html" class="user-chip">
+          <img src="https://i.pravatar.cc/80?img=33" alt="">
+          <div><div class="name">Ishanu Sharma</div><div class="role">Class of 2024</div></div>
+        </a>
+      </div>
+    </header>
+
+    <div class="app-content">
+      <div class="page-head">
+        <div class="flex-between">
+          <div>
+            <h2>Alumni Directory</h2>
+            <p class="text-soft">12,412 graduates and counting — find someone worth reconnecting with.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="directory-layout">
+        <!-- FILTERS -->
+        <aside class="filter-panel">
+          <h4>Filter Results</h4>
+          <p class="text-faint" style="font-size:.82rem; margin-bottom:18px;">Narrow down by year, field, or location.</p>
+          <form id="directoryFilters">
+            <div class="field">
+              <label for="fName">Name</label>
+              <div class="input-icon">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="fName" name="name" placeholder="Search by name">
+              </div>
+            </div>
+            <div class="field">
+              <label for="fYear">Graduation year</label>
+              <select id="fYear" name="year">
+                <option value="">Any year</option>
+                <option>2026</option><option>2022</option><option>2019</option>
+                <option>2016</option><option>2013</option><option>2011</option>
+                <option>2010</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="fDept">Department</label>
+              <select id="fDept" name="department">
+                <option value="">Any department</option>
+                <option>Computer Science &amp; Engineering</option>
+                <option>Electronics &amp; Communication</option>
+                <option>Mechanical Engineering</option>
+                <option>Business Administration</option>
+                <option>Design</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="fIndustry">Industry</label>
+              <select id="fIndustry" name="industry">
+                <option value="">Any industry</option>
+                <option>Technology</option>
+                <option>Finance</option>
+                <option>Healthcare</option>
+                <option>Design &amp; Creative</option>
+                <option>Marketing</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="fLocation">Location</label>
+              <select id="fLocation" name="location">
+                <option value="">Anywhere</option>
+                <option>Bangalore</option>
+                <option>Mumbai</option>
+                <option>Delhi NCR</option>
+                <option>Hyderabad</option>
+                <option>Remote / Abroad</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Apply Filters</button>
+            <button type="reset" class="btn btn-ghost btn-block btn-sm" style="margin-top:8px;">Clear all</button>
+          </form>
+        </aside>
+
+        <!-- RESULTS -->
+        <div>
+          <div class="flex-between" style="margin-bottom:18px;">
+            <span class="result-count">Showing 9 of 12,412 alumni</span>
+            <select style="width:auto; padding:10px 36px 10px 14px;">
+              <option>Sort: Most Relevant</option>
+              <option>Sort: Recently Joined</option>
+              <option>Sort: Graduation Year</option>
+            </select>
+          </div>
+
+          <div class="grid-3">
+            <div class="card alumni-card">
+              <div class="class-ring"><div class="class-ring__gem">'15</div></div>
+              <h4>Meera Nair</h4>
+              <div class="role">Product Lead, Finlytics</div>
+              <div class="loc"><i class="fa-solid fa-location-dot"></i> Mumbai</div>
+              <div class="actions">
+                <a href="profile.html" class="btn btn-secondary btn-sm">View Profile</a>
+                <button class="btn btn-primary btn-sm">Connect</button>
+              </div>
+            </div>
+            <div class="card alumni-card">
+              <div class="class-ring"><div class="class-ring__gem">'11</div></div>
+              <h4>Rohan Bhatt</h4>
+              <div class="role">Engineering Manager, Corda Systems</div>
+              <div class="loc"><i class="fa-solid fa-location-dot"></i> Bangalore</div>
+              <div class="actions">
+                <a href="profile.html" class="btn btn-secondary btn-sm">View Profile</a>
+                <button class="btn btn-primary btn-sm">Connect</button>
+              </div>
+            </div>
+            <div class="card alumni-card">
+              <div class="class-ring"><div class="class-ring__gem">'16</div></div>
+              <h4>Priya Menon</h4>
+              <div class="role">Senior Data Scientist, Klaro</div>
+              <div class="loc"><i class="fa-solid fa-location-dot"></i> Hyderabad</div>
+              <div class="actions">
+                <a href="profile.html" class="btn btn-secondary btn-sm">View Profile</a>
+                <button class="btn btn-primary btn-sm">Connect</button>
+              </div>
+            </div>
+            <div class="card alumni-card">
+              <div class="class-ring"><div class="class-ring__gem">'13</div></div>
+              <h4>Karan Verma</h4>
+              <div class="role">Data Lead, Verto Analytics</div>
+              <div class="loc"><i class="fa-solid fa-location-dot"></i> Delhi NCR</div>
+              <div class="actions">
+                <a href="profile.html" class="btn btn-secondary btn-sm">View Profile</a>
+                <button class="btn btn-primary btn-sm">Connect</button>
+              </div>
+            </div>
+            <div class="card alumni-card">
+              <div class="class-ring"><div class="class-ring__gem">'20</div></div>
+              <h4>Simran Kaur</h4>
+              <div class="role">Backend Engineer, Northloop</div>
+              <div class="loc"><i class="fa-solid fa-location-dot"></i> Bangalore</div>
+              <div class="actions">
+                <a href="profile.html" class="btn btn-secondary btn-sm">View Profile</a>
+                <button class="btn btn-primary btn-sm">Connect</button>
+              </div>
+            </div>
+            <div class="card alumni-card">
+              <div class="class-ring"><div class="class-ring__gem">'18</div></div>
+              <h4>Nikhil Desai</h4>
+              <div class="role">Design Lead, Studio Arc</div>
+              <div class="loc"><i class="fa-solid fa-location-dot"></i> Ahmedabad</div>
+              <div class="actions">
+                <a href="profile.html" class="btn btn-secondary btn-sm">View Profile</a>
+                <button class="btn btn-primary btn-sm">Connect</button>
+              </div>
+            </div>
+            <div class="card alumni-card">
+              <div class="class-ring"><div class="class-ring__gem">'19</div></div>
+              <h4>Fatima Sheikh</h4>
+              <div class="role">Marketing Manager, Bloom &amp; Co.</div>
+              <div class="loc"><i class="fa-solid fa-location-dot"></i> Mumbai</div>
+              <div class="actions">
+                <a href="profile.html" class="btn btn-secondary btn-sm">View Profile</a>
+                <button class="btn btn-primary btn-sm">Connect</button>
+              </div>
+            </div>
+            <div class="card alumni-card">
+              <div class="class-ring"><div class="class-ring__gem">'17</div></div>
+              <h4>Arjun Pillai</h4>
+              <div class="role">Finance Analyst, Meridian Capital</div>
+              <div class="loc"><i class="fa-solid fa-location-dot"></i> Chennai</div>
+              <div class="actions">
+                <a href="profile.html" class="btn btn-secondary btn-sm">View Profile</a>
+                <button class="btn btn-primary btn-sm">Connect</button>
+              </div>
+            </div>
+            <div class="card alumni-card">
+              <div class="class-ring"><div class="class-ring__gem">'10</div></div>
+              <h4>Vikram Rathore</h4>
+              <div class="role">VP Engineering, Solace Cloud</div>
+              <div class="loc"><i class="fa-solid fa-location-dot"></i> Remote · Singapore</div>
+              <div class="actions">
+                <a href="profile.html" class="btn btn-secondary btn-sm">View Profile</a>
+                <button class="btn btn-primary btn-sm">Connect</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pagination">
+            <span class="current">1</span>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <span class="dots">…</span>
+            <a href="#">138</a>
+            <a href="#"><i class="fa-solid fa-chevron-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

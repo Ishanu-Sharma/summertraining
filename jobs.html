@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jobs &amp; Referrals — The Quad</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8E%93</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <input type="checkbox" id="sidebarToggle" class="sidebar-toggle-checkbox">
+  <aside class="app-sidebar">
+    <a href="dashboard.html" class="logo">
+      <span class="logo-mark"><span>🎓</span></span>
+      The Quad <small>Assam downtown University</small>
+    </a>
+    <nav class="side-nav">
+      <a href="dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+      <a href="directory.html"><i class="fa-solid fa-users"></i> Directory</a>
+      <a href="events.html"><i class="fa-solid fa-calendar-days"></i> Events</a>
+      <a href="jobs.html" class="active"><i class="fa-solid fa-briefcase"></i> Jobs Board</a>
+      <a href="messages.html"><i class="fa-solid fa-comment-dots"></i> Messages</a>
+      <a href="#"><i class="fa-solid fa-handshake-angle"></i> Mentorship</a>
+
+      <div class="nav-label">Account</div>
+      <a href="profile.html"><i class="fa-solid fa-id-badge"></i> My Profile</a>
+      <a href="edit-profile.html"><i class="fa-solid fa-gear"></i> Settings</a>
+
+      <div class="nav-label">Admin</div>
+      <a href="admin.html"><i class="fa-solid fa-shield-halved"></i> Admin Panel</a>
+    </nav>
+    <div class="sidebar-user">
+      <img src="https://i.pravatar.cc/80?img=33" alt="Ishanu Sharma">
+      <div>
+        <div class="name">Ishanu Sharma</div>
+        <div class="role">Class of 2024</div>
+      </div>
+      <a href="index.html" style="margin-left:auto; color:rgba(251,246,238,.6);" title="Log out"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+    </div>
+  </aside>
+
+  <div class="app-main">
+    <header class="app-topbar">
+      <label for="sidebarToggle" class="sidebar-toggle-label"><i class="fa-solid fa-bars"></i></label>
+      <div class="topbar-search input-icon">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" placeholder="Search alumni, events, jobs...">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" aria-label="Notifications"><i class="fa-solid fa-bell"></i><span class="badge-dot"></span></button>
+        <button class="icon-btn" aria-label="Messages"><i class="fa-solid fa-comment-dots"></i></button>
+        <a href="profile.html" class="user-chip">
+          <img src="https://i.pravatar.cc/80?img=33" alt="">
+          <div><div class="name">Ishanu Sharma</div><div class="role">Class of 2024</div></div>
+        </a>
+      </div>
+    </header>
+
+    <div class="app-content">
+      <div class="page-head">
+        <div class="flex-between">
+          <div>
+            <h2>Jobs &amp; Referrals</h2>
+            <p class="text-soft">Posted by alumni who are actually hiring — skip the application black hole.</p>
+          </div>
+          <a href="post-job.html" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Post a Job</a>
+        </div>
+      </div>
+
+      <div class="jobs-layout">
+        <!-- FILTERS -->
+        <aside class="filter-panel">
+          <h4>Filter Jobs</h4>
+          <p class="text-faint" style="font-size:.82rem; margin-bottom:18px;">Find a role worth a referral.</p>
+          <form id="jobFilters">
+            <div class="field">
+              <label for="jSearch">Keyword</label>
+              <div class="input-icon">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="jSearch" placeholder="Title or company">
+              </div>
+            </div>
+            <div class="field">
+              <label>Job type</label>
+              <label class="checkbox-row" style="margin-bottom:10px;"><input type="checkbox" checked> Full-time</label>
+              <label class="checkbox-row" style="margin-bottom:10px;"><input type="checkbox"> Internship</label>
+              <label class="checkbox-row" style="margin-bottom:10px;"><input type="checkbox"> Contract</label>
+              <label class="checkbox-row"><input type="checkbox"> Part-time</label>
+            </div>
+            <div class="field">
+              <label for="jLocation">Location</label>
+              <select id="jLocation">
+                <option value="">Anywhere</option>
+                <option>Bangalore</option>
+                <option>Mumbai</option>
+                <option>Hyderabad</option>
+                <option>Chennai</option>
+                <option>Remote</option>
+              </select>
+            </div>
+            <label class="checkbox-row" style="margin-bottom:20px;"><input type="checkbox" checked> Alumni-referred only</label>
+            <button type="submit" class="btn btn-primary btn-block">Apply Filters</button>
+          </form>
+        </aside>
+
+        <!-- RESULTS -->
+        <div>
+          <div class="tabs">
+            <input type="radio" name="job-tabs" id="tab-all-jobs" checked>
+            <input type="radio" name="job-tabs" id="tab-saved">
+            <input type="radio" name="job-tabs" id="tab-applied">
+
+            <div class="tab-labels">
+              <label for="tab-all-jobs">All Jobs</label>
+              <label for="tab-saved">Saved</label>
+              <label for="tab-applied">Applied</label>
+            </div>
+
+            <div class="tab-content">
+              <div class="tab-panel panel-all-jobs" style="display:flex; flex-direction:column; gap:18px;">
+
+                <div class="card job-card">
+                  <div class="job-card__logo">NH</div>
+                  <div style="flex:1;">
+                    <div class="flex-between">
+                      <div>
+                        <h4>Product Designer</h4>
+                        <p class="text-soft" style="font-size:.9rem;">Nimbus Health</p>
+                      </div>
+                      <button class="icon-btn" aria-label="Save job"><i class="fa-regular fa-bookmark"></i></button>
+                    </div>
+                    <div class="job-card__meta">
+                      <span><i class="fa-solid fa-location-dot"></i> Remote</span>
+                      <span><i class="fa-solid fa-briefcase"></i> Full-time</span>
+                      <span><i class="fa-solid fa-clock"></i> Posted 2 days ago</span>
+                    </div>
+                    <div class="flex gap-sm">
+                      <a href="#" class="btn btn-primary btn-sm">Apply Now</a>
+                      <a href="#" class="btn btn-secondary btn-sm">View Details</a>
+                    </div>
+                    <div class="job-card__referrer">
+                      <img src="https://i.pravatar.cc/80?img=33" alt=""> Referred by Ishanu Sharma, Class of 2024
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card job-card">
+                  <div class="job-card__logo">CS</div>
+                  <div style="flex:1;">
+                    <div class="flex-between">
+                      <div>
+                        <h4>Backend Engineer</h4>
+                        <p class="text-soft" style="font-size:.9rem;">Corda Systems</p>
+                      </div>
+                      <button class="icon-btn" aria-label="Save job"><i class="fa-regular fa-bookmark"></i></button>
+                    </div>
+                    <div class="job-card__meta">
+                      <span><i class="fa-solid fa-location-dot"></i> Bangalore</span>
+                      <span><i class="fa-solid fa-briefcase"></i> Full-time</span>
+                      <span><i class="fa-solid fa-clock"></i> Posted 3 days ago</span>
+                    </div>
+                    <div class="flex gap-sm">
+                      <a href="#" class="btn btn-primary btn-sm">Apply Now</a>
+                      <a href="#" class="btn btn-secondary btn-sm">View Details</a>
+                    </div>
+                    <div class="job-card__referrer">
+                      <img src="https://i.pravatar.cc/80?img=33" alt=""> Referred by Rohan Bhatt, Class of 2011
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card job-card">
+                  <div class="job-card__logo">FL</div>
+                  <div style="flex:1;">
+                    <div class="flex-between">
+                      <div>
+                        <h4>Growth Marketer</h4>
+                        <p class="text-soft" style="font-size:.9rem;">Finlytics</p>
+                      </div>
+                      <button class="icon-btn" aria-label="Save job"><i class="fa-regular fa-bookmark"></i></button>
+                    </div>
+                    <div class="job-card__meta">
+                      <span><i class="fa-solid fa-location-dot"></i> Mumbai</span>
+                      <span><i class="fa-solid fa-briefcase"></i> Full-time</span>
+                      <span><i class="fa-solid fa-clock"></i> Posted 5 days ago</span>
+                    </div>
+                    <div class="flex gap-sm">
+                      <a href="#" class="btn btn-primary btn-sm">Apply Now</a>
+                      <a href="#" class="btn btn-secondary btn-sm">View Details</a>
+                    </div>
+                    <div class="job-card__referrer">
+                      <img src="https://i.pravatar.cc/80?img=47" alt=""> Referred by Meera Nair, Class of 2015
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card job-card">
+                  <div class="job-card__logo">KL</div>
+                  <div style="flex:1;">
+                    <div class="flex-between">
+                      <div>
+                        <h4>Data Analytics Intern</h4>
+                        <p class="text-soft" style="font-size:.9rem;">Klaro</p>
+                      </div>
+                      <button class="icon-btn" aria-label="Save job"><i class="fa-regular fa-bookmark"></i></button>
+                    </div>
+                    <div class="job-card__meta">
+                      <span><i class="fa-solid fa-location-dot"></i> Hyderabad</span>
+                      <span><i class="fa-solid fa-briefcase"></i> Internship</span>
+                      <span><i class="fa-solid fa-clock"></i> Posted 1 week ago</span>
+                    </div>
+                    <div class="flex gap-sm">
+                      <a href="#" class="btn btn-primary btn-sm">Apply Now</a>
+                      <a href="#" class="btn btn-secondary btn-sm">View Details</a>
+                    </div>
+                    <div class="job-card__referrer">
+                      <img src="https://i.pravatar.cc/80?img=45" alt=""> Referred by Priya Menon, Class of 2016
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card job-card">
+                  <div class="job-card__logo">NL</div>
+                  <div style="flex:1;">
+                    <div class="flex-between">
+                      <div>
+                        <h4>Frontend Engineer</h4>
+                        <p class="text-soft" style="font-size:.9rem;">Northloop</p>
+                      </div>
+                      <button class="icon-btn" aria-label="Save job"><i class="fa-regular fa-bookmark"></i></button>
+                    </div>
+                    <div class="job-card__meta">
+                      <span><i class="fa-solid fa-location-dot"></i> Bangalore</span>
+                      <span><i class="fa-solid fa-briefcase"></i> Full-time</span>
+                      <span><i class="fa-solid fa-clock"></i> Posted 1 week ago</span>
+                    </div>
+                    <div class="flex gap-sm">
+                      <a href="#" class="btn btn-primary btn-sm">Apply Now</a>
+                      <a href="#" class="btn btn-secondary btn-sm">View Details</a>
+                    </div>
+                    <div class="job-card__referrer">
+                      <img src="https://i.pravatar.cc/80?img=9" alt=""> Referred by Simran Kaur, Class of 2020
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="tab-panel panel-saved">
+                <div class="card" style="text-align:center; padding:60px 30px;">
+                  <i class="fa-regular fa-bookmark" style="font-size:2rem; color:var(--ink-faint); margin-bottom:16px;"></i>
+                  <h4>No saved jobs yet</h4>
+                  <p class="text-faint" style="margin-top:8px;">Tap the bookmark icon on any listing to save it here for later.</p>
+                </div>
+              </div>
+
+              <div class="tab-panel panel-applied">
+                <div class="card job-card">
+                  <div class="job-card__logo">MC</div>
+                  <div style="flex:1;">
+                    <div class="flex-between">
+                      <div>
+                        <h4>Finance Associate</h4>
+                        <p class="text-soft" style="font-size:.9rem;">Meridian Capital</p>
+                      </div>
+                      <span class="status-pill approved">Applied</span>
+                    </div>
+                    <div class="job-card__meta">
+                      <span><i class="fa-solid fa-location-dot"></i> Chennai</span>
+                      <span><i class="fa-solid fa-briefcase"></i> Contract</span>
+                      <span><i class="fa-solid fa-clock"></i> Applied 2 weeks ago</span>
+                    </div>
+                    <div class="job-card__referrer">
+                      <img src="https://i.pravatar.cc/80?img=14" alt=""> Referred by Arjun Pillai, Class of 2017
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

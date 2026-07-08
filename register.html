@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join The Quad — Assam downtown University Alumni Network</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8E%93</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="auth-shell">
+  <div class="auth-visual">
+    <div class="rings-deco">
+      <div class="class-ring class-ring--lg" style="top:12%; left:18%;"><div class="class-ring__gem">'21</div></div>
+      <div class="class-ring" style="top:60%; left:70%;"><div class="class-ring__gem">'09</div></div>
+      <div class="class-ring class-ring--sm" style="top:78%; left:26%;"><div class="class-ring__gem">'17</div></div>
+    </div>
+    <div class="auth-visual__content">
+      <a href="index.html" class="logo" style="color:#fff; margin-bottom:60px; display:inline-flex;">
+        <span class="logo-mark"><span>🎓</span></span> The Quad
+      </a>
+      <blockquote>&ldquo;Setting up my profile took four minutes. Getting a referral out of it took four days.&rdquo;</blockquote>
+      <p class="attribution">— Simran Kaur, Class of 2020 · Backend Engineer, Northloop</p>
+    </div>
+    <p style="position:relative; z-index:1; color:rgba(251,246,238,.6); font-size:.85rem;">Assam downtown University Alumni Relations Office</p>
+  </div>
+
+  <div class="auth-form-side">
+    <div class="auth-card animate-in" style="max-width:460px;">
+      <h1>Create your profile</h1>
+      <p class="lede">Free for every Adtu graduate. Takes about four minutes.</p>
+
+      <form id="registerForm" novalidate>
+        <div class="field-row">
+          <div class="field">
+            <label for="fullName">Full name</label>
+            <input type="text" id="fullName" name="fullName" placeholder="Ananya Rao" required>
+          </div>
+          <div class="field">
+            <label for="gradYear">Graduation year</label>
+            <select id="gradYear" name="gradYear" required>
+              <option value="" selected disabled>Select year</option>
+              <option>2026</option>
+              <option>2025</option>
+              <option>2024</option>
+              <option>2020</option>
+              <option>2015</option>
+              <option>2010</option>
+              <option>Before 2010</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="regEmail">Email address</label>
+          <div class="input-icon">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" id="regEmail" name="email" placeholder="you@adtu.in" required>
+          </div>
+          <span class="hint">Use your Assam downtown email if you have it — it speeds up verification.</span>
+        </div>
+
+        <div class="field">
+          <label for="department">Department / Major</label>
+          <select id="department" name="department" required>
+            <option value="" selected disabled>Select department</option>
+            <option>Computer Science &amp; Engineering</option>
+            <option>Electronics &amp; Communication</option>
+            <option>Mechanical Engineering</option>
+            <option>Business Administration</option>
+            <option>Economics</option>
+            <option>Design</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="regPassword">Password</label>
+            <input type="password" id="regPassword" name="password" placeholder="Create a password" required>
+          </div>
+          <div class="field">
+            <label for="confirmPassword">Confirm password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter password" required>
+          </div>
+        </div>
+
+        <label class="checkbox-row" style="margin-bottom:26px;">
+          <input type="checkbox" name="terms" required>
+          I agree to the <a href="#" style="color:var(--teal-700); font-weight:600;">Terms of Service</a> and <a href="#" style="color:var(--teal-700); font-weight:600;">Privacy Policy</a>
+        </label>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg">Create Account</button>
+      </form>
+
+      <p class="auth-footer-link">Already have an account? <a href="login.html">Log in</a></p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

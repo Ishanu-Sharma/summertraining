@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Events — The Quad</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8E%93</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <input type="checkbox" id="sidebarToggle" class="sidebar-toggle-checkbox">
+  <aside class="app-sidebar">
+    <a href="dashboard.html" class="logo">
+      <span class="logo-mark"><span>🎓</span></span>
+      The Quad <small>Assam downtown University</small>
+    </a>
+    <nav class="side-nav">
+      <a href="dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+      <a href="directory.html"><i class="fa-solid fa-users"></i> Directory</a>
+      <a href="events.html" class="active"><i class="fa-solid fa-calendar-days"></i> Events</a>
+      <a href="jobs.html"><i class="fa-solid fa-briefcase"></i> Jobs Board</a>
+      <a href="messages.html"><i class="fa-solid fa-comment-dots"></i> Messages</a>
+      <a href="#"><i class="fa-solid fa-handshake-angle"></i> Mentorship</a>
+
+      <div class="nav-label">Account</div>
+      <a href="profile.html"><i class="fa-solid fa-id-badge"></i> My Profile</a>
+      <a href="edit-profile.html"><i class="fa-solid fa-gear"></i> Settings</a>
+
+      <div class="nav-label">Admin</div>
+      <a href="admin.html"><i class="fa-solid fa-shield-halved"></i> Admin Panel</a>
+    </nav>
+    <div class="sidebar-user">
+      <img src="https://i.pravatar.cc/80?img=33" alt="Ishanu Sharma">
+      <div>
+        <div class="name">Ishanu Sharma</div>
+        <div class="role">Class of 2024</div>
+      </div>
+      <a href="index.html" style="margin-left:auto; color:rgba(251,246,238,.6);" title="Log out"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+    </div>
+  </aside>
+
+  <div class="app-main">
+    <header class="app-topbar">
+      <label for="sidebarToggle" class="sidebar-toggle-label"><i class="fa-solid fa-bars"></i></label>
+      <div class="topbar-search input-icon">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" placeholder="Search alumni, events, jobs...">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" aria-label="Notifications"><i class="fa-solid fa-bell"></i><span class="badge-dot"></span></button>
+        <button class="icon-btn" aria-label="Messages"><i class="fa-solid fa-comment-dots"></i></button>
+        <a href="profile.html" class="user-chip">
+          <img src="https://i.pravatar.cc/80?img=33" alt="">
+          <div><div class="name">Ishanu Sharma</div><div class="role">Class of 2024</div></div>
+        </a>
+      </div>
+    </header>
+
+    <div class="app-content">
+      <div class="page-head">
+        <div class="flex-between">
+          <div>
+            <h2>Events &amp; Reunions</h2>
+            <p class="text-soft">Homecomings, chapter dinners, and the occasional webinar you'll actually attend.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FEATURED EVENT -->
+      <div class="featured-event-banner" style="margin-bottom:44px;">
+        <div class="featured-event-banner__visual">
+          <p class="eyebrow" style="color:var(--peach-300);">Featured</p>
+          <h3 style="color:#fff;">Homecoming Reunion 2026</h3>
+          <p style="color:rgba(251,246,238,.8);">Classes of 2016, 2018 &amp; 2020 · Amphitheatre, Adtu Campus</p>
+          <div class="avatar-stack" style="margin-top:10px;">
+            <img src="https://i.pravatar.cc/80?img=5" alt="">
+            <img src="https://i.pravatar.cc/80?img=15" alt="">
+            <img src="https://i.pravatar.cc/80?img=25" alt="">
+            <span class="more">209+</span>
+          </div>
+        </div>
+        <div class="featured-event-banner__body">
+          <span class="tag tag-orange" style="margin-bottom:14px;"><i class="fa-solid fa-calendar-day"></i> Sat, Oct 17 2026 · 5:00 PM</span>
+          <h3>Three years, one lawn, way too much catching up</h3>
+          <p class="text-soft" style="margin:14px 0 24px;">Live music, the Dean's annual karaoke attempt, and a food truck line-up curated by the class of 2018 hospitality crowd.</p>
+          <div class="flex gap-md flex-wrap">
+            <a href="event-details.html" class="btn btn-primary">View Details &amp; RSVP</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div class="tabs">
+        <input type="radio" name="event-tabs" id="tab-upcoming" checked>
+        <input type="radio" name="event-tabs" id="tab-past">
+        <input type="radio" name="event-tabs" id="tab-rsvp">
+
+        <div class="tab-labels">
+          <label for="tab-upcoming">Upcoming</label>
+          <label for="tab-past">Past</label>
+          <label for="tab-rsvp">My RSVPs</label>
+        </div>
+
+        <div class="tab-content">
+          <div class="tab-panel panel-upcoming">
+            <div class="grid-3">
+              <div class="card event-card">
+                <div class="event-card__banner"><div class="event-card__date"><div class="mon">Aug</div><div class="day">02</div></div></div>
+                <div class="event-card__body">
+                  <span class="tag" style="margin-bottom:10px;">In-person</span>
+                  <h4>Bangalore Chapter Dinner</h4>
+                  <p class="text-faint" style="font-size:.85rem; margin:8px 0 16px;"><i class="fa-solid fa-location-dot"></i> Koramangala, Bangalore</p>
+                  <a href="event-details.html" class="btn btn-secondary btn-block btn-sm">RSVP</a>
+                </div>
+              </div>
+              <div class="card event-card">
+                <div class="event-card__banner"><div class="event-card__date"><div class="mon">Jul</div><div class="day">22</div></div></div>
+                <div class="event-card__body">
+                  <span class="tag" style="margin-bottom:10px;">Online</span>
+                  <h4>Careers in AI — CS Dept Webinar</h4>
+                  <p class="text-faint" style="font-size:.85rem; margin:8px 0 16px;"><i class="fa-solid fa-video"></i> Zoom · 7:00 PM IST</p>
+                  <a href="event-details.html" class="btn btn-secondary btn-block btn-sm">RSVP</a>
+                </div>
+              </div>
+              <div class="card event-card">
+                <div class="event-card__banner"><div class="event-card__date"><div class="mon">Aug</div><div class="day">20</div></div></div>
+                <div class="event-card__body">
+                  <span class="tag" style="margin-bottom:10px;">In-person</span>
+                  <h4>Women in Tech Panel</h4>
+                  <p class="text-faint" style="font-size:.85rem; margin:8px 0 16px;"><i class="fa-solid fa-location-dot"></i> Delhi NCR</p>
+                  <a href="event-details.html" class="btn btn-secondary btn-block btn-sm">RSVP</a>
+                </div>
+              </div>
+              <div class="card event-card">
+                <div class="event-card__banner"><div class="event-card__date"><div class="mon">Sep</div><div class="day">05</div></div></div>
+                <div class="event-card__body">
+                  <span class="tag" style="margin-bottom:10px;">In-person</span>
+                  <h4>Design Alumni Meetup</h4>
+                  <p class="text-faint" style="font-size:.85rem; margin:8px 0 16px;"><i class="fa-solid fa-location-dot"></i> Mumbai</p>
+                  <a href="event-details.html" class="btn btn-secondary btn-block btn-sm">RSVP</a>
+                </div>
+              </div>
+              <div class="card event-card">
+                <div class="event-card__banner"><div class="event-card__date"><div class="mon">Oct</div><div class="day">17</div></div></div>
+                <div class="event-card__body">
+                  <span class="tag tag-orange" style="margin-bottom:10px;">Featured</span>
+                  <h4>Homecoming Reunion 2026</h4>
+                  <p class="text-faint" style="font-size:.85rem; margin:8px 0 16px;"><i class="fa-solid fa-location-dot"></i> Adtu Campus</p>
+                  <a href="event-details.html" class="btn btn-primary btn-block btn-sm">RSVP</a>
+                </div>
+              </div>
+              <div class="card event-card">
+                <div class="event-card__banner"><div class="event-card__date"><div class="mon">Nov</div><div class="day">12</div></div></div>
+                <div class="event-card__body">
+                  <span class="tag" style="margin-bottom:10px;">Online</span>
+                  <h4>Annual Giving Town Hall</h4>
+                  <p class="text-faint" style="font-size:.85rem; margin:8px 0 16px;"><i class="fa-solid fa-video"></i> Zoom · 6:30 PM IST</p>
+                  <a href="event-details.html" class="btn btn-secondary btn-block btn-sm">RSVP</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel panel-past">
+            <div class="grid-3">
+              <div class="card event-card" style="opacity:.85;">
+                <div class="event-card__banner" style="background:linear-gradient(135deg, var(--ink-faint), var(--ink-soft));"><div class="event-card__date"><div class="mon">Mar</div><div class="day">03</div></div></div>
+                <div class="event-card__body">
+                  <span class="tag tag-outline" style="margin-bottom:10px;">Ended</span>
+                  <h4>Founders' Day Gala 2025</h4>
+                  <p class="text-faint" style="font-size:.85rem; margin:8px 0 16px;">412 alumni attended</p>
+                  <button class="btn btn-secondary btn-block btn-sm">View Recap</button>
+                </div>
+              </div>
+              <div class="card event-card" style="opacity:.85;">
+                <div class="event-card__banner" style="background:linear-gradient(135deg, var(--ink-faint), var(--ink-soft));"><div class="event-card__date"><div class="mon">Jan</div><div class="day">18</div></div></div>
+                <div class="event-card__body">
+                  <span class="tag tag-outline" style="margin-bottom:10px;">Ended</span>
+                  <h4>Silicon Valley Chapter Mixer</h4>
+                  <p class="text-faint" style="font-size:.85rem; margin:8px 0 16px;">86 alumni attended</p>
+                  <button class="btn btn-secondary btn-block btn-sm">View Recap</button>
+                </div>
+              </div>
+              <div class="card event-card" style="opacity:.85;">
+                <div class="event-card__banner" style="background:linear-gradient(135deg, var(--ink-faint), var(--ink-soft));"><div class="event-card__date"><div class="mon">Dec</div><div class="day">06</div></div></div>
+                <div class="event-card__body">
+                  <span class="tag tag-outline" style="margin-bottom:10px;">Ended</span>
+                  <h4>Class of 2015 — 10 Year Reunion</h4>
+                  <p class="text-faint" style="font-size:.85rem; margin:8px 0 16px;">240 alumni attended</p>
+                  <button class="btn btn-secondary btn-block btn-sm">View Recap</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel panel-rsvp">
+            <div class="grid-3">
+              <div class="card event-card">
+                <div class="event-card__banner"><div class="event-card__date"><div class="mon">Oct</div><div class="day">17</div></div></div>
+                <div class="event-card__body">
+                  <span class="tag" style="margin-bottom:10px;"><i class="fa-solid fa-check"></i> Going</span>
+                  <h4>Homecoming Reunion 2026</h4>
+                  <p class="text-faint" style="font-size:.85rem; margin:8px 0 16px;"><i class="fa-solid fa-location-dot"></i> Adtu Campus</p>
+                  <a href="event-details.html" class="btn btn-secondary btn-block btn-sm">View Details</a>
+                </div>
+              </div>
+              <div class="card event-card">
+                <div class="event-card__banner"><div class="event-card__date"><div class="mon">Jul</div><div class="day">22</div></div></div>
+                <div class="event-card__body">
+                  <span class="tag tag-orange" style="margin-bottom:10px;"><i class="fa-solid fa-star"></i> Interested</span>
+                  <h4>Careers in AI — CS Dept Webinar</h4>
+                  <p class="text-faint" style="font-size:.85rem; margin:8px 0 16px;"><i class="fa-solid fa-video"></i> Online</p>
+                  <a href="event-details.html" class="btn btn-secondary btn-block btn-sm">View Details</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
