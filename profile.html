@@ -18,7 +18,7 @@
   <aside class="app-sidebar">
     <a href="dashboard.html" class="logo">
       <span class="logo-mark"><span>🎓</span></span>
-      The Quad <small>Assam downtown University</small>
+      The Quad <small>Assam Downtown University</small>
     </a>
     <nav class="side-nav">
       <a href="dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
@@ -32,16 +32,18 @@
       <a href="profile.html" class="active"><i class="fa-solid fa-id-badge"></i> My Profile</a>
       <a href="edit-profile.html"><i class="fa-solid fa-gear"></i> Settings</a>
 
+      <div class="admin-nav-group">
       <div class="nav-label">Admin</div>
       <a href="admin.html"><i class="fa-solid fa-shield-halved"></i> Admin Panel</a>
+      </div>
     </nav>
     <div class="sidebar-user">
-      <img src="https://i.pravatar.cc/80?img=33" alt="Ishanu Sharma">
+      <img data-user-avatar src="https://i.pravatar.cc/80?img=53" alt="">
       <div>
-        <div class="name">Ishanu Sharma</div>
-        <div class="role">Class of 2024</div>
+        <div class="name" data-user-name>Ishanu Sharma</div>
+        <div class="role" data-user-role>Class of 2024</div>
       </div>
-      <a href="index.html" style="margin-left:auto; color:rgba(251,246,238,.6);" title="Log out"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+      <a href="login.html" data-logout style="margin-left:auto; color:rgba(251,246,238,.6);" title="Log out"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
     </div>
   </aside>
 
@@ -53,11 +55,11 @@
         <input type="search" placeholder="Search alumni, events, jobs...">
       </div>
       <div class="topbar-actions">
-        <button class="icon-btn" aria-label="Notifications"><i class="fa-solid fa-bell"></i><span class="badge-dot"></span></button>
-        <button class="icon-btn" aria-label="Messages"><i class="fa-solid fa-comment-dots"></i></button>
+        <button class="icon-btn" aria-label="Notifications" data-notif-bell><i class="fa-solid fa-bell"></i><span class="badge-dot"></span></button>
+        <a href="messages.html" class="icon-btn" aria-label="Messages"><i class="fa-solid fa-comment-dots"></i><span class="badge-dot hidden" data-message-badge></span></a>
         <a href="profile.html" class="user-chip">
-          <img src="https://i.pravatar.cc/80?img=33" alt="">
-          <div><div class="name">Ishanu Sharma</div><div class="role">Class of 2024</div></div>
+          <img data-user-avatar src="https://i.pravatar.cc/80?img=53" alt="">
+          <div><div class="name" data-user-name>Ishanu Sharma</div><div class="role" data-user-role>Class of 2024</div></div>
         </a>
       </div>
     </header>
@@ -68,27 +70,28 @@
         <div class="profile-banner__body">
           <div class="profile-banner__head">
             <div class="flex gap-md" style="align-items:flex-end;">
-              <img class="profile-banner__avatar" src="https://i.pravatar.cc/200?img=33" alt="Ishanu Sharma">
+              <img class="profile-banner__avatar" id="profAvatar" src="https://i.pravatar.cc/200?img=53" alt="">
               <div>
-                <h2 style="display:flex; align-items:center; gap:10px;">Ishanu Sharma <span class="class-ring class-ring--sm"><span class="class-ring__gem">'24</span></span></h2>
-                <p class="text-soft">Freelancer</p>
+                <h2 style="display:flex; align-items:center; gap:10px;"><span id="profName">Ishanu Sharma</span> <span class="class-ring class-ring--sm"><span class="class-ring__gem" id="profRingGem">'24</span></span></h2>
+                <p class="text-soft" id="profHeadline">UX Researcher at Nimbus Health</p>
               </div>
             </div>
             <div class="profile-banner__actions">
-              <a href="edit-profile.html" class="btn btn-secondary"><i class="fa-solid fa-pen"></i> Edit Profile</a>
-              <button class="btn btn-primary"><i class="fa-solid fa-share-nodes"></i> Share Profile</button>
+              <a href="edit-profile.html" class="btn btn-secondary" id="profEditBtn"><i class="fa-solid fa-pen"></i> Edit Profile</a>
+              <button type="button" class="btn btn-secondary hidden" id="profConnectBtn"><i class="fa-solid fa-user-plus"></i> Connect</button>
+              <a href="messages.html" class="btn btn-secondary hidden" id="profMessageBtn"><i class="fa-solid fa-comment"></i> Message</a>
+              <button type="button" class="btn btn-primary" id="profShareBtn"><i class="fa-solid fa-share-nodes"></i> Share Profile</button>
             </div>
           </div>
           <div class="profile-banner__meta">
-            <span><i class="fa-solid fa-location-dot"></i> Assam, India</span>
-            <span><i class="fa-solid fa-graduation-cap"></i> Design, Class of 2024</span>
-            <span><i class="fa-solid fa-briefcase"></i> Freelancer</span>
-            <span><i class="fa-solid fa-calendar-plus"></i> Joined The Quad in 2026</span>
+            <span><i class="fa-solid fa-location-dot"></i> <span id="profLocation">Pune, India</span></span>
+            <span><i class="fa-solid fa-graduation-cap"></i> <span id="profEducationLine">Design, Class of 2024</span></span>
+            <span><i class="fa-solid fa-briefcase"></i> <span id="profCompany">Nimbus Health</span></span>
+            <span><i class="fa-solid fa-calendar-plus"></i> <span id="profJoined">Joined The Quad in 2025</span></span>
           </div>
-          <div class="skill-tag-row">
+          <div class="skill-tag-row" id="profSkills">
             <span class="tag">UX Research</span>
             <span class="tag">Figma</span>
-            <span class="tag">Design Systems</span>
             <span class="tag">User Interviews</span>
             <span class="tag">Prototyping</span>
           </div>
@@ -113,15 +116,15 @@
             <div class="tab-panel panel-about">
               <div class="card card--pad-lg">
                 <h4 style="margin-bottom:14px;">About</h4>
-                <p class="text-soft" style="margin-bottom:24px;">UX Researcher who fell into research after four years of product design. Currently leading user research for Nimbus Health's patient app. Always happy to talk about qualitative research methods, or about Adtu's design club, which I'm fairly sure no longer exists.</p>
+                <p class="text-soft" id="profBio" style="margin-bottom:24px;">UX Researcher who joined Nimbus Health straight out of AdtU. Still building out a proper research toolkit one project at a time — always happy to talk about qualitative methods, or about AdtU's design club, which I'm fairly sure no longer exists.</p>
                 <div class="grid-2" style="gap:16px;">
-                  <div class="contact-info-card" style="border:none; padding:0;">
+                  <div class="contact-info-card" id="profEmailRow" style="border:none; padding:0;">
                     <i class="fa-solid fa-envelope"></i>
-                    <div><div class="text-faint" style="font-size:.78rem;">Email</div><div>ishanu.sharma@adtu.in</div></div>
+                    <div><div class="text-faint" style="font-size:.78rem;">Email</div><div id="profEmail">ishanu.sharma@adtu.in</div></div>
                   </div>
-                  <div class="contact-info-card" style="border:none; padding:0;">
+                  <div class="contact-info-card" id="profLinkedinRow" style="border:none; padding:0;">
                     <i class="fa-brands fa-linkedin-in"></i>
-                    <div><div class="text-faint" style="font-size:.78rem;">LinkedIn</div><div>/in/ishanusharma-ux</div></div>
+                    <div><div class="text-faint" style="font-size:.78rem;">LinkedIn</div><div id="profLinkedin">/in/ishanusharma-ux</div></div>
                   </div>
                 </div>
               </div>
@@ -130,21 +133,16 @@
             <div class="tab-panel panel-experience">
               <div class="card card--pad-lg">
                 <h4 style="margin-bottom:24px;">Experience</h4>
-                <div class="thread">
+                <div class="thread" id="profExperience">
                   <div class="thread-item">
                     <h4>UX Researcher</h4>
-                    <p class="text-soft">Nimbus Health · 2023 — Present · Pune</p>
-                    <p style="margin-top:8px;">Leads end-to-end research for the patient-facing mobile app; runs 15+ interviews a quarter.</p>
-                  </div>
-                  <div class="thread-item">
-                    <h4>Product Designer</h4>
-                    <p class="text-soft">Loop Studio · 2021 — 2023 · Bangalore</p>
-                    <p style="margin-top:8px;">Owned design for two B2B dashboards from wireframe to shipped feature.</p>
+                    <p class="text-soft">Nimbus Health · 2024 — Present · Pune</p>
+                    <p style="margin-top:8px;">Runs user interviews for the patient-facing mobile app and is building out the team's first research playbook.</p>
                   </div>
                   <div class="thread-item">
                     <h4>Design Intern</h4>
-                    <p class="text-soft">Adtu Design Lab · Summer 2018 · Campus</p>
-                    <p style="margin-top:8px;">First real design job — a campus wayfinding app that three people still use.</p>
+                    <p class="text-soft">AdtU Design Lab · Summer 2023 · Campus</p>
+                    <p style="margin-top:8px;">First real design job — a campus wayfinding app that a few people still use.</p>
                   </div>
                 </div>
               </div>
@@ -153,73 +151,35 @@
             <div class="tab-panel panel-education">
               <div class="card card--pad-lg">
                 <h4 style="margin-bottom:24px;">Education</h4>
-                <div class="thread">
+                <div class="thread" id="profEducation">
                   <div class="thread-item">
                     <h4>B.Des, Design</h4>
-                    <p class="text-soft">Assam downtown University · 2015 — 2019</p>
-                  </div>
-                  <div class="thread-item">
-                    <h4>Certificate in User Research</h4>
-                    <p class="text-soft">Nielsen Norman Group · 2022</p>
+                    <p class="text-soft">Assam downtown University · 2020 — 2024</p>
                   </div>
                 </div>
               </div>
             </div>
 
             <div class="tab-panel panel-posts">
-              <div class="card feed-card" style="margin-bottom:18px;">
-                <div class="feed-card__head">
-                  <img src="https://i.pravatar.cc/80?img=48" alt="">
-                  <div><div class="name">Ishanu Sharma</div><div class="meta">3 days ago</div></div>
-                </div>
-                <p class="body-text">Running a free 30-minute "how to break into UX research" session for any Adtu batch. Comment or message me if you want a slot.</p>
-                <div class="feed-card__actions">
-                  <button><i class="fa-regular fa-thumbs-up"></i> 56 Likes</button>
-                  <button><i class="fa-regular fa-comment"></i> 18 Comments</button>
-                  <button><i class="fa-solid fa-share"></i> Share</button>
-                </div>
-              </div>
-              <div class="card feed-card">
-                <div class="feed-card__head">
-                  <img src="https://i.pravatar.cc/80?img=48" alt="">
-                  <div><div class="name">Ishanu Sharma</div><div class="meta">1 month ago</div></div>
-                </div>
-                <p class="body-text">Homecoming planning committee, assemble. Who's helping with the design-batch reunion booth this year?</p>
-                <div class="feed-card__actions">
-                  <button><i class="fa-regular fa-thumbs-up"></i> 24 Likes</button>
-                  <button><i class="fa-regular fa-comment"></i> 7 Comments</button>
-                  <button><i class="fa-solid fa-share"></i> Share</button>
-                </div>
-              </div>
+              <div id="profPosts"></div>
             </div>
           </div>
         </div>
 
         <div>
           <div class="widget">
-            <h4>Batchmates · Class of 2019</h4>
-            <div class="widget-list-item">
-              <img src="https://i.pravatar.cc/80?img=39" alt="">
-              <div class="info"><div class="name">Fatima Sheikh</div><div class="sub">Marketing, Bloom &amp; Co.</div></div>
-            </div>
-            <div class="widget-list-item">
-              <img src="https://i.pravatar.cc/80?img=26" alt="">
-              <div class="info"><div class="name">Vivaan Kapoor</div><div class="sub">Finance, Solace Cloud</div></div>
-            </div>
-            <div class="widget-list-item">
-              <img src="https://i.pravatar.cc/80?img=57" alt="">
-              <div class="info"><div class="name">Neha Joshi</div><div class="sub">Product, Klaro</div></div>
+            <h4 id="profBatchmatesTitle">Batchmates · Class of 2024</h4>
+            <div id="profBatchmatesList">
+              <div class="widget-list-item">
+                <img src="https://i.pravatar.cc/80?img=39" alt="">
+                <div class="info"><div class="name">Fatima Sheikh</div><div class="sub">Marketing, Bloom &amp; Co.</div></div>
+              </div>
             </div>
           </div>
           <div class="widget">
             <h4>Mutual Connections</h4>
-            <div class="avatar-stack" style="margin-bottom:10px;">
-              <img src="https://i.pravatar.cc/80?img=33" alt="">
-              <img src="https://i.pravatar.cc/80?img=45" alt="">
-              <img src="https://i.pravatar.cc/80?img=21" alt="">
-              <span class="more">12+</span>
-            </div>
-            <p class="text-faint" style="font-size:.82rem;">Including Rohan Bhatt and Priya Menon.</p>
+            <div class="avatar-stack" id="mutualAvatars" style="margin-bottom:10px;"></div>
+            <p class="text-faint" id="mutualText" style="font-size:.82rem;">No mutual connections yet.</p>
           </div>
         </div>
       </div>
@@ -227,5 +187,13 @@
   </div>
 </div>
 
+
+<script src="seed-data.js"></script>
+<script src="db.js"></script>
+<script src="auth.js"></script>
+<script src="validate.js"></script>
+<script src="ui.js"></script>
+<script src="feed.js"></script>
+<script src="profile.js"></script>
 </body>
 </html>

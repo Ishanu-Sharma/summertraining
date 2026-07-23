@@ -18,7 +18,7 @@
   <aside class="app-sidebar">
     <a href="dashboard.html" class="logo">
       <span class="logo-mark"><span>🎓</span></span>
-      The Quad <small>Assam downtown University</small>
+      The Quad <small>Assam Downtown University</small>
     </a>
     <nav class="side-nav">
       <a href="dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
@@ -32,16 +32,18 @@
       <a href="profile.html"><i class="fa-solid fa-id-badge"></i> My Profile</a>
       <a href="edit-profile.html"><i class="fa-solid fa-gear"></i> Settings</a>
 
+      <div class="admin-nav-group">
       <div class="nav-label">Admin</div>
       <a href="admin.html"><i class="fa-solid fa-shield-halved"></i> Admin Panel</a>
+      </div>
     </nav>
     <div class="sidebar-user">
-      <img src="https://i.pravatar.cc/80?img=33" alt="Ishanu Sharma">
+      <img data-user-avatar src="https://i.pravatar.cc/80?img=53" alt="">
       <div>
-        <div class="name">Ishanu Sharma</div>
-        <div class="role">Class of 2024</div>
+        <div class="name" data-user-name>Ishanu Sharma</div>
+        <div class="role" data-user-role>Class of 2024</div>
       </div>
-      <a href="index.html" style="margin-left:auto; color:rgba(251,246,238,.6);" title="Log out"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+      <a href="login.html" data-logout style="margin-left:auto; color:rgba(251,246,238,.6);" title="Log out"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
     </div>
   </aside>
 
@@ -53,11 +55,11 @@
         <input type="search" placeholder="Search alumni, events, jobs...">
       </div>
       <div class="topbar-actions">
-        <button class="icon-btn" aria-label="Notifications"><i class="fa-solid fa-bell"></i><span class="badge-dot"></span></button>
-        <button class="icon-btn" aria-label="Messages"><i class="fa-solid fa-comment-dots"></i></button>
+        <button class="icon-btn" aria-label="Notifications" data-notif-bell><i class="fa-solid fa-bell"></i><span class="badge-dot"></span></button>
+        <a href="messages.html" class="icon-btn" aria-label="Messages"><i class="fa-solid fa-comment-dots"></i><span class="badge-dot hidden" data-message-badge></span></a>
         <a href="profile.html" class="user-chip">
-          <img src="https://i.pravatar.cc/80?img=33" alt="">
-          <div><div class="name">Ishanu Sharma</div><div class="role">Class of 2024</div></div>
+          <img data-user-avatar src="https://i.pravatar.cc/80?img=53" alt="">
+          <div><div class="name" data-user-name>Ishanu Sharma</div><div class="role" data-user-role>Class of 2024</div></div>
         </a>
       </div>
     </header>
@@ -88,10 +90,10 @@
             </div>
             <div class="field">
               <label>Job type</label>
-              <label class="checkbox-row" style="margin-bottom:10px;"><input type="checkbox" checked> Full-time</label>
-              <label class="checkbox-row" style="margin-bottom:10px;"><input type="checkbox"> Internship</label>
-              <label class="checkbox-row" style="margin-bottom:10px;"><input type="checkbox"> Contract</label>
-              <label class="checkbox-row"><input type="checkbox"> Part-time</label>
+              <label class="checkbox-row" style="margin-bottom:10px;"><input type="checkbox" class="job-type-check" value="Full-time" checked> Full-time</label>
+              <label class="checkbox-row" style="margin-bottom:10px;"><input type="checkbox" class="job-type-check" value="Internship" checked> Internship</label>
+              <label class="checkbox-row" style="margin-bottom:10px;"><input type="checkbox" class="job-type-check" value="Contract" checked> Contract</label>
+              <label class="checkbox-row"><input type="checkbox" class="job-type-check" value="Part-time" checked> Part-time</label>
             </div>
             <div class="field">
               <label for="jLocation">Location</label>
@@ -104,7 +106,7 @@
                 <option>Remote</option>
               </select>
             </div>
-            <label class="checkbox-row" style="margin-bottom:20px;"><input type="checkbox" checked> Alumni-referred only</label>
+            <label class="checkbox-row" style="margin-bottom:20px;"><input type="checkbox" id="jReferredOnly"> Alumni-referred only</label>
             <button type="submit" class="btn btn-primary btn-block">Apply Filters</button>
           </form>
         </aside>
@@ -123,7 +125,8 @@
             </div>
 
             <div class="tab-content">
-              <div class="tab-panel panel-all-jobs" style="display:flex; flex-direction:column; gap:18px;">
+              <div class="tab-panel panel-all-jobs">
+              <div id="allJobsList" style="display:flex; flex-direction:column; gap:18px;">
 
                 <div class="card job-card">
                   <div class="job-card__logo">NH</div>
@@ -145,7 +148,7 @@
                       <a href="#" class="btn btn-secondary btn-sm">View Details</a>
                     </div>
                     <div class="job-card__referrer">
-                      <img src="https://i.pravatar.cc/80?img=33" alt=""> Referred by Ishanu Sharma, Class of 2024
+                      <img data-user-avatar src="https://i.pravatar.cc/80?img=53" alt=""> Referred by Ishanu Sharma, Class of 2024
                     </div>
                   </div>
                 </div>
@@ -251,16 +254,20 @@
                 </div>
 
               </div>
+              </div>
 
               <div class="tab-panel panel-saved">
+              <div id="savedJobsList">
                 <div class="card" style="text-align:center; padding:60px 30px;">
                   <i class="fa-regular fa-bookmark" style="font-size:2rem; color:var(--ink-faint); margin-bottom:16px;"></i>
                   <h4>No saved jobs yet</h4>
                   <p class="text-faint" style="margin-top:8px;">Tap the bookmark icon on any listing to save it here for later.</p>
                 </div>
               </div>
+              </div>
 
               <div class="tab-panel panel-applied">
+              <div id="appliedJobsList">
                 <div class="card job-card">
                   <div class="job-card__logo">MC</div>
                   <div style="flex:1;">
@@ -282,6 +289,7 @@
                   </div>
                 </div>
               </div>
+              </div>
             </div>
           </div>
         </div>
@@ -290,5 +298,12 @@
   </div>
 </div>
 
+
+<script src="seed-data.js"></script>
+<script src="db.js"></script>
+<script src="auth.js"></script>
+<script src="validate.js"></script>
+<script src="ui.js"></script>
+<script src="jobs.js"></script>
 </body>
 </html>

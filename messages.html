@@ -18,7 +18,7 @@
   <aside class="app-sidebar">
     <a href="dashboard.html" class="logo">
       <span class="logo-mark"><span>🎓</span></span>
-      The Quad <small>Assam downtown University</small>
+      The Quad <small>Assam Downtown University</small>
     </a>
     <nav class="side-nav">
       <a href="dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
@@ -32,16 +32,18 @@
       <a href="profile.html"><i class="fa-solid fa-id-badge"></i> My Profile</a>
       <a href="edit-profile.html"><i class="fa-solid fa-gear"></i> Settings</a>
 
+      <div class="admin-nav-group">
       <div class="nav-label">Admin</div>
       <a href="admin.html"><i class="fa-solid fa-shield-halved"></i> Admin Panel</a>
+      </div>
     </nav>
     <div class="sidebar-user">
-      <img src="https://i.pravatar.cc/80?img=33" alt="Ishanu Sharma">
+      <img data-user-avatar src="https://i.pravatar.cc/80?img=53" alt="">
       <div>
-        <div class="name">Ishanu Sharma</div>
-        <div class="role">Class of 2024</div>
+        <div class="name" data-user-name>Ishanu Sharma</div>
+        <div class="role" data-user-role>Class of 2024</div>
       </div>
-      <a href="index.html" style="margin-left:auto; color:rgba(251,246,238,.6);" title="Log out"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+      <a href="login.html" data-logout style="margin-left:auto; color:rgba(251,246,238,.6);" title="Log out"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
     </div>
   </aside>
 
@@ -53,10 +55,10 @@
         <input type="search" placeholder="Search alumni, events, jobs...">
       </div>
       <div class="topbar-actions">
-        <button class="icon-btn" aria-label="Notifications"><i class="fa-solid fa-bell"></i><span class="badge-dot"></span></button>
+        <button class="icon-btn" aria-label="Notifications" data-notif-bell><i class="fa-solid fa-bell"></i><span class="badge-dot"></span></button>
         <a href="profile.html" class="user-chip">
-          <img src="https://i.pravatar.cc/80?img=33" alt="">
-          <div><div class="name">Ishanu Sharma</div><div class="role">Class of 2024</div></div>
+          <img data-user-avatar src="https://i.pravatar.cc/80?img=53" alt="">
+          <div><div class="name" data-user-name>Ishanu Sharma</div><div class="role" data-user-role>Class of 2024</div></div>
         </a>
       </div>
     </header>
@@ -66,83 +68,29 @@
         <div class="conv-list__search">
           <div class="input-icon">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="search" placeholder="Search messages">
+            <input type="search" id="convSearch" placeholder="Search messages">
           </div>
         </div>
-
-        <a href="#" class="conv-item active">
-          <img src="https://i.pravatar.cc/80?img=33" alt="">
-          <div class="info">
-            <div class="top-row"><span class="name">Rohan Bhatt</span><span class="time">10:24 AM</span></div>
-            <div class="snippet">Sure, send me your resume and I'll pass it to HR directly...</div>
-          </div>
-          <span class="unread-count">2</span>
-        </a>
-        <a href="#" class="conv-item">
-          <img src="https://i.pravatar.cc/80?img=47" alt="">
-          <div class="info">
-            <div class="top-row"><span class="name">Meera Nair</span><span class="time">Yesterday</span></div>
-            <div class="snippet">Let's catch up properly at homecoming!</div>
-          </div>
-        </a>
-        <a href="#" class="conv-item">
-          <img src="https://i.pravatar.cc/80?img=45" alt="">
-          <div class="info">
-            <div class="top-row"><span class="name">Priya Menon</span><span class="time">Yesterday</span></div>
-            <div class="snippet">Congrats again on the promotion news 🎉</div>
-          </div>
-        </a>
-        <a href="#" class="conv-item">
-          <img src="https://i.pravatar.cc/80?img=68" alt="">
-          <div class="info">
-            <div class="top-row"><span class="name">Adtu Alumni Office</span><span class="time">Mon</span></div>
-            <div class="snippet">Your RSVP for Homecoming Reunion 2026 is confirmed.</div>
-          </div>
-        </a>
-        <a href="#" class="conv-item">
-          <img src="https://i.pravatar.cc/80?img=21" alt="">
-          <div class="info">
-            <div class="top-row"><span class="name">Nikhil Desai</span><span class="time">Sun</span></div>
-            <div class="snippet">Thanks for connecting! Would love your take on...</div>
-          </div>
-        </a>
-        <a href="#" class="conv-item">
-          <img src="https://i.pravatar.cc/80?img=19" alt="">
-          <div class="info">
-            <div class="top-row"><span class="name">Karan Verma</span><span class="time">Last week</span></div>
-            <div class="snippet">Long time! How's Pune treating you?</div>
-          </div>
-        </a>
+        <div id="convListItems"></div>
       </aside>
 
-      <div class="chat-pane">
-        <div class="chat-header">
-          <img src="https://i.pravatar.cc/80?img=33" alt="">
-          <div style="flex:1;">
-            <div class="name">Rohan Bhatt</div>
-            <div class="status"><span class="status-dot online"></span> Online</div>
-          </div>
-          <button class="icon-btn" aria-label="More options"><i class="fa-solid fa-ellipsis"></i></button>
+      <div class="chat-pane" id="chatPane">
+        <div class="empty-state" style="margin:auto;">
+          <i class="fa-regular fa-comments"></i>
+          <h4>Select a conversation</h4>
+          <p>Pick someone from the list to see your messages.</p>
         </div>
-
-        <div class="chat-body">
-          <div class="chat-day-divider">Today</div>
-          <div class="bubble in">Hey Ishanu! Saw your post about the free UX research sessions — nice initiative.<span class="time">9:58 AM</span></div>
-          <div class="bubble out">Hi Rohan! Thank you, happy to help if anyone from your team wants to chat.<span class="time">10:02 AM</span></div>
-          <div class="bubble in">Actually — we're hiring two backend engineers on my team. Know anyone from your batch who might be interested?<span class="time">10:11 AM</span></div>
-          <div class="bubble out">I might! Let me ask around and get back to you.<span class="time">10:15 AM</span></div>
-          <div class="bubble in">Perfect. Sure, send me your resume and I'll pass it to HR directly if you know someone good.<span class="time">10:24 AM</span></div>
-        </div>
-
-        <form class="chat-input">
-          <button type="button" class="icon-btn" aria-label="Attach file"><i class="fa-solid fa-paperclip"></i></button>
-          <input type="text" placeholder="Write a message...">
-          <button type="submit" class="btn btn-primary btn-icon" aria-label="Send message"><i class="fa-solid fa-paper-plane"></i></button>
-        </form>
       </div>
     </div>
   </div>
 </div>
 
+
+<script src="seed-data.js"></script>
+<script src="db.js"></script>
+<script src="auth.js"></script>
+<script src="validate.js"></script>
+<script src="ui.js"></script>
+<script src="messages.js"></script>
 </body>
 </html>

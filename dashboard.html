@@ -18,7 +18,7 @@
   <aside class="app-sidebar">
     <a href="dashboard.html" class="logo">
       <span class="logo-mark"><span>🎓</span></span>
-      The Quad <small>Assam downtown University</small>
+      The Quad <small>Assam Downtown University</small>
     </a>
     <nav class="side-nav">
       <a href="dashboard.html" class="active"><i class="fa-solid fa-house"></i> Dashboard</a>
@@ -32,16 +32,18 @@
       <a href="profile.html"><i class="fa-solid fa-id-badge"></i> My Profile</a>
       <a href="edit-profile.html"><i class="fa-solid fa-gear"></i> Settings</a>
 
+      <div class="admin-nav-group">
       <div class="nav-label">Admin</div>
       <a href="admin.html"><i class="fa-solid fa-shield-halved"></i> Admin Panel</a>
+      </div>
     </nav>
     <div class="sidebar-user">
-      <img src="https://i.pravatar.cc/80?img=33" alt="Ishanu Sharma">
+      <img data-user-avatar src="https://i.pravatar.cc/80?img=53" alt="">
       <div>
-        <div class="name">Ishanu Sharma</div>
-        <div class="role">Class of 2024</div>
+        <div class="name" data-user-name>Ishanu Sharma</div>
+        <div class="role" data-user-role>Class of 2024</div>
       </div>
-      <a href="index.html" style="margin-left:auto; color:rgba(251,246,238,.6);" title="Log out"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+      <a href="login.html" data-logout style="margin-left:auto; color:rgba(251,246,238,.6);" title="Log out"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
     </div>
   </aside>
 
@@ -53,28 +55,28 @@
         <input type="search" placeholder="Search alumni, events, jobs...">
       </div>
       <div class="topbar-actions">
-        <button class="icon-btn" aria-label="Notifications"><i class="fa-solid fa-bell"></i><span class="badge-dot"></span></button>
-        <button class="icon-btn" aria-label="Messages"><i class="fa-solid fa-comment-dots"></i></button>
+        <button class="icon-btn" aria-label="Notifications" data-notif-bell><i class="fa-solid fa-bell"></i><span class="badge-dot"></span></button>
+        <a href="messages.html" class="icon-btn" aria-label="Messages"><i class="fa-solid fa-comment-dots"></i><span class="badge-dot hidden" data-message-badge></span></a>
         <a href="profile.html" class="user-chip">
-          <img src="https://i.pravatar.cc/80?img=33" alt="">
+          <img data-user-avatar src="https://i.pravatar.cc/80?img=53" alt="">
           <div>
-            <div class="name">Ishanu Sharma</div>
-            <div class="role">Class of 2024</div>
+            <div class="name" data-user-name>Ishanu Sharma</div>
+            <div class="role" data-user-role>Class of 2024</div>
           </div>
         </a>
       </div>
     </header>
 
     <div class="app-content">
-      <div class="welcome-banner animate-in">
+      <div class="welcome-banner animate-in" id="welcomeBanner">
         <div>
-          <h2>Welcome back, Ishanu 👋</h2>
+          <h2>Welcome back, <span id="welcomeUserName">Ishanu</span> 👋</h2>
           <p>Here's what's happening across your network today.</p>
         </div>
         <div class="mini-stats">
           <div><div class="num">128</div><div class="label">Profile views</div></div>
           <div><div class="num">6</div><div class="label">New connections</div></div>
-          <div><div class="num">3</div><div class="label">Unread messages</div></div>
+          <div><div class="num" id="statUnread">3</div><div class="label">Unread messages</div></div>
         </div>
       </div>
 
@@ -83,133 +85,40 @@
         <div>
           <div class="card" style="margin-bottom:22px;">
             <div class="composer">
-              <img src="https://i.pravatar.cc/80?img=33" alt="">
+              <img data-user-avatar src="https://i.pravatar.cc/80?img=53" alt="">
               <div style="flex:1;">
-                <textarea placeholder="Share an update with your network — a new role, a milestone, a question..."></textarea>
+                <textarea id="dashComposerText" placeholder="Share an update with your network — a new role, a milestone, a question..."></textarea>
                 <div class="composer-actions">
                   <div class="composer-icons">
                     <button type="button" title="Add photo"><i class="fa-solid fa-image"></i></button>
                     <button type="button" title="Tag event"><i class="fa-solid fa-calendar-days"></i></button>
                     <button type="button" title="Add link"><i class="fa-solid fa-link"></i></button>
                   </div>
-                  <button type="button" class="btn btn-primary btn-sm">Post Update</button>
+                  <button type="button" id="dashComposerBtn" class="btn btn-primary btn-sm">Post Update</button>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="card feed-card" style="margin-bottom:22px;">
-            <div class="feed-card__head">
-              <img src="https://i.pravatar.cc/80?img=33" alt="Rohan Bhatt">
-              <div style="flex:1;">
-                <div class="name">Rohan Bhatt <span class="tag" style="margin-left:6px;">Class of 2011</span></div>
-                <div class="meta">Engineering Manager, Corda Systems · 2h ago</div>
-              </div>
-              <span class="tag tag-orange">Jobs</span>
-            </div>
-            <p class="body-text">Corda Systems is hiring two backend engineers in Bangalore — happy to refer anyone from Adtu CSE. Drop me a message if that's you.</p>
-            <div class="feed-card__actions">
-              <button><i class="fa-regular fa-thumbs-up"></i> 42 Likes</button>
-              <button><i class="fa-regular fa-comment"></i> 9 Comments</button>
-              <button><i class="fa-solid fa-share"></i> Share</button>
-            </div>
-          </div>
-
-          <div class="card feed-card" style="margin-bottom:22px;">
-            <div class="feed-card__head">
-              <img src="https://i.pravatar.cc/80?img=45" alt="Priya Menon">
-              <div style="flex:1;">
-                <div class="name">Priya Menon <span class="tag" style="margin-left:6px;">Class of 2016</span></div>
-                <div class="meta">Senior Data Scientist, Klaro · 5h ago</div>
-              </div>
-            </div>
-            <p class="body-text">Small win — just got promoted to Senior Data Scientist at Klaro. Thank you to everyone here who mentored me through the first two brutal years. This place matters more than I let on back then.</p>
-            <div class="feed-card__actions">
-              <button><i class="fa-regular fa-thumbs-up"></i> 84 Likes</button>
-              <button><i class="fa-regular fa-comment"></i> 21 Comments</button>
-              <button><i class="fa-solid fa-share"></i> Share</button>
-            </div>
-          </div>
-
-          <div class="card feed-card">
-            <div class="feed-card__head">
-              <img src="https://i.pravatar.cc/80?img=68" alt="Adtu Alumni Office">
-              <div style="flex:1;">
-                <div class="name">Adtu Alumni Office</div>
-                <div class="meta">Official · 1d ago</div>
-              </div>
-              <span class="tag">Event</span>
-            </div>
-            <p class="body-text">Reminder: Homecoming RSVPs close this Friday. 209 alumni going so far from the classes of 2016, 2018 &amp; 2020 — see the full lineup and grab your spot.</p>
-            <div class="feed-card__actions">
-              <button><i class="fa-regular fa-thumbs-up"></i> 63 Likes</button>
-              <button><i class="fa-regular fa-comment"></i> 14 Comments</button>
-              <button><i class="fa-solid fa-share"></i> Share</button>
-            </div>
-          </div>
+          <div id="feedList"></div>
         </div>
 
         <!-- WIDGETS COLUMN -->
         <div>
           <div class="widget">
             <h4>Upcoming Events</h4>
-            <div class="widget-list-item">
-              <div class="class-ring class-ring--sm"><div class="class-ring__gem">17</div></div>
-              <div class="info">
-                <div class="name">Homecoming Reunion 2026</div>
-                <div class="sub">Sat, Oct 17 · Adtu Campus</div>
-              </div>
-            </div>
-            <div class="widget-list-item">
-              <div class="class-ring class-ring--sm"><div class="class-ring__gem">02</div></div>
-              <div class="info">
-                <div class="name">Bangalore Chapter Dinner</div>
-                <div class="sub">Sun, Aug 2 · Koramangala</div>
-              </div>
-            </div>
-            <div class="widget-list-item">
-              <div class="class-ring class-ring--sm"><div class="class-ring__gem">22</div></div>
-              <div class="info">
-                <div class="name">Careers in AI — CS Dept Webinar</div>
-                <div class="sub">Wed, Jul 22 · Online</div>
-              </div>
-            </div>
+            <div id="widgetUpcomingEvents"></div>
             <a href="events.html" class="btn btn-ghost btn-sm" style="margin-top:12px; padding-left:0;">See all events →</a>
           </div>
 
           <div class="widget">
             <h4>People You May Know</h4>
-            <div class="widget-list-item">
-              <img src="https://i.pravatar.cc/80?img=21" alt="">
-              <div class="info"><div class="name">Nikhil Desai</div><div class="sub">Class of 2018 · Design</div></div>
-              <button class="btn btn-secondary btn-sm">Connect</button>
-            </div>
-            <div class="widget-list-item">
-              <img src="https://i.pravatar.cc/80?img=39" alt="">
-              <div class="info"><div class="name">Fatima Sheikh</div><div class="sub">Class of 2019 · Marketing</div></div>
-              <button class="btn btn-secondary btn-sm">Connect</button>
-            </div>
-            <div class="widget-list-item">
-              <img src="https://i.pravatar.cc/80?img=14" alt="">
-              <div class="info"><div class="name">Arjun Pillai</div><div class="sub">Class of 2017 · Finance</div></div>
-              <button class="btn btn-secondary btn-sm">Connect</button>
-            </div>
+            <div id="widgetPeopleYouMayKnow"></div>
           </div>
 
           <div class="widget">
             <h4>Trending Jobs</h4>
-            <div class="widget-list-item">
-              <div class="job-card__logo" style="width:40px; height:40px; font-size:.9rem;">NH</div>
-              <div class="info"><div class="name">Product Designer</div><div class="sub">Nimbus Health · Remote</div></div>
-            </div>
-            <div class="widget-list-item">
-              <div class="job-card__logo" style="width:40px; height:40px; font-size:.9rem;">CS</div>
-              <div class="info"><div class="name">Backend Engineer</div><div class="sub">Corda Systems · Bangalore</div></div>
-            </div>
-            <div class="widget-list-item">
-              <div class="job-card__logo" style="width:40px; height:40px; font-size:.9rem;">FL</div>
-              <div class="info"><div class="name">Growth Marketer</div><div class="sub">Finlytics · Mumbai</div></div>
-            </div>
+            <div id="widgetTrendingJobs"></div>
             <a href="jobs.html" class="btn btn-ghost btn-sm" style="margin-top:12px; padding-left:0;">See all jobs →</a>
           </div>
         </div>
@@ -218,5 +127,13 @@
   </div>
 </div>
 
+
+<script src="seed-data.js"></script>
+<script src="db.js"></script>
+<script src="auth.js"></script>
+<script src="validate.js"></script>
+<script src="ui.js"></script>
+<script src="feed.js"></script>
+<script src="dashboard.js"></script>
 </body>
 </html>

@@ -18,7 +18,7 @@
   <aside class="app-sidebar">
     <a href="dashboard.html" class="logo">
       <span class="logo-mark"><span>🎓</span></span>
-      The Quad <small>Assam downtown University</small>
+      The Quad <small>Assam Downtown University</small>
     </a>
     <nav class="side-nav">
       <a href="dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
@@ -32,16 +32,18 @@
       <a href="profile.html"><i class="fa-solid fa-id-badge"></i> My Profile</a>
       <a href="edit-profile.html"><i class="fa-solid fa-gear"></i> Settings</a>
 
+      <div class="admin-nav-group">
       <div class="nav-label">Admin</div>
       <a href="admin.html" class="active"><i class="fa-solid fa-shield-halved"></i> Admin Panel</a>
+      </div>
     </nav>
     <div class="sidebar-user">
-      <img src="https://i.pravatar.cc/80?img=68" alt="Admin">
+      <img data-user-avatar src="https://i.pravatar.cc/80?img=68" alt="">
       <div>
-        <div class="name">Alumni Office</div>
-        <div class="role">Administrator</div>
+        <div class="name" data-user-name>Alumni Office</div>
+        <div class="role" data-user-role>Administrator</div>
       </div>
-      <a href="index.html" style="margin-left:auto; color:rgba(251,246,238,.6);" title="Log out"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+      <a href="login.html" data-logout style="margin-left:auto; color:rgba(251,246,238,.6);" title="Log out"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
     </div>
   </aside>
 
@@ -53,10 +55,10 @@
         <input type="search" placeholder="Search alumni, events, jobs...">
       </div>
       <div class="topbar-actions">
-        <button class="icon-btn" aria-label="Notifications"><i class="fa-solid fa-bell"></i><span class="badge-dot"></span></button>
+        <button class="icon-btn" aria-label="Notifications" data-notif-bell><i class="fa-solid fa-bell"></i><span class="badge-dot"></span></button>
         <a href="profile.html" class="user-chip">
-          <img src="https://i.pravatar.cc/80?img=68" alt="">
-          <div><div class="name">Alumni Office</div><div class="role">Administrator</div></div>
+          <img data-user-avatar src="https://i.pravatar.cc/80?img=68" alt="">
+          <div><div class="name" data-user-name>Alumni Office</div><div class="role" data-user-role>Administrator</div></div>
         </a>
       </div>
     </header>
@@ -68,10 +70,10 @@
       </div>
 
       <div class="admin-stat-row">
-        <div class="card admin-stat-card"><i class="fa-solid fa-users"></i><div><div class="stat-card"><span class="num" style="font-size:1.5rem;">12,412</span><span class="label">Total Alumni</span></div></div></div>
-        <div class="card admin-stat-card"><i class="fa-solid fa-user-clock"></i><div><div class="stat-card"><span class="num" style="font-size:1.5rem;">34</span><span class="label">Pending Verifications</span></div></div></div>
-        <div class="card admin-stat-card"><i class="fa-solid fa-calendar-check"></i><div><div class="stat-card"><span class="num" style="font-size:1.5rem;">6</span><span class="label">Active Events</span></div></div></div>
-        <div class="card admin-stat-card"><i class="fa-solid fa-briefcase"></i><div><div class="stat-card"><span class="num" style="font-size:1.5rem;">128</span><span class="label">Job Postings</span></div></div></div>
+        <div class="card admin-stat-card"><i class="fa-solid fa-users"></i><div><div class="stat-card"><span class="num" id="statTotalAlumni" style="font-size:1.5rem;">12,412</span><span class="label">Total Alumni</span></div></div></div>
+        <div class="card admin-stat-card"><i class="fa-solid fa-user-clock"></i><div><div class="stat-card"><span class="num" id="statPendingVerifications" style="font-size:1.5rem;">34</span><span class="label">Pending Verifications</span></div></div></div>
+        <div class="card admin-stat-card"><i class="fa-solid fa-calendar-check"></i><div><div class="stat-card"><span class="num" id="statActiveEvents" style="font-size:1.5rem;">6</span><span class="label">Active Events</span></div></div></div>
+        <div class="card admin-stat-card"><i class="fa-solid fa-briefcase"></i><div><div class="stat-card"><span class="num" id="statJobPostings" style="font-size:1.5rem;">128</span><span class="label">Job Postings</span></div></div></div>
       </div>
 
       <div class="tabs">
@@ -96,30 +98,10 @@
               <h4 style="margin-bottom:18px;">Recent Signups</h4>
               <table class="data-table">
                 <thead><tr><th>Name</th><th>Batch</th><th>Department</th><th>Joined</th><th>Status</th></tr></thead>
-                <tbody>
+                <tbody id="recentSignupsBody">
                   <tr>
                     <td class="cell-user"><img src="https://i.pravatar.cc/80?img=9" alt=""> Simran Kaur</td>
                     <td>2020</td><td>Computer Science</td><td>Jul 6, 2026</td>
-                    <td><span class="status-pill approved">Verified</span></td>
-                  </tr>
-                  <tr>
-                    <td class="cell-user"><img src="https://i.pravatar.cc/80?img=14" alt=""> Arjun Pillai</td>
-                    <td>2017</td><td>Business Administration</td><td>Jul 5, 2026</td>
-                    <td><span class="status-pill pending">Pending</span></td>
-                  </tr>
-                  <tr>
-                    <td class="cell-user"><img src="https://i.pravatar.cc/80?img=21" alt=""> Nikhil Desai</td>
-                    <td>2018</td><td>Design</td><td>Jul 4, 2026</td>
-                    <td><span class="status-pill approved">Verified</span></td>
-                  </tr>
-                  <tr>
-                    <td class="cell-user"><img src="https://i.pravatar.cc/80?img=39" alt=""> Fatima Sheikh</td>
-                    <td>2019</td><td>Business Administration</td><td>Jul 3, 2026</td>
-                    <td><span class="status-pill pending">Pending</span></td>
-                  </tr>
-                  <tr>
-                    <td class="cell-user"><img src="https://i.pravatar.cc/80?img=19" alt=""> Karan Verma</td>
-                    <td>2013</td><td>Computer Science</td><td>Jul 1, 2026</td>
                     <td><span class="status-pill approved">Verified</span></td>
                   </tr>
                 </tbody>
@@ -133,60 +115,28 @@
               <div class="flex-between" style="margin-bottom:18px;">
                 <div class="input-icon" style="max-width:320px;">
                   <i class="fa-solid fa-magnifying-glass"></i>
-                  <input type="text" placeholder="Search alumni by name or email">
+                  <input type="text" id="alumniSearchInput" placeholder="Search alumni by name or email">
                 </div>
-                <select style="width:auto; padding:10px 36px 10px 14px;">
-                  <option>All Statuses</option>
-                  <option>Verified</option>
-                  <option>Pending</option>
+                <select id="alumniStatusFilter" style="width:auto; padding:10px 36px 10px 14px;">
+                  <option value="">All Statuses</option>
+                  <option value="verified">Verified</option>
+                  <option value="pending">Pending</option>
                 </select>
               </div>
               <table class="data-table">
                 <thead><tr><th>Name</th><th>Batch</th><th>Email</th><th>Status</th><th>Actions</th></tr></thead>
-                <tbody>
+                <tbody id="alumniTableBody">
                   <tr>
-                    <td class="cell-user"><img src="https://i.pravatar.cc/80?img=33" alt=""> Ishanu Sharma</td>
+                    <td class="cell-user"><img data-user-avatar src="https://i.pravatar.cc/80?img=53" alt=""> Ishanu Sharma</td>
                     <td>2024</td><td>ishanu.sharma@adtu.in</td>
                     <td><span class="status-pill approved">Verified</span></td>
                     <td class="table-actions">
                       <button title="View"><i class="fa-solid fa-eye"></i></button>
-                      <button title="Edit"><i class="fa-solid fa-pen"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="cell-user"><img src="https://i.pravatar.cc/80?img=14" alt=""> Arjun Pillai</td>
-                    <td>2017</td><td>arjun.pillai@adtu.in</td>
-                    <td><span class="status-pill pending">Pending</span></td>
-                    <td class="table-actions">
-                      <button title="Approve"><i class="fa-solid fa-check"></i></button>
-                      <button title="View"><i class="fa-solid fa-eye"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="cell-user"><img src="https://i.pravatar.cc/80?img=39" alt=""> Fatima Sheikh</td>
-                    <td>2019</td><td>fatima.sheikh@adtu.in</td>
-                    <td><span class="status-pill pending">Pending</span></td>
-                    <td class="table-actions">
-                      <button title="Approve"><i class="fa-solid fa-check"></i></button>
-                      <button title="View"><i class="fa-solid fa-eye"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="cell-user"><img src="https://i.pravatar.cc/80?img=33" alt=""> Rohan Bhatt</td>
-                    <td>2011</td><td>rohan.bhatt@adtu.in</td>
-                    <td><span class="status-pill approved">Verified</span></td>
-                    <td class="table-actions">
-                      <button title="View"><i class="fa-solid fa-eye"></i></button>
-                      <button title="Edit"><i class="fa-solid fa-pen"></i></button>
                     </td>
                   </tr>
                 </tbody>
               </table>
-              <div class="pagination">
-                <span class="current">1</span><a href="#">2</a><a href="#">3</a>
-                <span class="dots">…</span><a href="#">621</a>
-                <a href="#"><i class="fa-solid fa-chevron-right"></i></a>
-              </div>
+              <div class="pagination" id="alumniPagination"></div>
             </div>
           </div>
 
@@ -195,30 +145,15 @@
             <div class="card card--pad-lg">
               <div class="flex-between" style="margin-bottom:18px;">
                 <h4>All Events</h4>
-                <a href="#" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Create Event</a>
+                <a href="events.html" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Create Event</a>
               </div>
               <table class="data-table">
                 <thead><tr><th>Event</th><th>Date</th><th>RSVPs</th><th>Status</th><th>Actions</th></tr></thead>
-                <tbody>
+                <tbody id="eventsTableBody">
                   <tr>
                     <td>Homecoming Reunion 2026</td><td>Oct 17, 2026</td><td>212</td>
                     <td><span class="status-pill approved">Published</span></td>
-                    <td class="table-actions"><button title="Edit"><i class="fa-solid fa-pen"></i></button><button title="Delete"><i class="fa-solid fa-trash"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td>Bangalore Chapter Dinner</td><td>Aug 2, 2026</td><td>58</td>
-                    <td><span class="status-pill approved">Published</span></td>
-                    <td class="table-actions"><button title="Edit"><i class="fa-solid fa-pen"></i></button><button title="Delete"><i class="fa-solid fa-trash"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td>Careers in AI Webinar</td><td>Jul 22, 2026</td><td>134</td>
-                    <td><span class="status-pill approved">Published</span></td>
-                    <td class="table-actions"><button title="Edit"><i class="fa-solid fa-pen"></i></button><button title="Delete"><i class="fa-solid fa-trash"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td>Design Alumni Meetup</td><td>Sep 5, 2026</td><td>—</td>
-                    <td><span class="status-pill pending">Draft</span></td>
-                    <td class="table-actions"><button title="Edit"><i class="fa-solid fa-pen"></i></button><button title="Delete"><i class="fa-solid fa-trash"></i></button></td>
+                    <td class="table-actions"><button title="View"><i class="fa-solid fa-eye"></i></button><button title="Delete"><i class="fa-solid fa-trash"></i></button></td>
                   </tr>
                 </tbody>
               </table>
@@ -231,21 +166,11 @@
               <h4 style="margin-bottom:18px;">Job Postings</h4>
               <table class="data-table">
                 <thead><tr><th>Title</th><th>Company</th><th>Posted By</th><th>Status</th><th>Actions</th></tr></thead>
-                <tbody>
+                <tbody id="jobsTableBody">
                   <tr>
                     <td>Product Designer</td><td>Nimbus Health</td><td>Ishanu Sharma</td>
                     <td><span class="status-pill approved">Approved</span></td>
-                    <td class="table-actions"><button title="View"><i class="fa-solid fa-eye"></i></button><button title="Remove"><i class="fa-solid fa-trash"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td>Backend Engineer</td><td>Corda Systems</td><td>Rohan Bhatt</td>
-                    <td><span class="status-pill approved">Approved</span></td>
-                    <td class="table-actions"><button title="View"><i class="fa-solid fa-eye"></i></button><button title="Remove"><i class="fa-solid fa-trash"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td>Growth Marketer</td><td>Finlytics</td><td>Meera Nair</td>
-                    <td><span class="status-pill pending">Pending Review</span></td>
-                    <td class="table-actions"><button title="Approve"><i class="fa-solid fa-check"></i></button><button title="Remove"><i class="fa-solid fa-trash"></i></button></td>
+                    <td class="table-actions"><button title="Remove"><i class="fa-solid fa-trash"></i></button></td>
                   </tr>
                 </tbody>
               </table>
@@ -266,10 +191,10 @@
                   <input type="email" id="sSupportEmail" value="alumni@adtu.in">
                 </div>
               </div>
-              <label class="checkbox-row" style="margin-bottom:14px;"><input type="checkbox" checked> Require university email for verification</label>
-              <label class="checkbox-row" style="margin-bottom:14px;"><input type="checkbox"> Auto-approve job postings from verified alumni</label>
-              <label class="checkbox-row" style="margin-bottom:26px;"><input type="checkbox" checked> Allow students to view (but not message) the directory</label>
-              <button class="btn btn-primary">Save Settings</button>
+              <label class="checkbox-row" style="margin-bottom:14px;"><input type="checkbox" id="sRequireUnivEmail" checked> Require university email for verification</label>
+              <label class="checkbox-row" style="margin-bottom:14px;"><input type="checkbox" id="sAutoApproveJobs"> Auto-approve job postings from verified alumni</label>
+              <label class="checkbox-row" style="margin-bottom:26px;"><input type="checkbox" id="sAllowStudentDirectory" checked> Allow students to view (but not message) the directory</label>
+              <button type="button" id="saveSettingsBtn" class="btn btn-primary">Save Settings</button>
             </div>
           </div>
         </div>
@@ -278,5 +203,12 @@
   </div>
 </div>
 
+
+<script src="seed-data.js"></script>
+<script src="db.js"></script>
+<script src="auth.js"></script>
+<script src="validate.js"></script>
+<script src="ui.js"></script>
+<script src="admin.js"></script>
 </body>
 </html>

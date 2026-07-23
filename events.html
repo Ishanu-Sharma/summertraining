@@ -18,7 +18,7 @@
   <aside class="app-sidebar">
     <a href="dashboard.html" class="logo">
       <span class="logo-mark"><span>🎓</span></span>
-      The Quad <small>Assam downtown University</small>
+      The Quad <small>Assam Downtown University</small>
     </a>
     <nav class="side-nav">
       <a href="dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
@@ -32,16 +32,18 @@
       <a href="profile.html"><i class="fa-solid fa-id-badge"></i> My Profile</a>
       <a href="edit-profile.html"><i class="fa-solid fa-gear"></i> Settings</a>
 
+      <div class="admin-nav-group">
       <div class="nav-label">Admin</div>
       <a href="admin.html"><i class="fa-solid fa-shield-halved"></i> Admin Panel</a>
+      </div>
     </nav>
     <div class="sidebar-user">
-      <img src="https://i.pravatar.cc/80?img=33" alt="Ishanu Sharma">
+      <img data-user-avatar src="https://i.pravatar.cc/80?img=53" alt="">
       <div>
-        <div class="name">Ishanu Sharma</div>
-        <div class="role">Class of 2024</div>
+        <div class="name" data-user-name>Ishanu Sharma</div>
+        <div class="role" data-user-role>Class of 2024</div>
       </div>
-      <a href="index.html" style="margin-left:auto; color:rgba(251,246,238,.6);" title="Log out"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+      <a href="login.html" data-logout style="margin-left:auto; color:rgba(251,246,238,.6);" title="Log out"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
     </div>
   </aside>
 
@@ -53,11 +55,11 @@
         <input type="search" placeholder="Search alumni, events, jobs...">
       </div>
       <div class="topbar-actions">
-        <button class="icon-btn" aria-label="Notifications"><i class="fa-solid fa-bell"></i><span class="badge-dot"></span></button>
-        <button class="icon-btn" aria-label="Messages"><i class="fa-solid fa-comment-dots"></i></button>
+        <button class="icon-btn" aria-label="Notifications" data-notif-bell><i class="fa-solid fa-bell"></i><span class="badge-dot"></span></button>
+        <a href="messages.html" class="icon-btn" aria-label="Messages"><i class="fa-solid fa-comment-dots"></i><span class="badge-dot hidden" data-message-badge></span></a>
         <a href="profile.html" class="user-chip">
-          <img src="https://i.pravatar.cc/80?img=33" alt="">
-          <div><div class="name">Ishanu Sharma</div><div class="role">Class of 2024</div></div>
+          <img data-user-avatar src="https://i.pravatar.cc/80?img=53" alt="">
+          <div><div class="name" data-user-name>Ishanu Sharma</div><div class="role" data-user-role>Class of 2024</div></div>
         </a>
       </div>
     </header>
@@ -76,9 +78,9 @@
       <div class="featured-event-banner" style="margin-bottom:44px;">
         <div class="featured-event-banner__visual">
           <p class="eyebrow" style="color:var(--peach-300);">Featured</p>
-          <h3 style="color:#fff;">Homecoming Reunion 2026</h3>
-          <p style="color:rgba(251,246,238,.8);">Classes of 2016, 2018 &amp; 2020 · Amphitheatre, Adtu Campus</p>
-          <div class="avatar-stack" style="margin-top:10px;">
+          <h3 style="color:#fff;" id="featTitle">Homecoming Reunion 2026</h3>
+          <p style="color:rgba(251,246,238,.8);" id="featCohortLine">Classes of 2016, 2018 &amp; 2020 · Amphitheatre, AdtU Campus</p>
+          <div class="avatar-stack" id="featAvatars" style="margin-top:10px;">
             <img src="https://i.pravatar.cc/80?img=5" alt="">
             <img src="https://i.pravatar.cc/80?img=15" alt="">
             <img src="https://i.pravatar.cc/80?img=25" alt="">
@@ -86,11 +88,11 @@
           </div>
         </div>
         <div class="featured-event-banner__body">
-          <span class="tag tag-orange" style="margin-bottom:14px;"><i class="fa-solid fa-calendar-day"></i> Sat, Oct 17 2026 · 5:00 PM</span>
-          <h3>Three years, one lawn, way too much catching up</h3>
-          <p class="text-soft" style="margin:14px 0 24px;">Live music, the Dean's annual karaoke attempt, and a food truck line-up curated by the class of 2018 hospitality crowd.</p>
+          <span class="tag tag-orange" id="featDateTag" style="margin-bottom:14px;"><i class="fa-solid fa-calendar-day"></i> Sat, Oct 17 2026 · 5:00 PM</span>
+          <h3>Save your spot</h3>
+          <p class="text-soft" id="featDescription" style="margin:14px 0 24px;">Live music, the Dean's annual karaoke attempt, and a food truck line-up curated by the class of 2018 hospitality crowd.</p>
           <div class="flex gap-md flex-wrap">
-            <a href="event-details.html" class="btn btn-primary">View Details &amp; RSVP</a>
+            <a href="event-details.html" id="featDetailsLink" class="btn btn-primary">View Details &amp; RSVP</a>
           </div>
         </div>
       </div>
@@ -109,7 +111,7 @@
 
         <div class="tab-content">
           <div class="tab-panel panel-upcoming">
-            <div class="grid-3">
+            <div class="grid-3" id="upcomingGrid">
               <div class="card event-card">
                 <div class="event-card__banner"><div class="event-card__date"><div class="mon">Aug</div><div class="day">02</div></div></div>
                 <div class="event-card__body">
@@ -151,7 +153,7 @@
                 <div class="event-card__body">
                   <span class="tag tag-orange" style="margin-bottom:10px;">Featured</span>
                   <h4>Homecoming Reunion 2026</h4>
-                  <p class="text-faint" style="font-size:.85rem; margin:8px 0 16px;"><i class="fa-solid fa-location-dot"></i> Adtu Campus</p>
+                  <p class="text-faint" style="font-size:.85rem; margin:8px 0 16px;"><i class="fa-solid fa-location-dot"></i> AdtU Campus</p>
                   <a href="event-details.html" class="btn btn-primary btn-block btn-sm">RSVP</a>
                 </div>
               </div>
@@ -168,7 +170,7 @@
           </div>
 
           <div class="tab-panel panel-past">
-            <div class="grid-3">
+            <div class="grid-3" id="pastGrid">
               <div class="card event-card" style="opacity:.85;">
                 <div class="event-card__banner" style="background:linear-gradient(135deg, var(--ink-faint), var(--ink-soft));"><div class="event-card__date"><div class="mon">Mar</div><div class="day">03</div></div></div>
                 <div class="event-card__body">
@@ -200,13 +202,13 @@
           </div>
 
           <div class="tab-panel panel-rsvp">
-            <div class="grid-3">
+            <div class="grid-3" id="rsvpGrid">
               <div class="card event-card">
                 <div class="event-card__banner"><div class="event-card__date"><div class="mon">Oct</div><div class="day">17</div></div></div>
                 <div class="event-card__body">
                   <span class="tag" style="margin-bottom:10px;"><i class="fa-solid fa-check"></i> Going</span>
                   <h4>Homecoming Reunion 2026</h4>
-                  <p class="text-faint" style="font-size:.85rem; margin:8px 0 16px;"><i class="fa-solid fa-location-dot"></i> Adtu Campus</p>
+                  <p class="text-faint" style="font-size:.85rem; margin:8px 0 16px;"><i class="fa-solid fa-location-dot"></i> AdtU Campus</p>
                   <a href="event-details.html" class="btn btn-secondary btn-block btn-sm">View Details</a>
                 </div>
               </div>
@@ -227,5 +229,12 @@
   </div>
 </div>
 
+
+<script src="seed-data.js"></script>
+<script src="db.js"></script>
+<script src="auth.js"></script>
+<script src="validate.js"></script>
+<script src="ui.js"></script>
+<script src="events.js"></script>
 </body>
 </html>
