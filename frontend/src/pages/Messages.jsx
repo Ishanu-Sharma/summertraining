@@ -28,6 +28,7 @@ export default function Messages() {
   const [activeId, setActiveId] = useState(null);
   const [search, setSearch] = useState("");
   const [chatInput, setChatInput] = useState("");
+  const [loading, setLoading] = useState(true);
   const bodyRef = useRef(null);
 
   const usersById = useMemo(() => buildUsersMap(users), [users]);
@@ -40,6 +41,7 @@ export default function Messages() {
 
   useEffect(() => {
     (async () => {
+      setLoading(true);
       const convs = await loadConversations();
       if (withId && withId !== user.id) {
         const { conversation } = await api.post(`/conversations/with/${withId}`);
@@ -48,6 +50,7 @@ export default function Messages() {
       } else if (convs.length) {
         setActiveId(convs[0].id);
       }
+      setLoading(false);
     })();
   }, []);
 
@@ -113,7 +116,13 @@ export default function Messages() {
             </div>
           </div>
           <div>
-            {filteredConvs.map(c => {
+            {loading && (
+              <div className="empty-state" style={{ padding: "40px 20px" }}>
+                <i className="fa-solid fa-spinner fa-spin"></i>
+                <h4>Loading conversations…</h4>
+              </div>
+            )}
+            {!loading && filteredConvs.map(c => {
               const ou = otherUser(c);
               if (!ou) return null;
               const last = c.messages[c.messages.length - 1];
@@ -130,21 +139,26 @@ export default function Messages() {
                 </a>
               );
             })}
-            {!filteredConvs.length && (
+            {!loading && !filteredConvs.length && (
               <div className="empty-state" style={{ padding: "40px 20px" }}><i className="fa-regular fa-comments"></i><h4>No conversations</h4></div>
             )}
           </div>
         </aside>
 
         <div className="chat-pane">
-          {!activeConv && (
+          {loading && (
+            <div className="empty-state" style={{ margin: "auto" }}>
+              <i className="fa-solid fa-spinner fa-spin"></i>
+            </div>
+          )}
+          {!loading && !activeConv && (
             <div className="empty-state" style={{ margin: "auto" }}>
               <i className="fa-regular fa-comments"></i>
               <h4>Select a conversation</h4>
               <p>Pick someone from the list to see your messages.</p>
             </div>
           )}
-          {activeConv && (() => {
+          {!loading && activeConv && (() => {
             const ou = otherUser(activeConv);
             if (!ou) return null;
             let lastDay = null;
