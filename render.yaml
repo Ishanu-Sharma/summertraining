@@ -1,0 +1,51 @@
+services:
+  - type: web
+    name: the-quad-api
+    runtime: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm install
+    startCommand: npm run migrate && npm start
+    # Uncomment to persist uploaded avatars across deploys/restarts (see README §5):
+    # disk:
+    #   name: quad-uploads
+    #   mountPath: /opt/render/project/src/backend/uploads
+    #   sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: CLIENT_ORIGIN
+        value: https://the-quad-web.onrender.com
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: 3306
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: DB_SSL
+        value: "true"
+
+  - type: web
+    name: the-quad-web
+    runtime: static
+    rootDir: frontend
+    plan: free
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://the-quad-api.onrender.com
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
