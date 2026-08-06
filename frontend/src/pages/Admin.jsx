@@ -123,6 +123,7 @@ export default function Admin() {
     if (alumniSearch && !(u.fullName.toLowerCase().includes(alumniSearch.toLowerCase()) || u.email.toLowerCase().includes(alumniSearch.toLowerCase()))) return false;
     if (alumniStatus === "verified" && !u.verified) return false;
     if (alumniStatus === "pending" && u.verified) return false;
+    if (alumniStatus === "deactivated" && !u.deactivated) return false;
     return true;
   });
 
@@ -195,6 +196,7 @@ export default function Admin() {
                 <option value="">All Statuses</option>
                 <option value="verified">Verified</option>
                 <option value="pending">Pending</option>
+                <option value="deactivated">Deactivated</option>
               </select>
             </div>
             <div className="data-table-wrap">
@@ -205,10 +207,14 @@ export default function Admin() {
                   <tr key={u.id}>
                     <td className="cell-user"><img src={resolveAvatar(u.avatar)} alt="" /> {u.fullName}</td>
                     <td>{u.gradYear || "—"}</td><td>{u.email}</td>
-                    <td><span className={"status-pill " + (u.verified ? "approved" : "pending")}>{u.verified ? "Verified" : "Pending"}</span></td>
+                    <td><span className={"status-pill " + (u.deactivated ? "pending" : (u.verified ? "approved" : "pending"))}>{u.deactivated ? "Deactivated" : (u.verified ? "Verified" : "Pending")}</span></td>
                     <td className="table-actions">
                       {!u.verified && <button type="button" title="Approve" onClick={() => approveUser(u.id)}><i className="fa-solid fa-check"></i></button>}
                       <button type="button" title="View" onClick={() => navigate(`/profile/${u.id}`)}><i className="fa-solid fa-eye"></i></button>
+                      <button type="button" title={u.deactivated ? "Reactivate" : "Deactivate"} onClick={() => toggleDeactivate(u)}>
+                        <i className={"fa-solid " + (u.deactivated ? "fa-user-check" : "fa-user-slash")}></i>
+                      </button>
+                      <button type="button" title="Delete" onClick={() => deleteUser(u)}><i className="fa-solid fa-trash"></i></button>
                     </td>
                   </tr>
                 ))}
