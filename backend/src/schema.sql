@@ -185,6 +185,7 @@ CREATE TABLE IF NOT EXISTS conversations (
   user_b     VARCHAR(64) NOT NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY uniq_conv_pair (user_a, user_b),
+  INDEX idx_conv_user_b (user_b),
   FOREIGN KEY (user_a) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (user_b) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

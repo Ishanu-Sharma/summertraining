@@ -5,28 +5,45 @@ const { authRequired } = require("../middleware/auth");
 
 const router = express.Router();
 
-async function serializeConversation(row, userId) {
-  const [messages] = await pool.query(
-    "SELECT * FROM messages WHERE conversation_id = ? ORDER BY created_at ASC", [row.id]
+async function serializeConversations(rows, userId) {
+  if (!rows.length) return [];
+  const ids = rows.map(r => r.id);
+  const placeholders = ids.map(() => "?").join(",");
+
+  const [allMessages] = await pool.query(
+    `SELECT * FROM messages WHERE conversation_id IN (${placeholders}) ORDER BY created_at ASC`, ids
   );
-  const [reads] = await pool.query(
-    "SELECT user_id, last_read_at FROM conversation_reads WHERE conversation_id = ?", [row.id]
+  const [allReads] = await pool.query(
+    `SELECT conversation_id, user_id, last_read_at FROM conversation_reads WHERE conversation_id IN (${placeholders})`, ids
   );
-  const lastReadAt = {};
-  reads.forEach(r => { lastReadAt[r.user_id] = new Date(r.last_read_at).getTime(); });
-  return {
+
+  const messagesByConv = {};
+  allMessages.forEach(m => {
+    (messagesByConv[m.conversation_id] ||= []).push({ id: m.id, senderId: m.sender_id, text: m.text, createdAt: m.created_at });
+  });
+  const readsByConv = {};
+  allReads.forEach(r => {
+    (readsByConv[r.conversation_id] ||= {})[r.user_id] = new Date(r.last_read_at).getTime();
+  });
+
+  return rows.map(row => ({
     id: row.id,
     participantIds: [row.user_a, row.user_b],
-    messages: messages.map(m => ({ id: m.id, senderId: m.sender_id, text: m.text, createdAt: m.created_at })),
-    lastReadAt
-  };
+    messages: messagesByConv[row.id] || [],
+    lastReadAt: readsByConv[row.id] || {}
+  }));
+}
+
+async function serializeConversation(row, userId) {
+  const [result] = await serializeConversations([row], userId);
+  return result;
 }
 
 router.get("/", authRequired, async (req, res) => {
   const [rows] = await pool.query(
     "SELECT * FROM conversations WHERE user_a = ? OR user_b = ?", [req.userId, req.userId]
   );
-  const conversations = await Promise.all(rows.map(r => serializeConversation(r, req.userId)));
+  const conversations = await serializeConversations(rows, req.userId);
   conversations.sort((a, b) => {
     const at = a.messages.length ? new Date(a.messages[a.messages.length - 1].createdAt) : 0;
     const bt = b.messages.length ? new Date(b.messages[b.messages.length - 1].createdAt) : 0;
@@ -103,21 +120,16 @@ router.post("/:id/read", authRequired, async (req, res) => {
 
 router.get("/unread-count", authRequired, async (req, res) => {
   const [rows] = await pool.query(
-    "SELECT * FROM conversations WHERE user_a = ? OR user_b = ?", [req.userId, req.userId]
+    `SELECT COUNT(*) AS c
+     FROM messages m
+     JOIN conversations c ON m.conversation_id = c.id
+     LEFT JOIN conversation_reads cr ON cr.conversation_id = c.id AND cr.user_id = ?
+     WHERE (c.user_a = ? OR c.user_b = ?)
+       AND m.sender_id <> ?
+       AND m.created_at > COALESCE(cr.last_read_at, FROM_UNIXTIME(0))`,
+    [req.userId, req.userId, req.userId, req.userId]
   );
-  let count = 0;
-  for (const conv of rows) {
-    const [readRows] = await pool.query(
-      "SELECT last_read_at FROM conversation_reads WHERE conversation_id = ? AND user_id = ?", [conv.id, req.userId]
-    );
-    const lastRead = readRows[0] ? new Date(readRows[0].last_read_at).getTime() : 0;
-    const [msgRows] = await pool.query(
-      "SELECT COUNT(*) AS c FROM messages WHERE conversation_id = ? AND sender_id <> ? AND created_at > FROM_UNIXTIME(?)",
-      [conv.id, req.userId, lastRead / 1000]
-    );
-    count += msgRows[0].c;
-  }
-  res.json({ count });
+  res.json({ count: rows[0].c });
 });
 
 module.exports = router;

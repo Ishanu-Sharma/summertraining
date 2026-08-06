@@ -46,6 +46,20 @@ async function migrate() {
 
   await addColumnIfMissing("users", "deactivated", "deactivated TINYINT(1) NOT NULL DEFAULT 0 AFTER verified");
 
+  const addIndexIfMissing = async (table, indexName, definition) => {
+    const [rows] = await connection.query(
+      `SELECT COUNT(*) AS cnt FROM information_schema.STATISTICS
+       WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND INDEX_NAME = ?`,
+      [process.env.DB_NAME, table, indexName]
+    );
+    if (rows[0].cnt === 0) {
+      console.log(`  Adding missing index ${table}.${indexName}...`);
+      await connection.query(`ALTER TABLE ${table} ADD ${definition}`);
+    }
+  };
+
+  await addIndexIfMissing("conversations", "idx_conv_user_b", "INDEX idx_conv_user_b (user_b)");
+
   console.log("Repair pass complete.");
   await connection.end();
 }
