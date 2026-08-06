@@ -4,6 +4,7 @@ import AppShell from "../components/AppShell";
 import { useAuth } from "../context/AuthContext";
 import { useSocket } from "../context/SocketContext";
 import { useToast } from "../context/ToastContext";
+import { useUsers } from "../context/UsersContext";
 import { api } from "../api/client";
 import { buildUsersMap, formatFullDate, resolveAvatar, DEFAULT_AVATAR } from "../utils/format";
 
@@ -12,9 +13,9 @@ export default function EventDetails() {
   const { user } = useAuth();
   const { socket } = useSocket();
   const showToast = useToast();
+  const { users } = useUsers();
 
   const [event, setEvent] = useState(null);
-  const [users, setUsers] = useState([]);
   const [myStatus, setMyStatus] = useState(null);
   const [selected, setSelected] = useState("");
   const [commentText, setCommentText] = useState("");
@@ -24,11 +25,10 @@ export default function EventDetails() {
 
   async function load() {
     try {
-      const [{ event }, { users }, { status }] = await Promise.all([
-        api.get(`/events/${id}`), api.get("/users"), api.get(`/events/${id}/rsvp/me`)
+      const [{ event }, { status }] = await Promise.all([
+        api.get(`/events/${id}`), api.get(`/events/${id}/rsvp/me`)
       ]);
       setEvent(event);
-      setUsers(users);
       setMyStatus(status);
       setSelected(status || "");
     } catch {

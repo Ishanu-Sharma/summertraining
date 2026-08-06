@@ -30,7 +30,7 @@ export default function App() {
       <Route path="/events" element={<ProtectedRoute><Events /></ProtectedRoute>} />
       <Route path="/events/:id" element={<ProtectedRoute><EventDetails /></ProtectedRoute>} />
       <Route path="/jobs" element={<ProtectedRoute><Jobs /></ProtectedRoute>} />
-      <Route path="/jobs/new" element={<ProtectedRoute><PostJob /></ProtectedRoute>} />
+      <Route path="/jobs/new" element={<ProtectedRoute blockRoles={["student"]}><PostJob /></ProtectedRoute>} />
       <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
       <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path="/profile/:id" element={<ProtectedRoute><Profile /></ProtectedRoute>} />

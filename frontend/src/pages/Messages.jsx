@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import AppShell from "../components/AppShell";
 import { useAuth } from "../context/AuthContext";
 import { useSocket } from "../context/SocketContext";
+import { useUsers } from "../context/UsersContext";
 import { api } from "../api/client";
 import { buildUsersMap, timeAgo, resolveAvatar } from "../utils/format";
 
@@ -23,7 +24,7 @@ export default function Messages() {
   const withId = searchParams.get("with");
 
   const [conversations, setConversations] = useState([]);
-  const [users, setUsers] = useState([]);
+  const { users } = useUsers();
   const [activeId, setActiveId] = useState(null);
   const [search, setSearch] = useState("");
   const [chatInput, setChatInput] = useState("");
@@ -32,9 +33,8 @@ export default function Messages() {
   const usersById = useMemo(() => buildUsersMap(users), [users]);
 
   async function loadConversations() {
-    const [{ conversations }, { users }] = await Promise.all([api.get("/conversations"), api.get("/users")]);
+    const { conversations } = await api.get("/conversations");
     setConversations(conversations);
-    setUsers(users);
     return conversations;
   }
 
@@ -104,7 +104,7 @@ export default function Messages() {
 
   return (
     <AppShell searchable={false}>
-      <div className="messages-shell">
+      <div className={"messages-shell" + (activeConv ? " has-active-conv" : "")}>
         <aside className="conv-list">
           <div className="conv-list__search">
             <div className="input-icon">
@@ -151,6 +151,9 @@ export default function Messages() {
             return (
               <>
                 <div className="chat-header">
+                  <button type="button" className="icon-btn chat-back-btn" aria-label="Back to conversations" onClick={() => setActiveId(null)}>
+                    <i className="fa-solid fa-arrow-left"></i>
+                  </button>
                   <img src={resolveAvatar(ou.avatar)} alt="" />
                   <div style={{ flex: 1 }}>
                     <div className="name">{ou.fullName}</div>

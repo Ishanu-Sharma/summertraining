@@ -4,6 +4,7 @@ import AppShell from "../components/AppShell";
 import FeedCard from "../components/FeedCard";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
+import { useUsers } from "../context/UsersContext";
 import { api } from "../api/client";
 import { buildUsersMap, resolveAvatar } from "../utils/format";
 
@@ -14,12 +15,12 @@ export default function Profile() {
   const { user: currentUser } = useAuth();
   const showToast = useToast();
   const navigate = useNavigate();
+  const { users: allUsers } = useUsers();
 
   const viewedId = id || currentUser.id;
   const isOwn = viewedId === currentUser.id;
 
   const [viewedUser, setViewedUser] = useState(null);
-  const [allUsers, setAllUsers] = useState([]);
   const [myConnections, setMyConnections] = useState([]);
   const [theirConnections, setTheirConnections] = useState([]);
   const [posts, setPosts] = useState([]);
@@ -31,11 +32,10 @@ export default function Profile() {
 
   async function load() {
     try {
-      const [{ user: viewedUser }, { users: allUsers }, { ids: myConnections }, { posts }] = await Promise.all([
-        api.get(`/users/${viewedId}`), api.get("/users"), api.get(`/users/${currentUser.id}/connections`), api.get(`/posts?authorId=${viewedId}`)
+      const [{ user: viewedUser }, { ids: myConnections }, { posts }] = await Promise.all([
+        api.get(`/users/${viewedId}`), api.get(`/users/${currentUser.id}/connections`), api.get(`/posts?authorId=${viewedId}`)
       ]);
       setViewedUser(viewedUser);
-      setAllUsers(allUsers);
       setMyConnections(myConnections);
       setPosts(posts);
       if (!isOwn) {

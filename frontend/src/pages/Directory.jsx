@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import AppShell from "../components/AppShell";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
+import { useUsers } from "../context/UsersContext";
 import { api } from "../api/client";
 
 const PAGE_SIZE = 6;
@@ -10,8 +11,8 @@ const PAGE_SIZE = 6;
 export default function Directory() {
   const { user } = useAuth();
   const showToast = useToast();
+  const { users } = useUsers();
 
-  const [alumni, setAlumni] = useState([]);
   const [connections, setConnections] = useState([]);
   const [filters, setFilters] = useState({ name: "", year: "", department: "", industry: "", location: "" });
   const [sort, setSort] = useState("relevant");
@@ -27,11 +28,15 @@ export default function Directory() {
 
   useEffect(() => {
     (async () => {
-      const [usersRes, connRes] = await Promise.all([api.get("/users"), api.get(`/users/${user.id}/connections`)]);
-      setAlumni(usersRes.users.filter(u => u.role === "alumni" && u.privacy?.showInDirectory && !u.deactivated));
+      const connRes = await api.get(`/users/${user.id}/connections`);
       setConnections(connRes.ids);
     })();
   }, []);
+
+  const alumni = useMemo(
+    () => users.filter(u => u.role === "alumni" && u.privacy?.showInDirectory && !u.deactivated),
+    [users]
+  );
 
   const years = useMemo(() => [...new Set(alumni.map(u => u.gradYear).filter(Boolean))].sort((a, b) => b - a), [alumni]);
   const departments = useMemo(() => [...new Set(alumni.map(u => u.department).filter(Boolean))].sort(), [alumni]);

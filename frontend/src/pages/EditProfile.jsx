@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import AppShell from "../components/AppShell";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
+import { useUsers } from "../context/UsersContext";
 import { api } from "../api/client";
 import { resolveAvatar } from "../utils/format";
 
@@ -14,6 +15,7 @@ export default function EditProfile() {
   const { user, updateLocalUser, logout } = useAuth();
   const showToast = useToast();
   const navigate = useNavigate();
+  const { refresh: refreshUsers } = useUsers();
 
   const [form, setForm] = useState({
     fullName: user.fullName || "", headline: user.headline || "", location: user.location || "", bio: user.bio || "",
@@ -42,6 +44,7 @@ export default function EditProfile() {
       const { user: updated } = await api.upload(`/users/${user.id}/avatar`, formData);
       setAvatar(updated.avatar);
       updateLocalUser({ avatar: updated.avatar });
+      refreshUsers();
       showToast("Photo updated!", "success");
     } catch (err) {
       showToast(err.message, "error");
@@ -57,6 +60,7 @@ export default function EditProfile() {
       const { user: updated } = await api.del(`/users/${user.id}/avatar`);
       setAvatar(updated.avatar);
       updateLocalUser({ avatar: updated.avatar });
+      refreshUsers();
       showToast("Photo removed.", "info");
     } catch (err) {
       showToast(err.message, "error");
@@ -86,6 +90,7 @@ export default function EditProfile() {
       };
       const { user: updated } = await api.patch(`/users/${user.id}`, patch);
       updateLocalUser(updated);
+      refreshUsers();
       showToast("Profile updated!", "success");
       setTimeout(() => navigate("/profile"), 500);
     } catch (err) {

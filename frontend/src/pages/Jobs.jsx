@@ -4,6 +4,7 @@ import AppShell from "../components/AppShell";
 import { useAuth } from "../context/AuthContext";
 import { useSocket } from "../context/SocketContext";
 import { useToast } from "../context/ToastContext";
+import { useUsers } from "../context/UsersContext";
 import { api } from "../api/client";
 import { buildUsersMap, initials, timeAgo, resolveAvatar } from "../utils/format";
 
@@ -13,9 +14,9 @@ export default function Jobs() {
   const { user } = useAuth();
   const { socket } = useSocket();
   const showToast = useToast();
+  const { users } = useUsers();
 
   const [jobs, setJobs] = useState([]);
-  const [users, setUsers] = useState([]);
   const [saved, setSaved] = useState(new Set());
   const [applied, setApplied] = useState(new Set());
   const [tab, setTab] = useState("all");
@@ -27,11 +28,10 @@ export default function Jobs() {
   const usersById = useMemo(() => buildUsersMap(users), [users]);
 
   async function loadAll() {
-    const [jobsRes, usersRes, savedRes, appliedRes] = await Promise.all([
-      api.get("/jobs"), api.get("/users"), api.get("/jobs/me/saved"), api.get("/jobs/me/applied")
+    const [jobsRes, savedRes, appliedRes] = await Promise.all([
+      api.get("/jobs"), api.get("/jobs/me/saved"), api.get("/jobs/me/applied")
     ]);
     setJobs(jobsRes.jobs);
-    setUsers(usersRes.users);
     setSaved(new Set(savedRes.jobIds));
     setApplied(new Set(appliedRes.jobIds));
   }
@@ -142,7 +142,9 @@ export default function Jobs() {
             <h2>Jobs Board</h2>
             <p className="text-soft">Roles posted by alumni who are hiring — and happy to be asked about it.</p>
           </div>
-          <Link to="/jobs/new" className="btn btn-primary"><i className="fa-solid fa-plus"></i> Post a Job</Link>
+          {user.role !== "student" && (
+            <Link to="/jobs/new" className="btn btn-primary"><i className="fa-solid fa-plus"></i> Post a Job</Link>
+          )}
         </div>
       </div>
 

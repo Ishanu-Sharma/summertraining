@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import AppShell from "../components/AppShell";
 import { useSocket } from "../context/SocketContext";
 import { useToast } from "../context/ToastContext";
+import { useUsers } from "../context/UsersContext";
 import { api } from "../api/client";
 import { formatFullDate, timeAgo, resolveAvatar } from "../utils/format";
 
@@ -12,8 +13,8 @@ export default function Admin() {
   const { socket } = useSocket();
   const showToast = useToast();
   const navigate = useNavigate();
+  const { users, refresh: refreshUsers } = useUsers();
 
-  const [users, setUsers] = useState([]);
   const [events, setEvents] = useState([]);
   const [jobs, setJobs] = useState([]);
   const [settings, setSettings] = useState(null);
@@ -33,10 +34,9 @@ export default function Admin() {
   );
 
   async function loadAll() {
-    const [usersRes, eventsRes, jobsRes, settingsRes] = await Promise.all([
-      api.get("/users"), api.get("/events"), api.get("/jobs"), api.get("/settings")
+    const [eventsRes, jobsRes, settingsRes] = await Promise.all([
+      api.get("/events"), api.get("/jobs"), api.get("/settings")
     ]);
-    setUsers(usersRes.users);
     setEvents(eventsRes.events);
     setJobs(jobsRes.jobs);
     setSettings(settingsRes.settings);
@@ -47,18 +47,19 @@ export default function Admin() {
   useEffect(() => {
     if (!socket) return;
     function refresh() { loadAll(); }
-    socket.on("admin:new-signup", refresh);
-    socket.on("admin:user-updated", refresh);
-    socket.on("admin:user-deleted", refresh);
+    function refreshUsersAndAll() { refreshUsers(); loadAll(); }
+    socket.on("admin:new-signup", refreshUsersAndAll);
+    socket.on("admin:user-updated", refreshUsersAndAll);
+    socket.on("admin:user-deleted", refreshUsersAndAll);
     socket.on("admin:job-posted", refresh);
     socket.on("event:new", refresh);
     socket.on("event:deleted", refresh);
     socket.on("job:new", refresh);
     socket.on("job:deleted", refresh);
     return () => {
-      socket.off("admin:new-signup", refresh);
-      socket.off("admin:user-updated", refresh);
-      socket.off("admin:user-deleted", refresh);
+      socket.off("admin:new-signup", refreshUsersAndAll);
+      socket.off("admin:user-updated", refreshUsersAndAll);
+      socket.off("admin:user-deleted", refreshUsersAndAll);
       socket.off("admin:job-posted", refresh);
       socket.off("event:new", refresh);
       socket.off("event:deleted", refresh);
@@ -74,7 +75,7 @@ export default function Admin() {
   async function approveUser(id) {
     await api.patch(`/users/${id}`, { verified: true });
     showToast("Alumni verified!", "success");
-    loadAll();
+    refreshUsers();
   }
 
   async function deleteEvent(id) {
@@ -102,14 +103,14 @@ export default function Admin() {
     if (!window.confirm(next ? `Deactivate ${u.fullName}'s account? They won't be able to log in.` : `Reactivate ${u.fullName}'s account?`)) return;
     await api.patch(`/users/${u.id}`, { deactivated: next });
     showToast(next ? "Account deactivated." : "Account reactivated.", "success");
-    loadAll();
+    refreshUsers();
   }
 
   async function deleteUser(u) {
     if (!window.confirm(`Permanently delete ${u.fullName}'s account? This can't be undone.`)) return;
     await api.del(`/users/${u.id}`);
     showToast("Account deleted.", "success");
-    loadAll();
+    refreshUsers();
   }
 
   async function saveSettings(patch) {
@@ -164,6 +165,7 @@ export default function Admin() {
         {tab === "overview" && (
           <div className="card card--pad-lg">
             <h4 style={{ marginBottom: 18 }}>Recent Signups</h4>
+            <div className="data-table-wrap">
             <table className="data-table">
               <thead><tr><th>Name</th><th>Batch</th><th>Department</th><th>Joined</th><th>Status</th></tr></thead>
               <tbody>
@@ -178,6 +180,7 @@ export default function Admin() {
                 {!recentSignups.length && <tr><td colSpan={5}><p className="text-faint" style={{ padding: "20px 0" }}>No alumni yet.</p></td></tr>}
               </tbody>
             </table>
+            </div>
           </div>
         )}
 
@@ -194,6 +197,7 @@ export default function Admin() {
                 <option value="pending">Pending</option>
               </select>
             </div>
+            <div className="data-table-wrap">
             <table className="data-table">
               <thead><tr><th>Name</th><th>Batch</th><th>Email</th><th>Status</th><th>Actions</th></tr></thead>
               <tbody>
@@ -211,6 +215,7 @@ export default function Admin() {
                 {!filteredAlumni.length && <tr><td colSpan={5}><p className="text-faint" style={{ padding: "20px 0" }}>No alumni match your search.</p></td></tr>}
               </tbody>
             </table>
+            </div>
           </div>
         )}
 
@@ -233,6 +238,7 @@ export default function Admin() {
                 </select>
               </div>
             </div>
+            <div className="data-table-wrap">
             <table className="data-table">
               <thead><tr><th>Name</th><th>Batch</th><th>Department</th><th>Email</th><th>Status</th><th>Actions</th></tr></thead>
               <tbody>
@@ -255,6 +261,7 @@ export default function Admin() {
                 {!filteredStudents.length && <tr><td colSpan={6}><p className="text-faint" style={{ padding: "20px 0" }}>No students match your search.</p></td></tr>}
               </tbody>
             </table>
+            </div>
           </div>
         )}
 
@@ -264,6 +271,7 @@ export default function Admin() {
               <h4>All Events</h4>
               <Link to="/events" className="btn btn-primary btn-sm"><i className="fa-solid fa-plus"></i> Create Event</Link>
             </div>
+            <div className="data-table-wrap">
             <table className="data-table">
               <thead><tr><th>Event</th><th>Date</th><th>RSVPs</th><th>Status</th><th>Actions</th></tr></thead>
               <tbody>
@@ -280,12 +288,14 @@ export default function Admin() {
                 {!events.length && <tr><td colSpan={5}><p className="text-faint" style={{ padding: "20px 0" }}>No events yet.</p></td></tr>}
               </tbody>
             </table>
+            </div>
           </div>
         )}
 
         {tab === "jobs" && (
           <div className="card card--pad-lg">
             <h4 style={{ marginBottom: 18 }}>Job Postings</h4>
+            <div className="data-table-wrap">
             <table className="data-table">
               <thead><tr><th>Title</th><th>Company</th><th>Posted By</th><th>Status</th><th>Actions</th></tr></thead>
               <tbody>
@@ -305,6 +315,7 @@ export default function Admin() {
                 {!jobs.length && <tr><td colSpan={5}><p className="text-faint" style={{ padding: "20px 0" }}>No jobs yet.</p></td></tr>}
               </tbody>
             </table>
+            </div>
           </div>
         )}
 

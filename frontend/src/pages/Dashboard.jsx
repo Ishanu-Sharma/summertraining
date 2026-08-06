@@ -5,6 +5,7 @@ import FeedCard from "../components/FeedCard";
 import { useAuth } from "../context/AuthContext";
 import { useSocket } from "../context/SocketContext";
 import { useToast } from "../context/ToastContext";
+import { useUsers } from "../context/UsersContext";
 import { api } from "../api/client";
 import { buildUsersMap, formatEventDate, initials, resolveAvatar } from "../utils/format";
 
@@ -21,9 +22,9 @@ export default function Dashboard() {
   const { user } = useAuth();
   const { socket } = useSocket();
   const showToast = useToast();
+  const { users } = useUsers();
 
   const [posts, setPosts] = useState([]);
-  const [users, setUsers] = useState([]);
   const [events, setEvents] = useState([]);
   const [jobs, setJobs] = useState([]);
   const [connections, setConnections] = useState([]);
@@ -33,11 +34,10 @@ export default function Dashboard() {
   const usersById = useMemo(() => buildUsersMap(users), [users]);
 
   async function loadAll() {
-    const [postsRes, usersRes, eventsRes, jobsRes, connRes] = await Promise.all([
-      api.get("/posts"), api.get("/users"), api.get("/events"), api.get("/jobs"), api.get(`/users/${user.id}/connections`)
+    const [postsRes, eventsRes, jobsRes, connRes] = await Promise.all([
+      api.get("/posts"), api.get("/events"), api.get("/jobs"), api.get(`/users/${user.id}/connections`)
     ]);
     setPosts(postsRes.posts);
-    setUsers(usersRes.users);
     setEvents(eventsRes.events);
     setJobs(jobsRes.jobs);
     setConnections(connRes.ids);

@@ -17,6 +17,9 @@ router.get("/:id", authRequired, async (req, res) => {
 });
 
 router.post("/", authRequired, async (req, res) => {
+  if (req.userRole === "student") {
+    return res.status(403).json({ error: "Only alumni and admins can post jobs." });
+  }
   const { title, company, location, type, experience, salary, description, applyLink, referralNote } = req.body;
   if (!title || !company || !location || !type || !description || !applyLink) {
     return res.status(400).json({ error: "Please fill in all required fields." });
