@@ -7,8 +7,10 @@ import { useToast } from "../context/ToastContext";
 import { useUsers } from "../context/UsersContext";
 import { api } from "../api/client";
 import { buildUsersMap, formatFullDate, resolveAvatar, DEFAULT_AVATAR } from "../utils/format";
+import { useDocumentTitle } from "../utils/useDocumentTitle";
 
 export default function EventDetails() {
+  useDocumentTitle("Event Details");
   const { id } = useParams();
   const { user } = useAuth();
   const { socket } = useSocket();

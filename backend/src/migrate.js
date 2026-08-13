@@ -45,6 +45,8 @@ async function migrate() {
   };
 
   await addColumnIfMissing("users", "deactivated", "deactivated TINYINT(1) NOT NULL DEFAULT 0 AFTER verified");
+  await addColumnIfMissing("users", "reset_token_hash", "reset_token_hash VARCHAR(64) NULL");
+  await addColumnIfMissing("users", "reset_token_expires", "reset_token_expires DATETIME NULL");
 
   const addIndexIfMissing = async (table, indexName, definition) => {
     const [rows] = await connection.query(

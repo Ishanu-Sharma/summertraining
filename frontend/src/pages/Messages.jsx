@@ -6,6 +6,7 @@ import { useSocket } from "../context/SocketContext";
 import { useUsers } from "../context/UsersContext";
 import { api } from "../api/client";
 import { buildUsersMap, timeAgo, resolveAvatar } from "../utils/format";
+import { useDocumentTitle } from "../utils/useDocumentTitle";
 
 function dayLabel(iso) {
   const d = new Date(iso);
@@ -18,6 +19,7 @@ function dayLabel(iso) {
 }
 
 export default function Messages() {
+  useDocumentTitle("Messages");
   const { user } = useAuth();
   const { socket } = useSocket();
   const [searchParams] = useSearchParams();

@@ -1,23 +1,56 @@
 const express = require("express");
-const path = require("path");
-const fs = require("fs");
 const pool = require("../db");
-const { newId, serializeUser, DEFAULT_AVATAR, parseJsonSafe } = require("../utils");
+const { newId, serializeUser, serializeUserSummary, serializeUserProfile, DEFAULT_AVATAR, parseJsonSafe } = require("../utils");
 const { authRequired, adminRequired } = require("../middleware/auth");
-const { uploadAvatar, AVATAR_DIR } = require("../middleware/upload");
+const { uploadAvatar, validateImageBuffer } = require("../middleware/upload");
+const storage = require("../utils/storage");
 
 const router = express.Router();
 
-/** GET /api/users — directory listing (alumni with showInDirectory=true), plus all for internal lookups */
+/**
+ * GET /api/users — cross-app lookup list (used to resolve names/avatars next
+ * to posts, jobs, events, and messages). Admins get full records for the
+ * admin console; everyone else gets a privacy-safe summary with NO email,
+ * bio, links, skills, or notification settings — see serializeUserSummary.
+ * This does not apply directory/visibility filtering; use GET /directory
+ * for the alumni directory browse page.
+ */
 router.get("/", authRequired, async (req, res) => {
   const [rows] = await pool.query("SELECT * FROM users ORDER BY created_at DESC");
-  res.json({ users: rows.map(serializeUser) });
+  const users = req.userRole === "admin" ? rows.map(serializeUser) : rows.map(serializeUserSummary);
+  res.json({ users });
+});
+
+/**
+ * GET /api/users/directory — the alumni directory browse/search page.
+ * Server-enforces both the per-user "show me in directory" privacy toggle
+ * AND the admin-configured "allow students to browse the directory" setting,
+ * neither of which were previously enforced anywhere but the client.
+ */
+router.get("/directory", authRequired, async (req, res) => {
+  if (req.userRole === "student") {
+    const [settingsRows] = await pool.query("SELECT allow_student_directory_view FROM settings WHERE id = 1");
+    if (settingsRows[0] && !settingsRows[0].allow_student_directory_view) {
+      return res.status(403).json({ error: "The Alumni Office currently restricts directory browsing to alumni accounts." });
+    }
+  }
+  const [rows] = await pool.query(
+    "SELECT * FROM users WHERE role = 'alumni' AND deactivated = 0 ORDER BY created_at DESC"
+  );
+  const alumni = rows
+    .map(serializeUserSummary)
+    .filter(u => u.showInDirectory);
+  res.json({ users: alumni });
 });
 
 router.get("/:id", authRequired, async (req, res) => {
   const [rows] = await pool.query("SELECT * FROM users WHERE id = ?", [req.params.id]);
-  if (!rows[0]) return res.status(404).json({ error: "User not found." });
-  const user = serializeUser(rows[0]);
+  const row = rows[0];
+  const isSelfOrAdmin = req.userRole === "admin" || req.userId === req.params.id;
+  if (!row || (row.deactivated && !isSelfOrAdmin)) {
+    return res.status(404).json({ error: "User not found." });
+  }
+  const user = serializeUserProfile(row, { viewerId: req.userId, viewerIsAdmin: req.userRole === "admin" });
 
   const [exp] = await pool.query("SELECT * FROM experiences WHERE user_id = ? ORDER BY sort_order ASC", [req.params.id]);
   const [edu] = await pool.query("SELECT * FROM education WHERE user_id = ? ORDER BY sort_order ASC", [req.params.id]);
@@ -82,10 +115,7 @@ router.delete("/:id", authRequired, adminRequired, async (req, res) => {
 
   await pool.query("DELETE FROM users WHERE id = ?", [req.params.id]);
 
-  const avatar = rows[0].avatar;
-  if (avatar && avatar.startsWith("/uploads/avatars/")) {
-    fs.unlink(path.join(AVATAR_DIR, path.basename(avatar)), () => {});
-  }
+  await storage.deleteAvatar(rows[0].avatar);
 
   req.app.get("io").to("admins").emit("admin:user-deleted", { id: req.params.id });
   res.json({ ok: true });
@@ -96,26 +126,29 @@ router.post("/:id/avatar", authRequired, (req, res, next) => {
   if (req.userId !== req.params.id) return res.status(403).json({ error: "You can only update your own photo." });
   next();
 }, (req, res) => {
-  uploadAvatar.single("avatar")(req, res, async (err) => {
+  uploadAvatar.single("avatar")(req, res, (err) => {
     if (err) return res.status(400).json({ error: err.message || "Upload failed." });
-    if (!req.file) return res.status(400).json({ error: "No file received." });
+    validateImageBuffer(req, res, async () => {
+      try {
+        const [rows] = await pool.query("SELECT avatar FROM users WHERE id = ?", [req.params.id]);
+        const previous = rows[0] && rows[0].avatar;
 
-    const [rows] = await pool.query("SELECT avatar FROM users WHERE id = ?", [req.params.id]);
-    const previous = rows[0] && rows[0].avatar;
+        const filename = `${req.userId}_${newId()}${req.file.detectedExt}`;
+        const publicPath = await storage.saveAvatar(req.file.buffer, filename, req.file.detectedMimetype);
+        await pool.query("UPDATE users SET avatar = ? WHERE id = ?", [publicPath, req.params.id]);
 
-    const publicPath = `/uploads/avatars/${req.file.filename}`;
-    await pool.query("UPDATE users SET avatar = ? WHERE id = ?", [publicPath, req.params.id]);
+        // Best-effort cleanup of the previous avatar (local or object storage).
+        await storage.deleteAvatar(previous);
 
-    // Best-effort cleanup of the previous locally-hosted avatar file.
-    if (previous && previous.startsWith("/uploads/avatars/")) {
-      const oldPath = path.join(AVATAR_DIR, path.basename(previous));
-      fs.unlink(oldPath, () => {});
-    }
-
-    const [updatedRows] = await pool.query("SELECT * FROM users WHERE id = ?", [req.params.id]);
-    const user = serializeUser(updatedRows[0]);
-    req.app.get("io").to("admins").emit("admin:user-updated", user);
-    res.json({ user });
+        const [updatedRows] = await pool.query("SELECT * FROM users WHERE id = ?", [req.params.id]);
+        const user = serializeUser(updatedRows[0]);
+        req.app.get("io").to("admins").emit("admin:user-updated", user);
+        res.json({ user });
+      } catch (err2) {
+        console.error(err2);
+        res.status(500).json({ error: "Upload failed. Please try again." });
+      }
+    });
   });
 });
 
@@ -125,9 +158,7 @@ router.delete("/:id/avatar", authRequired, async (req, res) => {
   const previous = rows[0] && rows[0].avatar;
   const fallback = DEFAULT_AVATAR;
   await pool.query("UPDATE users SET avatar = ? WHERE id = ?", [fallback, req.params.id]);
-  if (previous && previous.startsWith("/uploads/avatars/")) {
-    fs.unlink(path.join(AVATAR_DIR, path.basename(previous)), () => {});
-  }
+  await storage.deleteAvatar(previous);
   const [updatedRows] = await pool.query("SELECT * FROM users WHERE id = ?", [req.params.id]);
   res.json({ user: serializeUser(updatedRows[0]) });
 });

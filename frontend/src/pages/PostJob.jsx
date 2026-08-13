@@ -3,8 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import AppShell from "../components/AppShell";
 import { useToast } from "../context/ToastContext";
 import { api } from "../api/client";
+import { useDocumentTitle } from "../utils/useDocumentTitle";
 
 export default function PostJob() {
+  useDocumentTitle("Post a Job");
   const showToast = useToast();
   const navigate = useNavigate();
   const [form, setForm] = useState({

@@ -2,6 +2,7 @@ const express = require("express");
 const pool = require("../db");
 const { newId, serializeEvent } = require("../utils");
 const { authRequired, adminRequired } = require("../middleware/auth");
+const { paginationParams, paginatedResponse } = require("../utils/pagination");
 
 const router = express.Router();
 
@@ -19,10 +20,52 @@ async function attachExtras(event) {
   return event;
 }
 
+/**
+ * Batched version of attachExtras for a whole page of events at once —
+ * 4 queries total instead of 4 queries PER event (previously N+1: a
+ * 20-event page fired 80+ round trips to the database).
+ */
+async function attachExtrasBatch(events) {
+  if (!events.length) return events;
+  const ids = events.map(e => e.id);
+  const placeholders = ids.map(() => "?").join(",");
+
+  const [agendaRows] = await pool.query(
+    `SELECT * FROM event_agenda WHERE event_id IN (${placeholders}) ORDER BY sort_order ASC`, ids
+  );
+  const [hostRows] = await pool.query(`SELECT * FROM event_hosts WHERE event_id IN (${placeholders})`, ids);
+  const [rsvpRows] = await pool.query(
+    `SELECT event_id, user_id FROM event_rsvps WHERE event_id IN (${placeholders}) AND status = 'going'`, ids
+  );
+  const [commentRows] = await pool.query(
+    `SELECT * FROM event_comments WHERE event_id IN (${placeholders}) ORDER BY created_at ASC`, ids
+  );
+
+  const by = (rows, key) => rows.reduce((acc, r) => { (acc[r[key]] ||= []).push(r); return acc; }, {});
+  const agendaByEvent = by(agendaRows, "event_id");
+  const hostsByEvent = by(hostRows, "event_id");
+  const rsvpsByEvent = by(rsvpRows, "event_id");
+  const commentsByEvent = by(commentRows, "event_id");
+
+  for (const event of events) {
+    event.agenda = (agendaByEvent[event.id] || []).map(a => ({ time: a.time, title: a.title, note: a.note }));
+    event.hosts = (hostsByEvent[event.id] || []).map(h => ({ userId: h.user_id, label: h.label }));
+    event.attendeeIds = (rsvpsByEvent[event.id] || []).map(r => r.user_id);
+    event.comments = (commentsByEvent[event.id] || []).map(c => ({ id: c.id, userId: c.user_id, text: c.text, createdAt: c.created_at }));
+  }
+  return events;
+}
+
 router.get("/", authRequired, async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM events ORDER BY date ASC");
-  const events = await Promise.all(rows.map(r => attachExtras(serializeEvent(r))));
-  res.json({ events });
+  // Same reasoning as jobs.js: the frontend currently splits one fetched
+  // list into Upcoming/Past/My RSVPs tabs client-side, so this defaults
+  // generously rather than tightly paginating. Events realistically grow
+  // far slower than posts/jobs, so this ceiling is unlikely to bind.
+  const { limit, offset, page } = paginationParams(req.query, { defaultLimit: 100, maxLimit: 200 });
+  const [[{ total }]] = await pool.query("SELECT COUNT(*) AS total FROM events");
+  const [rows] = await pool.query("SELECT * FROM events ORDER BY date ASC LIMIT ? OFFSET ?", [limit, offset]);
+  const events = await attachExtrasBatch(rows.map(serializeEvent));
+  res.json(paginatedResponse("events", events, { total, page, limit }));
 });
 
 router.get("/:id", authRequired, async (req, res) => {

@@ -7,10 +7,12 @@ import { useToast } from "../context/ToastContext";
 import { useUsers } from "../context/UsersContext";
 import { api } from "../api/client";
 import { buildUsersMap, resolveAvatar } from "../utils/format";
+import { useDocumentTitle } from "../utils/useDocumentTitle";
 
 const TABS = [["about", "About"], ["experience", "Experience"], ["education", "Education"], ["posts", "Posts"]];
 
 export default function Profile() {
+  useDocumentTitle("Profile");
   const { id } = useParams();
   const { user: currentUser } = useAuth();
   const showToast = useToast();

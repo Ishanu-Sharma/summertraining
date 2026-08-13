@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /$
+Allow: /contact
+Allow: /login
+Allow: /register
+Disallow: /dashboard
+Disallow: /directory
+Disallow: /events
+Disallow: /jobs
+Disallow: /messages
+Disallow: /profile
+Disallow: /settings
+Disallow: /admin
+Disallow: /forgot-password
+Disallow: /reset-password
+
+# TODO: replace with your real production domain once deployed.
+Sitemap: https://REPLACE-WITH-YOUR-DOMAIN.com/sitemap.xml

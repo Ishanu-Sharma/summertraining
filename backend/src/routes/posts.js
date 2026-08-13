@@ -2,24 +2,46 @@ const express = require("express");
 const pool = require("../db");
 const { newId, serializePost } = require("../utils");
 const { authRequired } = require("../middleware/auth");
+const { paginationParams, paginatedResponse } = require("../utils/pagination");
 
 const router = express.Router();
 
-async function attachExtras(post) {
-  const [likes] = await pool.query("SELECT user_id FROM post_likes WHERE post_id = ?", [post.id]);
-  const [replies] = await pool.query("SELECT * FROM post_replies WHERE post_id = ? ORDER BY created_at ASC", [post.id]);
-  post.likedBy = likes.map(l => l.user_id);
-  post.replies = replies.map(r => ({ id: r.id, userId: r.user_id, text: r.text, createdAt: r.created_at }));
-  return post;
+/** Batched likes/replies for a whole page of posts — 2 queries total instead of 2 per post. */
+async function attachExtrasBatch(posts) {
+  if (!posts.length) return posts;
+  const ids = posts.map(p => p.id);
+  const placeholders = ids.map(() => "?").join(",");
+
+  const [likeRows] = await pool.query(`SELECT post_id, user_id FROM post_likes WHERE post_id IN (${placeholders})`, ids);
+  const [replyRows] = await pool.query(
+    `SELECT * FROM post_replies WHERE post_id IN (${placeholders}) ORDER BY created_at ASC`, ids
+  );
+
+  const by = (rows, key) => rows.reduce((acc, r) => { (acc[r[key]] ||= []).push(r); return acc; }, {});
+  const likesByPost = by(likeRows, "post_id");
+  const repliesByPost = by(replyRows, "post_id");
+
+  for (const post of posts) {
+    post.likedBy = (likesByPost[post.id] || []).map(l => l.user_id);
+    post.replies = (repliesByPost[post.id] || []).map(r => ({ id: r.id, userId: r.user_id, text: r.text, createdAt: r.created_at }));
+  }
+  return posts;
 }
 
 router.get("/", authRequired, async (req, res) => {
   const authorId = req.query.authorId;
+  const { limit, offset, page } = paginationParams(req.query, { defaultLimit: 20, maxLimit: 50 });
+
+  const [[{ total }]] = authorId
+    ? await pool.query("SELECT COUNT(*) AS total FROM posts WHERE author_id = ?", [authorId])
+    : await pool.query("SELECT COUNT(*) AS total FROM posts");
+
   const [rows] = authorId
-    ? await pool.query("SELECT * FROM posts WHERE author_id = ? ORDER BY created_at DESC", [authorId])
-    : await pool.query("SELECT * FROM posts ORDER BY created_at DESC");
-  const posts = await Promise.all(rows.map(r => attachExtras(serializePost(r))));
-  res.json({ posts });
+    ? await pool.query("SELECT * FROM posts WHERE author_id = ? ORDER BY created_at DESC LIMIT ? OFFSET ?", [authorId, limit, offset])
+    : await pool.query("SELECT * FROM posts ORDER BY created_at DESC LIMIT ? OFFSET ?", [limit, offset]);
+
+  const posts = await attachExtrasBatch(rows.map(serializePost));
+  res.json(paginatedResponse("posts", posts, { total, page, limit }));
 });
 
 router.post("/", authRequired, async (req, res) => {
@@ -28,7 +50,7 @@ router.post("/", authRequired, async (req, res) => {
   const id = newId("p");
   await pool.query("INSERT INTO posts (id, author_id, text, tag) VALUES (?,?,?,?)", [id, req.userId, text.trim(), tag || ""]);
   const [rows] = await pool.query("SELECT * FROM posts WHERE id = ?", [id]);
-  const post = await attachExtras(serializePost(rows[0]));
+  const [post] = await attachExtrasBatch([serializePost(rows[0])]);
   req.app.get("io").emit("post:new", post);
   res.status(201).json({ post });
 });

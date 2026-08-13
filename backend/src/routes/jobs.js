@@ -2,12 +2,21 @@ const express = require("express");
 const pool = require("../db");
 const { newId, serializeJob } = require("../utils");
 const { authRequired, adminRequired } = require("../middleware/auth");
+const { paginationParams, paginatedResponse } = require("../utils/pagination");
 
 const router = express.Router();
 
 router.get("/", authRequired, async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM jobs ORDER BY posted_at DESC");
-  res.json({ jobs: rows.map(serializeJob) });
+  // The frontend's All/Saved/Applied tabs currently filter one fetched list
+  // client-side, so the default page is generous (rather than a tight 20)
+  // to avoid silently hiding a user's saved/applied jobs that fall outside
+  // page 1. True infinite-scroll pagination (like the feed) is a natural
+  // next step if the jobs board grows past a few hundred open listings —
+  // the ?page/?limit params below already support it.
+  const { limit, offset, page } = paginationParams(req.query, { defaultLimit: 100, maxLimit: 200 });
+  const [[{ total }]] = await pool.query("SELECT COUNT(*) AS total FROM jobs");
+  const [rows] = await pool.query("SELECT * FROM jobs ORDER BY posted_at DESC LIMIT ? OFFSET ?", [limit, offset]);
+  res.json(paginatedResponse("jobs", rows.map(serializeJob), { total, page, limit }));
 });
 
 router.get("/:id", authRequired, async (req, res) => {

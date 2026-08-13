@@ -3,6 +3,8 @@ const express = require("express");
 const http = require("http");
 const path = require("path");
 const cors = require("cors");
+const helmet = require("helmet");
+const compression = require("compression");
 const { Server } = require("socket.io");
 
 const authRoutes = require("./routes/auth");
@@ -24,6 +26,16 @@ const io = new Server(server, {
 });
 app.set("io", io);
 
+// This is a JSON API (not an HTML-rendering server) whose only static assets are
+// avatar images served to a *different* origin (the frontend). Helmet's default
+// Content-Security-Policy is meant for HTML documents and its default
+// Cross-Origin-Resource-Policy ("same-origin") would silently block the frontend
+// from loading /uploads/avatars/* images, so both are adjusted accordingly.
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
+app.use(compression());
 app.use(cors({ origin: clientOrigin, credentials: true }));
 app.use(express.json({ limit: "2mb" }));
 app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));

@@ -3,26 +3,38 @@ import { Link } from "react-router-dom";
 import AppShell from "../components/AppShell";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
-import { useUsers } from "../context/UsersContext";
 import { api } from "../api/client";
+import { useDocumentTitle } from "../utils/useDocumentTitle";
 
 const PAGE_SIZE = 6;
 
 export default function Directory() {
+  useDocumentTitle("Directory");
   const { user } = useAuth();
   const showToast = useToast();
-  const { users } = useUsers();
 
+  // Directory eligibility (showInDirectory, deactivated, and the
+  // "allow students to browse" setting) is enforced server-side by
+  // GET /api/users/directory now — this page just renders what comes back,
+  // rather than filtering the full cross-app user list itself.
+  const [alumni, setAlumni] = useState([]);
+  const [restricted, setRestricted] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const [connections, setConnections] = useState([]);
   const [filters, setFilters] = useState({ name: "", year: "", department: "", industry: "", location: "" });
   const [sort, setSort] = useState("relevant");
   const [page, setPage] = useState(1);
-  const [settings, setSettings] = useState(null);
 
   useEffect(() => {
     (async () => {
-      const { settings } = await api.get("/settings");
-      setSettings(settings);
+      try {
+        const { users } = await api.get("/users/directory");
+        setAlumni(users);
+      } catch (err) {
+        setRestricted(true);
+      } finally {
+        setLoaded(true);
+      }
     })();
   }, []);
 
@@ -32,11 +44,6 @@ export default function Directory() {
       setConnections(connRes.ids);
     })();
   }, []);
-
-  const alumni = useMemo(
-    () => users.filter(u => u.role === "alumni" && u.privacy?.showInDirectory && !u.deactivated),
-    [users]
-  );
 
   const years = useMemo(() => [...new Set(alumni.map(u => u.gradYear).filter(Boolean))].sort((a, b) => b - a), [alumni]);
   const departments = useMemo(() => [...new Set(alumni.map(u => u.department).filter(Boolean))].sort(), [alumni]);
@@ -75,7 +82,7 @@ export default function Directory() {
     }
   }
 
-  if (user.role === "student" && settings && !settings.allowStudentDirectoryView) {
+  if (restricted) {
     return (
       <AppShell>
         <div className="empty-state">
@@ -86,6 +93,8 @@ export default function Directory() {
       </AppShell>
     );
   }
+
+  if (!loaded) return <AppShell><p className="text-faint">Loading directory…</p></AppShell>;
 
   return (
     <AppShell>

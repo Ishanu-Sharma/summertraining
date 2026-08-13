@@ -4,10 +4,12 @@ import SiteFooter from "../components/SiteFooter";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
 import { api } from "../api/client";
+import { useDocumentTitle } from "../utils/useDocumentTitle";
 
 const SUBJECTS = ["General Inquiry", "Report an Issue", "Event Idea or Proposal", "Partnership / Sponsorship", "Profile Verification Help"];
 
 export default function Contact() {
+  useDocumentTitle("Contact Us");
   const { user } = useAuth();
   const showToast = useToast();
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });

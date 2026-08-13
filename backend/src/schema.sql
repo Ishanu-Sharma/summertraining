@@ -23,6 +23,8 @@ CREATE TABLE IF NOT EXISTS users (
   skills             JSON NULL,
   privacy            JSON NULL,
   notifications      JSON NULL,
+  reset_token_hash   VARCHAR(64) NULL,
+  reset_token_expires DATETIME NULL,
   created_at         DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   INDEX idx_users_role (role),
   INDEX idx_users_grad_year (grad_year)

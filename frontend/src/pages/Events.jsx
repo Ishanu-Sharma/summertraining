@@ -6,8 +6,10 @@ import { useSocket } from "../context/SocketContext";
 import { useToast } from "../context/ToastContext";
 import { api } from "../api/client";
 import { formatEventDate, formatFullDate } from "../utils/format";
+import { useDocumentTitle } from "../utils/useDocumentTitle";
 
 export default function Events() {
+  useDocumentTitle("Events");
   const { user } = useAuth();
   const { socket } = useSocket();
   const showToast = useToast();

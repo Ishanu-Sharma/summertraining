@@ -54,6 +54,52 @@ function parseJsonSafe(value, fallback) {
   try { return JSON.parse(value); } catch { return fallback; }
 }
 
+/**
+ * Directory/lookup-safe projection of a user row, for any endpoint that
+ * returns MULTIPLE users to a non-admin caller (the general users list used
+ * to resolve names/avatars across posts, jobs, events, and messages).
+ *
+ * Unlike serializeUser, this NEVER includes email, bio, skills, links, or
+ * notification/privacy settings — those are only appropriate on a user's
+ * own record or their single-profile detail view (see serializeUserProfile
+ * below), not broadcast to every logged-in session on every page load.
+ */
+function serializeUserSummary(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    fullName: row.full_name,
+    role: row.role,
+    avatar: row.avatar,
+    gradYear: row.grad_year,
+    department: row.department,
+    industry: row.industry,
+    location: row.location,
+    headline: row.headline,
+    company: row.company,
+    jobTitle: row.job_title,
+    deactivated: !!row.deactivated,
+    showInDirectory: !!parseJsonSafe(row.privacy, {}).showInDirectory,
+    createdAt: row.created_at
+  };
+}
+
+/**
+ * Full profile view for a SINGLE user (GET /users/:id), respecting that
+ * user's own choice of whether to show their email address. `viewerId`
+ * lets a user always see their own email/full data regardless of the
+ * privacy toggle, and `viewerIsAdmin` does the same for admins.
+ */
+function serializeUserProfile(row, { viewerId, viewerIsAdmin } = {}) {
+  if (!row) return null;
+  const user = serializeUser(row);
+  const isSelfOrAdmin = viewerIsAdmin || viewerId === row.id;
+  if (!isSelfOrAdmin && !user.privacy.showEmail) {
+    user.email = null;
+  }
+  return user;
+}
+
 function serializeEvent(row) {
   if (!row) return null;
   return {
@@ -101,4 +147,7 @@ function serializePost(row) {
   };
 }
 
-module.exports = { newId, randomAvatar, serializeUser, serializeEvent, serializeJob, serializePost, parseJsonSafe, DEFAULT_AVATAR };
+module.exports = {
+  newId, randomAvatar, serializeUser, serializeUserSummary, serializeUserProfile,
+  serializeEvent, serializeJob, serializePost, parseJsonSafe, DEFAULT_AVATAR
+};

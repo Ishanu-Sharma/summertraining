@@ -2,8 +2,10 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
+import { useDocumentTitle } from "../utils/useDocumentTitle";
 
 export default function Login() {
+  useDocumentTitle("Log In");
   const { login } = useAuth();
   const showToast = useToast();
   const navigate = useNavigate();
@@ -71,7 +73,7 @@ export default function Login() {
             </div>
             <div className="flex-between" style={{ marginBottom: 26 }}>
               <label className="checkbox-row"><input type="checkbox" /> Remember me</label>
-              <a href="#" style={{ fontSize: ".88rem", fontWeight: 600, color: "var(--teal-700)" }}>Forgot password?</a>
+              <Link to="/forgot-password" style={{ fontSize: ".88rem", fontWeight: 600, color: "var(--teal-700)" }}>Forgot password?</Link>
             </div>
             <button type="submit" className={"btn btn-primary btn-block btn-lg" + (loading ? " is-loading" : "")} disabled={loading}>
               {loading ? "Logging in..." : "Log In"}

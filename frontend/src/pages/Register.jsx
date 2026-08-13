@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
+import { useDocumentTitle } from "../utils/useDocumentTitle";
 
 const YEARS_PAST = Array.from({ length: 20 }, (_, i) => 2026 - i);
 const YEARS_FUTURE = Array.from({ length: 6 }, (_, i) => 2026 + i);
@@ -11,6 +12,7 @@ const DEPARTMENTS = [
 ];
 
 export default function Register() {
+  useDocumentTitle("Create Account");
   const { register } = useAuth();
   const showToast = useToast();
   const navigate = useNavigate();

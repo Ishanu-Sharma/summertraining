@@ -8,6 +8,7 @@ import { useToast } from "../context/ToastContext";
 import { useUsers } from "../context/UsersContext";
 import { api } from "../api/client";
 import { buildUsersMap, formatEventDate, initials, resolveAvatar } from "../utils/format";
+import { useDocumentTitle } from "../utils/useDocumentTitle";
 
 function shuffle(arr) {
   const a = arr.slice();
@@ -19,12 +20,16 @@ function shuffle(arr) {
 }
 
 export default function Dashboard() {
+  useDocumentTitle("Dashboard");
   const { user } = useAuth();
   const { socket } = useSocket();
   const showToast = useToast();
   const { users } = useUsers();
 
   const [posts, setPosts] = useState([]);
+  const [postsPage, setPostsPage] = useState(1);
+  const [postsHasMore, setPostsHasMore] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [events, setEvents] = useState([]);
   const [jobs, setJobs] = useState([]);
   const [connections, setConnections] = useState([]);
@@ -38,9 +43,25 @@ export default function Dashboard() {
       api.get("/posts"), api.get("/events"), api.get("/jobs"), api.get(`/users/${user.id}/connections`)
     ]);
     setPosts(postsRes.posts);
+    setPostsPage(1);
+    setPostsHasMore(!!postsRes.pagination?.hasMore);
     setEvents(eventsRes.events);
     setJobs(jobsRes.jobs);
     setConnections(connRes.ids);
+  }
+
+  async function loadMorePosts() {
+    if (loadingMore || !postsHasMore) return;
+    setLoadingMore(true);
+    try {
+      const nextPage = postsPage + 1;
+      const { posts: more, pagination } = await api.get(`/posts?page=${nextPage}`);
+      setPosts(prev => [...prev, ...more]);
+      setPostsPage(nextPage);
+      setPostsHasMore(!!pagination?.hasMore);
+    } finally {
+      setLoadingMore(false);
+    }
   }
 
   useEffect(() => { loadAll(); }, []);
@@ -131,6 +152,11 @@ export default function Dashboard() {
           <div id="feedList">
             {posts.map(p => <FeedCard key={p.id} post={p} usersById={usersById} />)}
             {!posts.length && <p className="text-faint">Nothing in the feed yet — be the first to post.</p>}
+            {postsHasMore && (
+              <button type="button" className="btn btn-secondary btn-block btn-sm" style={{ marginTop: 8 }} onClick={loadMorePosts} disabled={loadingMore}>
+                {loadingMore ? "Loading…" : "Load more posts"}
+              </button>
+            )}
           </div>
         </div>
 

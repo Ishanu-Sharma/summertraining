@@ -6,12 +6,14 @@ import { useToast } from "../context/ToastContext";
 import { useUsers } from "../context/UsersContext";
 import { api } from "../api/client";
 import { resolveAvatar } from "../utils/format";
+import { useDocumentTitle } from "../utils/useDocumentTitle";
 
 const YEARS = Array.from({ length: 20 }, (_, i) => 2026 - i);
 const DEPARTMENTS = ["Computer Science & Engineering", "Electronics & Communication", "Mechanical Engineering", "Business Administration", "Design", "Economics", "Other"];
 const INDUSTRIES = ["Technology", "Healthcare", "Finance", "Design & Creative", "Marketing", "Other"];
 
 export default function EditProfile() {
+  useDocumentTitle("Settings");
   const { user, updateLocalUser, logout } = useAuth();
   const showToast = useToast();
   const navigate = useNavigate();

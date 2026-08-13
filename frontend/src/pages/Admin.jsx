@@ -6,10 +6,12 @@ import { useToast } from "../context/ToastContext";
 import { useUsers } from "../context/UsersContext";
 import { api } from "../api/client";
 import { formatFullDate, timeAgo, resolveAvatar } from "../utils/format";
+import { useDocumentTitle } from "../utils/useDocumentTitle";
 
 const TABS = [["overview", "Overview"], ["alumni", "Manage Alumni"], ["students", "Manage Students"], ["events", "Manage Events"], ["jobs", "Manage Jobs"], ["settings", "Settings"]];
 
 export default function Admin() {
+  useDocumentTitle("Admin Console");
   const { socket } = useSocket();
   const showToast = useToast();
   const navigate = useNavigate();

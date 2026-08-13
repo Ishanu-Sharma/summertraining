@@ -7,10 +7,12 @@ import { useToast } from "../context/ToastContext";
 import { useUsers } from "../context/UsersContext";
 import { api } from "../api/client";
 import { buildUsersMap, initials, timeAgo, resolveAvatar } from "../utils/format";
+import { useDocumentTitle } from "../utils/useDocumentTitle";
 
 const JOB_TYPES = ["Full-time", "Internship", "Contract", "Part-time"];
 
 export default function Jobs() {
+  useDocumentTitle("Jobs Board");
   const { user } = useAuth();
   const { socket } = useSocket();
   const showToast = useToast();

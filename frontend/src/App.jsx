@@ -4,6 +4,8 @@ import { ProtectedRoute, GuestOnlyRoute } from "./components/ProtectedRoute";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import Contact from "./pages/Contact";
 import Dashboard from "./pages/Dashboard";
 import Directory from "./pages/Directory";
@@ -24,6 +26,8 @@ export default function App() {
       <Route path="/contact" element={<Contact />} />
       <Route path="/login" element={<GuestOnlyRoute><Login /></GuestOnlyRoute>} />
       <Route path="/register" element={<GuestOnlyRoute><Register /></GuestOnlyRoute>} />
+      <Route path="/forgot-password" element={<GuestOnlyRoute><ForgotPassword /></GuestOnlyRoute>} />
+      <Route path="/reset-password" element={<GuestOnlyRoute><ResetPassword /></GuestOnlyRoute>} />
 
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/directory" element={<ProtectedRoute><Directory /></ProtectedRoute>} />

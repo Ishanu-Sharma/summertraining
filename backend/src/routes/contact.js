@@ -1,8 +1,9 @@
 const express = require("express");
+const { contactLimiter } = require("../middleware/rateLimit");
 const router = express.Router();
 
 /** No auth required — public contact form. Logged server-side; wire up email later if desired. */
-router.post("/", async (req, res) => {
+router.post("/", contactLimiter, async (req, res) => {
   const { name, email, subject, message } = req.body;
   if (!name || !email || !subject || !message) {
     return res.status(400).json({ error: "All fields are required." });
