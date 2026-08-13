@@ -1,0 +1,12 @@
+name: Keep Render Alive
+on:
+  schedule:
+    - cron: "*/14 * * * *"   # every 14 minutes, under Render's 15-min spin-down window
+  workflow_dispatch: {}       # lets you trigger it manually too
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping backend
+        run: curl -sf https://the-quad-api.onrender.com/health || echo "ping failed"

@@ -39,8 +39,7 @@ app.use(compression());
 app.use(cors({ origin: clientOrigin, credentials: true }));
 app.use(express.json({ limit: "2mb" }));
 app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
-
-app.get("/api/health", (req, res) => res.json({ ok: true, service: "the-quad-api" }));
+app.get("/health", (req, res) => res.status(200).send("ok"));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
