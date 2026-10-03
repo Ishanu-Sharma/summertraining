@@ -137,7 +137,7 @@ export default function Jobs() {
   const appliedArr = jobs.filter(j => applied.has(j.id));
 
   return (
-    <AppShell>
+    <AppShell breadcrumbs={[{ label: "Dashboard", to: "/dashboard" }, { label: "Jobs Board" }]}>
       <div className="page-head">
         <div className="flex-between">
           <div>

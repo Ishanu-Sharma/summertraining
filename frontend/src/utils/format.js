@@ -24,6 +24,22 @@ export function formatFullDate(isoDate) {
   return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric" });
 }
 
+/**
+ * Day-precision date for timestamps that come back as MySQL DATETIME strings
+ * ("2026-10-04 09:30:00"). Safari will not parse that form with a space, so the
+ * separator is normalised to "T" first; a plain "2026-10-04" is anchored to
+ * local midnight for the same reason formatFullDate does it.
+ */
+export function formatDate(value) {
+  if (!value) return "";
+  const text = String(value).includes(" ")
+    ? String(value).replace(" ", "T")
+    : String(value).length === 10 ? value + "T00:00:00" : value;
+  const d = new Date(text);
+  if (Number.isNaN(d.getTime())) return "";
+  return d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+}
+
 export function initials(name) {
   return (name || "").split(" ").filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join("");
 }

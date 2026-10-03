@@ -15,6 +15,8 @@ const postRoutes = require("./routes/posts");
 const conversationRoutes = require("./routes/conversations");
 const settingsRoutes = require("./routes/settings");
 const contactRoutes = require("./routes/contact");
+const storyRoutes = require("./routes/stories");
+const searchRoutes = require("./routes/search");
 const initSockets = require("./sockets");
 
 const app = express();
@@ -49,6 +51,8 @@ app.use("/api/posts", postRoutes);
 app.use("/api/conversations", conversationRoutes);
 app.use("/api/settings", settingsRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/stories", storyRoutes);
+app.use("/api/search", searchRoutes);
 
 app.use((req, res) => res.status(404).json({ error: "Not found." }));
 app.use((err, req, res, next) => {

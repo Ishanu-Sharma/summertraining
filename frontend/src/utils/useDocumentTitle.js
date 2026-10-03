@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 const SITE_NAME = "The Quad";
-const DEFAULT_DESCRIPTION = "The Quad connects Assam Downtown University alumni for mentorship, hiring, reunions, and giving back.";
+const DEFAULT_DESCRIPTION = "The Quad connects Assam down town University alumni for mentorship, hiring, reunions, and giving back.";
 
 /**
  * Sets document.title and the meta description for the current page.

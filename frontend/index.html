@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Quad | Assam Downtown University Alumni Network</title>
-<meta name="description" content="The Quad connects Assam Downtown University alumni for mentorship, hiring, reunions, and giving back.">
+<title>The Quad | Assam down town University Alumni Network</title>
+<meta name="description" content="The Quad connects Assam down town University alumni for mentorship, hiring, reunions, and giving back.">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#0d3b36">
 
@@ -15,24 +15,57 @@
      does not require one. -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="The Quad">
-<meta property="og:title" content="The Quad | Assam Downtown University Alumni Network">
-<meta property="og:description" content="The Quad connects Assam Downtown University alumni for mentorship, hiring, reunions, and giving back.">
+<meta property="og:title" content="The Quad | Assam down town University Alumni Network">
+<meta property="og:description" content="The Quad connects Assam down town University alumni for mentorship, hiring, reunions, and giving back.">
 <meta property="og:url" content="https://the-quad-web.onrender.com/">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="The Quad | Assam Downtown University Alumni Network">
-<meta name="twitter:description" content="The Quad connects Assam Downtown University alumni for mentorship, hiring, reunions, and giving back.">
+<meta name="twitter:title" content="The Quad | Assam down town University Alumni Network">
+<meta name="twitter:description" content="The Quad connects Assam down town University alumni for mentorship, hiring, reunions, and giving back.">
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="mask-icon" href="/favicon.svg" color="#0B4F49">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="The Quad">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="canonical" href="https://the-quad-web.onrender.com/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<!-- Theme, applied before first paint. React sets this too (ThemeContext), but
+     it cannot run until the bundle has parsed, and a dark-mode visitor would
+     otherwise get a full frame of cream page first. Deliberately tiny and
+     inline: an external file would be another blocking request. -->
+<script>
+  (function () {
+    try {
+      var stored = localStorage.getItem('quad_theme');
+      var dark = stored === 'dark' ||
+        (stored !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+      if (dark) {
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', '#0A1416');
+      }
+    } catch (e) { /* private mode, or storage blocked */ }
+  })();
+</script>
 </head>
 <body>
 <div id="root"></div>
+<noscript>
+  <div style="max-width:40rem;margin:4rem auto;padding:0 1.5rem;font-family:system-ui,sans-serif;line-height:1.6">
+    <h1>The Quad</h1>
+    <p>
+      The Quad is the alumni network of Assam down town University. It needs
+      JavaScript to run. Please enable it, or reach the Alumni Relations Office
+      directly at <a href="mailto:alumni@adtu.in">alumni@adtu.in</a>.
+    </p>
+  </div>
+</noscript>
 <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>
-

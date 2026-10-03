@@ -68,6 +68,14 @@ services:
     envVars:
       - key: VITE_API_URL
         value: https://the-quad-api.onrender.com
+      # Google Analytics measurement ID (G-XXXXXXXXXX). Deliberately not
+      # committed and NOT set by default: with no value, the build ships no
+      # analytics script, sets no analytics cookie, and shows no cookie
+      # banner, which is what keeps the privacy policy true out of the box.
+      # Set it in the Render dashboard to turn analytics on; it still only
+      # loads for visitors who accept the banner.
+      - key: VITE_GA_ID
+        sync: false
     routes:
       - type: rewrite
         source: /*

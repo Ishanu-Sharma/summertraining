@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import BrandMark from "../components/BrandMark";
+import PasswordField from "../components/PasswordField";
 import { api } from "../api/client";
+import { useDocumentTitle } from "../utils/useDocumentTitle";
 
 export default function ResetPassword() {
+  useDocumentTitle("Set a New Password", "Choose a new password for your account on The Quad.");
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const token = searchParams.get("token");
@@ -48,10 +51,10 @@ export default function ResetPassword() {
           </Link>
           <p className="auth-visual__pitch">Choose a new password and you are back in.</p>
         </div>
-        <p style={{ position: "relative", zIndex: 1, color: "rgba(251,246,238,.6)", fontSize: ".85rem" }}>Assam Downtown University Alumni Relations Office</p>
+        <p style={{ position: "relative", zIndex: 1, color: "rgba(251,246,238,.6)", fontSize: ".85rem" }}>Assam down town University Alumni Relations Office</p>
       </div>
 
-      <div className="auth-form-side">
+      <main className="auth-form-side" id="main" tabIndex={-1}>
         <div className="auth-card animate-in">
           {done ? (
             <>
@@ -64,21 +67,26 @@ export default function ResetPassword() {
               <p className="lede">Choose a new password for your account.</p>
 
               <form onSubmit={handleSubmit} noValidate>
-                <div className={"field" + (error ? " has-error" : "")}>
-                  <label htmlFor="password">New password</label>
-                  <div className="input-icon">
-                    <i className="fa-solid fa-lock"></i>
-                    <input type="password" id="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="At least 6 characters" required />
-                  </div>
-                </div>
-                <div className={"field" + (error ? " has-error" : "")}>
-                  <label htmlFor="confirm">Confirm new password</label>
-                  <div className="input-icon">
-                    <i className="fa-solid fa-lock"></i>
-                    <input type="password" id="confirm" value={confirm} onChange={e => setConfirm(e.target.value)} placeholder="Re-enter your password" required />
-                  </div>
-                  {error && <span className="field-error"><i className="fa-solid fa-circle-exclamation"></i> {error}</span>}
-                </div>
+                <PasswordField
+                  id="password"
+                  label="New password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder="At least 6 characters"
+                  autoComplete="new-password"
+                  required
+                />
+                <PasswordField
+                  id="confirm"
+                  label="Confirm new password"
+                  value={confirm}
+                  onChange={e => setConfirm(e.target.value)}
+                  placeholder="Re-enter your password"
+                  autoComplete="new-password"
+                  icon="fa-lock-open"
+                  required
+                  error={error}
+                />
                 <button type="submit" className={"btn btn-primary btn-block btn-lg" + (loading ? " is-loading" : "")} disabled={loading}>
                   {loading ? "Saving..." : "Reset password"}
                 </button>
@@ -88,7 +96,7 @@ export default function ResetPassword() {
             </>
           )}
         </div>
-      </div>
+      </main>
     </div>
   );
 }

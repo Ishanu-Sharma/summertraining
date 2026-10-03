@@ -108,7 +108,7 @@ export default function Messages() {
   }
 
   return (
-    <AppShell searchable={false}>
+    <AppShell searchable={false} breadcrumbs={[{ label: "Dashboard", to: "/dashboard" }, { label: "Messages" }]}>
       <div className={"messages-shell" + (activeConv ? " has-active-conv" : "")}>
         <aside className="conv-list">
           <div className="conv-list__search">

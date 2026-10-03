@@ -1,17 +1,25 @@
 import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
+import Breadcrumbs from "../components/Breadcrumbs";
+import CopyButton from "../components/CopyButton";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
 import { api } from "../api/client";
 import { useDocumentTitle } from "../utils/useDocumentTitle";
+import { attributionString, trackFormError, trackFormSuccess } from "../utils/analytics";
 
 const SUBJECTS = ["General Inquiry", "Report an Issue", "Event Idea or Proposal", "Partnership / Sponsorship", "Profile Verification Help"];
 
 export default function Contact() {
-  useDocumentTitle("Contact Us");
+  useDocumentTitle(
+    "About and Contact",
+    "Reach the Alumni Relations Office of Assam down town University. The team replies within two business days."
+  );
   const { user } = useAuth();
   const showToast = useToast();
+  const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -30,7 +38,11 @@ export default function Contact() {
     if (!form.subject) e.subject = "Select a topic.";
     if (form.message.trim().length < 10) e.message = "Tell us a little more (10+ characters).";
     setErrors(e);
-    return Object.keys(e).length === 0;
+    const ok = Object.keys(e).length === 0;
+    // Recorded so the proportion of attempts that fail validation, and on
+    // which field, is visible instead of guessed at.
+    if (!ok) trackFormError("contact", Object.keys(e)[0]);
+    return ok;
   }
 
   async function handleSubmit(ev) {
@@ -38,12 +50,16 @@ export default function Contact() {
     if (!validate()) return;
     setLoading(true);
     try {
-      await api.post("/contact", form, { auth: false });
+      // `source` is the first-touch UTM attribution captured when this visitor
+      // first landed, so a campaign can be credited with the enquiry it
+      // actually produced.
+      await api.post("/contact", { ...form, source: attributionString() }, { auth: false });
       setSent(true);
       setForm({ name: user?.fullName || "", email: user?.email || "", subject: "", message: "" });
-      showToast("Thanks. The Alumni Office will get back to you within 2 business days.", "success");
-      setTimeout(() => setSent(false), 2500);
+      trackFormSuccess("contact", { subject: form.subject });
+      navigate("/thank-you?from=contact");
     } catch (err) {
+      trackFormError("contact", err.message);
       showToast(err.message, "error");
     } finally {
       setLoading(false);
@@ -53,12 +69,14 @@ export default function Contact() {
   return (
     <>
       <SiteHeader />
+      <main id="main" tabIndex={-1}>
       <section className="section-sm">
         <div className="container">
+          <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "About & Contact" }]} />
           <div className="section-head" style={{ marginBottom: 60 }}>
             <p className="eyebrow">Get in touch</p>
             <h1>About &amp; Contact</h1>
-            <p className="lede">The Quad is built and maintained by the Assam Downtown University Alumni Relations Office. Questions, feedback, or a reunion idea? You'll reach a real team here, not a ticket queue.</p>
+            <p className="lede">The Quad is built and maintained by the Assam down town University Alumni Relations Office. Questions, feedback, or a reunion idea? You'll reach a real team here, not a ticket queue.</p>
           </div>
 
           <div className="contact-layout">
@@ -104,20 +122,39 @@ export default function Contact() {
               </div>
               <div className="contact-info-card">
                 <i className="fa-solid fa-phone"></i>
-                <div><h4 style={{ fontSize: "1rem" }}>Call Us</h4><p className="text-soft">+91 361 234 5678</p></div>
+                <div>
+                  <h4 style={{ fontSize: "1rem" }}>Call Us</h4>
+                  <p className="text-soft"><a href="tel:+913612345678">+91 361 234 5678</a></p>
+                  <CopyButton value="+91 361 234 5678" label="Copy number" copiedLabel="Number copied" />
+                </div>
               </div>
               <div className="contact-info-card">
                 <i className="fa-solid fa-envelope"></i>
-                <div><h4 style={{ fontSize: "1rem" }}>Email Us</h4><p className="text-soft">alumni@adtu.in</p></div>
+                <div>
+                  <h4 style={{ fontSize: "1rem" }}>Email Us</h4>
+                  <p className="text-soft"><a href="mailto:alumni@adtu.in">alumni@adtu.in</a></p>
+                  <CopyButton value="alumni@adtu.in" label="Copy address" copiedLabel="Address copied" />
+                </div>
               </div>
               <div className="contact-info-card">
                 <i className="fa-solid fa-clock"></i>
                 <div><h4 style={{ fontSize: "1rem" }}>Office Hours</h4><p className="text-soft">Monday to Friday, 10:00 AM to 6:00 PM IST</p></div>
               </div>
+
+              <div className="related-links">
+                <h3>Might save you the message</h3>
+                <ul>
+                  <li><Link to="/faq">How verification works, and how long it takes</Link></li>
+                  <li><Link to="/faq">Keeping your profile out of the directory</Link></li>
+                  <li><Link to="/privacy">What data we hold about you</Link></li>
+                  <li><Link to="/stories">Suggest an alumni story</Link></li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </section>
+      </main>
       <SiteFooter />
     </>
   );

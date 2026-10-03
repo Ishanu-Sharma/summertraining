@@ -2,19 +2,94 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 /**
- * The hero's 3D scene: a cluster of class rings, the motif the rest of the site
- * already uses in CSS, rendered in WebGL so it has real depth and lighting.
+ * The hero's 3D scene: The Quad's brand mark built as a real object, and the
+ * alumni network drawn around it.
  *
- * Isolated as a leaf component and loaded lazily (see Home.jsx) so three.js
- * lands in its own chunk instead of the main bundle. Everything here lives
- * outside React state: the render loop writes to refs only, so a pointer move
- * never re-renders the tree.
+ *   - A polished metal ring (the class ring the whole site is themed on),
+ *     carrying the four quad blocks from the logo, one of them orange.
+ *   - A shell of alumni nodes orbiting it, wired to their nearest neighbours.
+ *     Each node breathes on its own phase, so the graph reads as alive rather
+ *     than as a static lattice.
  *
- * Degrades in three steps:
- *   1. prefers-reduced-motion  -> one static frame, no animation loop
- *   2. no WebGL / context lost -> canvas removed, the CSS backdrop shows through
- *   3. offscreen or hidden tab -> loop suspended, so it does not drain battery
+ * What makes it read as genuinely three-dimensional rather than as a picture:
+ * the metal is lit by a real environment map (generated here, not downloaded),
+ * so the ring picks up a bright key reflection on one side and a warm bounce on
+ * the other, and those reflections travel across it as it turns. Flat shading
+ * with a couple of directional lights is what makes WebGL look like a decal.
+ *
+ * Everything lives outside React state: the loop writes to refs and plain
+ * objects, so a pointer move costs two floats and no re-render.
+ *
+ * Degrades in four steps:
+ *   1. prefers-reduced-motion  -> one composed static frame, no loop
+ *   2. no WebGL / context lost -> canvas removed, the CSS backdrop shows
+ *   3. offscreen or hidden tab -> loop suspended, no battery drain
+ *   4. small screens           -> fewer nodes, lower DPR, no antialias
  */
+
+const TEAL_900 = 0x0b4f49;
+const TEAL_700 = 0x0e6e64;
+const TEAL_500 = 0x1cab98;
+const ORANGE_500 = 0xf2622e;
+const PEACH_300 = 0xffc38a;
+const CREAM = 0xfbf6ee;
+
+/**
+ * The environment the metal reflects. Painted into a canvas as an
+ * equirectangular panorama and convolved by PMREM, which is what gives the
+ * ring a soft wide highlight instead of a hard specular dot.
+ */
+function buildEnvironment(renderer) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 512;
+  canvas.height = 256;
+  const ctx = canvas.getContext("2d");
+
+  const sky = ctx.createLinearGradient(0, 0, 0, 256);
+  sky.addColorStop(0, "#fffaf2");
+  sky.addColorStop(0.45, "#cfe6e0");
+  sky.addColorStop(1, "#0b3d38");
+  ctx.fillStyle = sky;
+  ctx.fillRect(0, 0, 512, 256);
+
+  const blob = (x, y, r, color) => {
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, color);
+    g.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = g;
+    ctx.fillRect(x - r, y - r, r * 2, r * 2);
+  };
+
+  blob(130, 60, 110, "rgba(255,255,255,0.95)");   // key
+  blob(360, 95, 120, "rgba(255,195,138,0.75)");   // warm bounce
+  blob(250, 215, 130, "rgba(28,171,152,0.55)");   // teal floor bounce
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.mapping = THREE.EquirectangularReflectionMapping;
+  texture.colorSpace = THREE.SRGBColorSpace;
+
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const envMap = pmrem.fromEquirectangular(texture).texture;
+  pmrem.dispose();
+  texture.dispose();
+  return envMap;
+}
+
+/** Evenly spaced points on a sphere. Avoids the clumping of random placement. */
+function fibonacciSphere(count, radius) {
+  const points = [];
+  const golden = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i < count; i++) {
+    const y = 1 - (i / (count - 1)) * 2;
+    const r = Math.sqrt(Math.max(0, 1 - y * y));
+    const theta = golden * i;
+    points.push(
+      new THREE.Vector3(Math.cos(theta) * r, y, Math.sin(theta) * r).multiplyScalar(radius)
+    );
+  }
+  return points;
+}
+
 export default function HeroScene() {
   const mountRef = useRef(null);
 
@@ -23,14 +98,14 @@ export default function HeroScene() {
     if (!mount) return;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const isSmall = window.innerWidth < 640;
+    const isSmall = window.innerWidth < 760;
 
     let renderer;
     try {
       renderer = new THREE.WebGLRenderer({
         alpha: true,
         antialias: !isSmall,
-        powerPreference: "low-power",
+        powerPreference: "high-performance"
       });
     } catch {
       return; // No WebGL. The CSS backdrop on .hero__scene is the fallback.
@@ -39,135 +114,232 @@ export default function HeroScene() {
     const width = mount.clientWidth || 1;
     const height = mount.clientHeight || 1;
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isSmall ? 1 : 1.75));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isSmall ? 1.25 : 2));
     renderer.setSize(width, height);
-    renderer.setClearColor(0x000000, 0);
+    renderer.setClearAlpha(0);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    // Filmic tone mapping keeps the bright reflection on the ring from
+    // clipping to a flat white patch.
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
     mount.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
-    camera.position.set(0, 0, 12);
+    const envMap = buildEnvironment(renderer);
+    scene.environment = envMap;
 
-    // Brand palette, same hex values as the CSS tokens in styles/style.css.
-    const TEAL_700 = 0x0e6e64;
-    const TEAL_500 = 0x1cab98;
-    const ORANGE_500 = 0xf2622e;
-    const PEACH_300 = 0xffc38a;
+    const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 100);
+    camera.position.set(0, 0.2, 13);
+    camera.lookAt(0, 0, 0);
 
-    // Warm key light from the upper left, cool fill from the lower right, so the
-    // rings read as metal against a cream page rather than flat silhouettes.
-    scene.add(new THREE.AmbientLight(0xfbf6ee, 2.2));
+    const disposables = [envMap];
+    const track = (item) => { disposables.push(item); return item; };
 
-    const key = new THREE.DirectionalLight(0xffffff, 2.6);
-    key.position.set(-4, 5, 6);
+    // Lights on top of the environment: the env map does the reflection work,
+    // these shape the form and put an edge on the silhouette.
+    scene.add(new THREE.AmbientLight(CREAM, 0.45));
+
+    const key = new THREE.DirectionalLight(0xffffff, 2.1);
+    key.position.set(-5, 6, 7);
     scene.add(key);
 
-    const fill = new THREE.DirectionalLight(TEAL_500, 1.1);
-    fill.position.set(5, -3, 2);
+    const rim = new THREE.DirectionalLight(PEACH_300, 1.6);
+    rim.position.set(6, -2, -4);
+    scene.add(rim);
+
+    const fill = new THREE.PointLight(TEAL_500, 24, 22);
+    fill.position.set(4, -3, 5);
     scene.add(fill);
 
-    const warm = new THREE.PointLight(PEACH_300, 18, 14);
-    warm.position.set(2.5, 1.5, 3.5);
-    scene.add(warm);
+    // --- The brand mark, in three dimensions -----------------------------
+    const mark = new THREE.Group();
+    mark.rotation.set(-0.32, -0.42, 0.06);
 
-    const disposables = [];
-    const track = (obj) => {
-      disposables.push(obj);
-      return obj;
-    };
-
-    const ringGeometry = track(
-      new THREE.TorusGeometry(1, 0.3, isSmall ? 12 : 18, isSmall ? 48 : 90)
+    const ring = new THREE.Mesh(
+      track(new THREE.TorusGeometry(2.55, 0.34, isSmall ? 20 : 40, isSmall ? 96 : 200)),
+      track(new THREE.MeshPhysicalMaterial({
+        color: TEAL_500,
+        metalness: 1,
+        roughness: 0.17,
+        envMapIntensity: 1.5,
+        clearcoat: 0.6,
+        clearcoatRoughness: 0.2
+      }))
     );
-    const gemGeometry = track(new THREE.IcosahedronGeometry(0.42, 1));
+    mark.add(ring);
 
-    const ringMaterial = (color) =>
-      track(
-        new THREE.MeshStandardMaterial({
-          color,
-          metalness: 0.82,
-          roughness: 0.34,
-        })
-      );
+    // A second, thinner band sitting just inside the first, in the darker
+    // brand teal. Two concentric bands is what makes it read as a ring you
+    // could pick up rather than as a torus primitive.
+    const innerBand = new THREE.Mesh(
+      track(new THREE.TorusGeometry(2.17, 0.085, 14, isSmall ? 80 : 160)),
+      track(new THREE.MeshPhysicalMaterial({
+        color: TEAL_900,
+        metalness: 0.95,
+        roughness: 0.3,
+        envMapIntensity: 1.1
+      }))
+    );
+    mark.add(innerBand);
 
-    const tealRing = ringMaterial(TEAL_500);
-    const deepRing = ringMaterial(TEAL_700);
+    // The four quad blocks from the logo, one orange, set inside the ring.
+    const blockGeometry = track(new THREE.BoxGeometry(0.92, 0.92, 0.3));
+    const creamBlock = track(new THREE.MeshPhysicalMaterial({
+      color: CREAM,
+      metalness: 0.15,
+      roughness: 0.38,
+      envMapIntensity: 0.9,
+      clearcoat: 0.5
+    }));
+    const orangeBlock = track(new THREE.MeshPhysicalMaterial({
+      color: ORANGE_500,
+      metalness: 0.25,
+      roughness: 0.26,
+      envMapIntensity: 1.1,
+      clearcoat: 0.7,
+      emissive: new THREE.Color(ORANGE_500),
+      emissiveIntensity: 0.12
+    }));
 
-    // Hand-placed rather than randomised: the composition reads as a deliberate
-    // cluster, and it renders identically on every visit. The first entry is the
-    // front ring that carries the gem.
-    const layout = [
-      { pos: [-0.3, 0.1, 0], scale: 1.5, tilt: [0.42, 0.26], material: tealRing, spin: 0.05 },
-      { pos: [-2.9, 1.8, -2.2], scale: 0.74, tilt: [1.1, -0.4], material: deepRing, spin: 0.085 },
-      { pos: [2.7, -1.4, -1.6], scale: 0.88, tilt: [-0.6, 0.8], material: deepRing, spin: -0.07 },
-      { pos: [2.2, 1.9, -3.2], scale: 0.58, tilt: [0.5, 0.55], material: tealRing, spin: 0.11 },
-      { pos: [-2.4, -2.0, -2.9], scale: 0.62, tilt: [-1.0, -0.9], material: deepRing, spin: -0.095 },
+    const BLOCKS = [
+      { x: -0.56, y: 0.56, material: creamBlock },
+      { x: 0.56, y: 0.56, material: orangeBlock },
+      { x: -0.56, y: -0.56, material: creamBlock },
+      { x: 0.56, y: -0.56, material: creamBlock }
     ];
-
-    const cluster = new THREE.Group();
-    const spinning = [];
-    let frontRing = null;
-
-    layout.forEach(({ pos, scale, tilt, material, spin }, i) => {
-      if (isSmall && i > 2) return; // Lighter cluster on phones.
-
-      const ring = new THREE.Mesh(ringGeometry, material);
-      ring.position.set(...pos);
-      ring.scale.setScalar(scale);
-      ring.rotation.set(tilt[0], tilt[1], 0);
-      cluster.add(ring);
-      spinning.push({ mesh: ring, spin });
-      if (i === 0) frontRing = ring;
+    const blocks = BLOCKS.map(({ x, y, material }) => {
+      const block = new THREE.Mesh(blockGeometry, material);
+      block.position.set(x, y, 0);
+      mark.add(block);
+      return block;
     });
 
-    // The gem is a child of the front ring, set on the band at the top of the
-    // torus, so it rides around with the ring exactly as a stone set in a real
-    // class ring would. Same relationship as the CSS .class-ring__gem.
-    const gem = new THREE.Mesh(
-      gemGeometry,
-      track(
-        new THREE.MeshStandardMaterial({
-          color: ORANGE_500,
-          metalness: 0.4,
-          roughness: 0.18,
-          emissive: new THREE.Color(ORANGE_500),
-          emissiveIntensity: 0.15,
-        })
-      )
-    );
-    gem.position.set(0, 1.16, 0);
-    gem.scale.setScalar(0.78);
-    frontRing.add(gem);
+    scene.add(mark);
 
-    scene.add(cluster);
+    // --- The network around it -------------------------------------------
+    const NODE_COUNT = isSmall ? 34 : 64;
+    const SHELL_RADIUS = 5.4;
+    const nodePositions = fibonacciSphere(NODE_COUNT, SHELL_RADIUS);
 
-    // Pointer parallax. Written to a plain object, never to React state, so this
-    // costs one float per event and no re-render.
+    // Squashed on y and nudged in and out so the shell reads as a cloud
+    // wrapping the ring rather than a perfect ball sitting behind it.
+    nodePositions.forEach((p, i) => {
+      p.y *= 0.72;
+      p.multiplyScalar(0.86 + ((i * 37) % 23) / 70);
+    });
+
+    const nodeGeometry = track(new THREE.IcosahedronGeometry(0.085, 1));
+    const nodeMaterial = track(new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+      metalness: 0.2,
+      roughness: 0.35,
+      envMapIntensity: 1.2
+    }));
+    const nodes = new THREE.InstancedMesh(nodeGeometry, nodeMaterial, NODE_COUNT);
+    nodes.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+
+    const baseColor = new THREE.Color(TEAL_700);
+    const accentColor = new THREE.Color(ORANGE_500);
+    const dummy = new THREE.Object3D();
+    // Every eighth node is orange, so the accent is distributed rather than
+    // clustered, and nothing here is random: the scene composes identically
+    // on every visit.
+    for (let i = 0; i < NODE_COUNT; i++) {
+      dummy.position.copy(nodePositions[i]);
+      dummy.scale.setScalar(1);
+      dummy.updateMatrix();
+      nodes.setMatrixAt(i, dummy.matrix);
+      nodes.setColorAt(i, i % 8 === 3 ? accentColor : baseColor);
+    }
+    nodes.instanceColor.needsUpdate = true;
+
+    const constellation = new THREE.Group();
+    constellation.add(nodes);
+
+    // Wire each node to its two nearest neighbours. O(n^2) over 64 points is
+    // nothing, and it runs once.
+    const linePoints = [];
+    for (let i = 0; i < NODE_COUNT; i++) {
+      const distances = [];
+      for (let j = 0; j < NODE_COUNT; j++) {
+        if (i === j) continue;
+        distances.push({ j, d: nodePositions[i].distanceTo(nodePositions[j]) });
+      }
+      distances.sort((a, b) => a.d - b.d);
+      for (const { j } of distances.slice(0, 2)) {
+        if (j < i) continue; // Each edge once.
+        linePoints.push(nodePositions[i], nodePositions[j]);
+      }
+    }
+
+    const lineGeometry = track(new THREE.BufferGeometry().setFromPoints(linePoints));
+    const lineMaterial = track(new THREE.LineBasicMaterial({
+      color: TEAL_500,
+      transparent: true,
+      opacity: 0.3
+    }));
+    constellation.add(new THREE.LineSegments(lineGeometry, lineMaterial));
+    scene.add(constellation);
+
+    // --- Motion ------------------------------------------------------------
     const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
     const onPointerMove = (event) => {
       pointer.tx = (event.clientX / window.innerWidth - 0.5) * 2;
       pointer.ty = (event.clientY / window.innerHeight - 0.5) * 2;
     };
 
+    const clock = new THREE.Clock();
     let frame = 0;
     let visible = true;
-    const clock = new THREE.Clock();
+
+    // Entrance: the mark settles in from slightly further away and smaller.
+    const ENTRANCE_MS = 1500;
+    const start = performance.now();
+    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
 
     const renderFrame = () => {
       const elapsed = clock.getElapsedTime();
 
-      spinning.forEach(({ mesh, spin }) => {
-        mesh.rotation.z += spin * 0.016;
-        mesh.rotation.y += spin * 0.008;
+      const progress = reduceMotion
+        ? 1
+        : Math.min(1, (performance.now() - start) / ENTRANCE_MS);
+      const eased = easeOutCubic(progress);
+
+      mark.scale.setScalar(0.84 + 0.16 * eased);
+      camera.position.z = 15.5 - 2.5 * eased;
+
+      // The ring turns slowly on its own axis; the blocks only sway, so the
+      // quad stays readable instead of tumbling.
+      ring.rotation.z = elapsed * 0.16;
+      innerBand.rotation.z = -elapsed * 0.1;
+      blocks.forEach((block, i) => {
+        block.rotation.z = Math.sin(elapsed * 0.5 + i) * 0.08;
+        block.position.z = Math.sin(elapsed * 0.9 + i * 1.7) * 0.07;
       });
 
-      // Slow vertical drift, so the cluster breathes instead of sitting still.
-      cluster.position.y = Math.sin(elapsed * 0.35) * 0.12;
+      mark.position.y = Math.sin(elapsed * 0.4) * 0.13;
 
-      pointer.x += (pointer.tx - pointer.x) * 0.045;
-      pointer.y += (pointer.ty - pointer.y) * 0.045;
-      cluster.rotation.y = pointer.x * 0.22;
-      cluster.rotation.x = pointer.y * 0.14;
+      constellation.rotation.y = elapsed * 0.05;
+      constellation.rotation.x = Math.sin(elapsed * 0.22) * 0.08;
+
+      // Nodes breathe on staggered phases. Writing only the scale keeps this
+      // to one matrix upload per frame and no geometry churn.
+      for (let i = 0; i < NODE_COUNT; i++) {
+        const pulse = 0.78 + 0.42 * (0.5 + 0.5 * Math.sin(elapsed * 1.25 + i * 0.9));
+        dummy.position.copy(nodePositions[i]);
+        dummy.scale.setScalar(pulse);
+        dummy.updateMatrix();
+        nodes.setMatrixAt(i, dummy.matrix);
+      }
+      nodes.instanceMatrix.needsUpdate = true;
+
+      pointer.x += (pointer.tx - pointer.x) * 0.05;
+      pointer.y += (pointer.ty - pointer.y) * 0.05;
+      // The camera moves rather than the object, which is what makes the
+      // parallax feel like looking around something solid.
+      camera.position.x = pointer.x * 1.6;
+      camera.position.y = 0.2 - pointer.y * 1.0;
+      camera.lookAt(0, 0, 0);
 
       renderer.render(scene, camera);
     };
@@ -178,25 +350,22 @@ export default function HeroScene() {
     };
 
     if (reduceMotion) {
-      renderer.render(scene, camera); // One static frame, nothing moves.
+      // One composed frame, at the angle the entrance would have settled on.
+      camera.position.z = 13;
+      mark.scale.setScalar(1);
+      renderer.render(scene, camera);
     } else {
       window.addEventListener("pointermove", onPointerMove, { passive: true });
       loop();
     }
 
-    // Suspend the loop while the hero is scrolled away or the tab is in the
-    // background. IntersectionObserver, not a scroll listener.
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        visible = entry.isIntersecting && !document.hidden;
-      },
+      ([entry]) => { visible = entry.isIntersecting && !document.hidden; },
       { threshold: 0 }
     );
     observer.observe(mount);
 
-    const onVisibilityChange = () => {
-      visible = !document.hidden;
-    };
+    const onVisibilityChange = () => { visible = !document.hidden; };
     document.addEventListener("visibilitychange", onVisibilityChange);
 
     const resizeObserver = new ResizeObserver(() => {
@@ -223,6 +392,7 @@ export default function HeroScene() {
       document.removeEventListener("visibilitychange", onVisibilityChange);
       window.removeEventListener("pointermove", onPointerMove);
       canvas.removeEventListener("webglcontextlost", onContextLost);
+      nodes.dispose();
       disposables.forEach((item) => item.dispose());
       renderer.dispose();
       if (canvas.parentNode === mount) mount.removeChild(canvas);

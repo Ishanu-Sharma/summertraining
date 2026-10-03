@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
+import Breadcrumbs from "../components/Breadcrumbs";
 import { useDocumentTitle } from "../utils/useDocumentTitle";
 
 /**
@@ -14,16 +15,18 @@ import { useDocumentTitle } from "../utils/useDocumentTitle";
 export default function Terms() {
   useDocumentTitle(
     "Terms and Conditions",
-    "The rules for using The Quad, the alumni network of Assam Downtown University."
+    "The rules for using The Quad, the alumni network of Assam down town University."
   );
 
   return (
     <>
       <SiteHeader />
 
+      <main id="main" tabIndex={-1}>
       <section className="section-sm">
         <div className="container">
           <div className="legal-page">
+            <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Terms and Conditions" }]} />
             <header className="legal-page__head">
               <h1>Terms and Conditions</h1>
               <p className="legal-page__meta">Last updated 4 October 2026</p>
@@ -176,6 +179,7 @@ export default function Terms() {
           </div>
         </div>
       </section>
+      </main>
 
       <SiteFooter />
     </>

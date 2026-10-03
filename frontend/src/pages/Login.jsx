@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BrandMark from "../components/BrandMark";
+import PasswordField from "../components/PasswordField";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
 import { useDocumentTitle } from "../utils/useDocumentTitle";
@@ -47,10 +48,10 @@ export default function Login() {
           </Link>
           <p className="auth-visual__pitch">Mentorship, referrals, reunions, and the people you graduated with, in one place.</p>
         </div>
-        <p style={{ position: "relative", zIndex: 1, color: "rgba(251,246,238,.6)", fontSize: ".85rem" }}>Assam Downtown University Alumni Relations Office</p>
+        <p style={{ position: "relative", zIndex: 1, color: "rgba(251,246,238,.6)", fontSize: ".85rem" }}>Assam down town University Alumni Relations Office</p>
       </div>
 
-      <div className="auth-form-side">
+      <main className="auth-form-side" id="main" tabIndex={-1}>
         <div className="auth-card animate-in">
           <h1>Welcome back</h1>
           <p className="lede">Log in to catch up on your feed, your messages, and whoever's hiring this week.</p>
@@ -63,14 +64,14 @@ export default function Login() {
                 <input type="email" id="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@adtu.in" required />
               </div>
             </div>
-            <div className="field">
-              <label htmlFor="password">Password</label>
-              <div className="input-icon">
-                <i className="fa-solid fa-lock"></i>
-                <input type="password" id="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Enter your password" required />
-              </div>
-              {error && <span className="field-error"><i className="fa-solid fa-circle-exclamation"></i> {error}</span>}
-            </div>
+            <PasswordField
+              id="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              autoComplete="current-password"
+              required
+              error={error}
+            />
             <div className="flex-between" style={{ marginBottom: 26 }}>
               <label className="checkbox-row"><input type="checkbox" /> Remember me</label>
               <Link to="/forgot-password" style={{ fontSize: ".88rem", fontWeight: 600, color: "var(--teal-700)" }}>Forgot password?</Link>
@@ -81,8 +82,11 @@ export default function Login() {
           </form>
 
           <p className="auth-footer-link">New to The Quad? <Link to="/register">Create an account</Link></p>
+          <p className="auth-footer-link">
+            <Link to="/">Back to the home page</Link> · <Link to="/faq">Need help?</Link>
+          </p>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

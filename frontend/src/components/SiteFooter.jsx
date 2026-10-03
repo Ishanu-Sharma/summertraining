@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import BrandMark from "./BrandMark";
+import ThemeToggle from "./ThemeToggle";
 
 /**
  * Every link here goes somewhere real. If you add a column, add the route too:
@@ -17,8 +18,8 @@ export default function SiteFooter() {
               The Quad
             </Link>
             <p>
-              The Quad is Assam Downtown University's home for graduates to reconnect,
-              mentor, hire, and give back, long after the caps stop flying.
+              The Quad is Assam down town University&rsquo;s home for graduates to
+              reconnect, mentor, hire, and give back, long after the caps stop flying.
             </p>
             <a
               className="footer-ext-link"
@@ -49,10 +50,18 @@ export default function SiteFooter() {
           </div>
 
           <div className="footer-col">
+            <h4>Learn more</h4>
+            <Link to="/stories">Alumni Stories</Link>
+            <Link to="/faq">FAQ</Link>
+            <Link to="/search">Search the site</Link>
+            <Link to="/contact">About &amp; Contact</Link>
+          </div>
+
+          <div className="footer-col">
             <h4>Support</h4>
-            <Link to="/contact">Contact us</Link>
             <Link to="/privacy">Privacy Policy</Link>
             <Link to="/terms">Terms and Conditions</Link>
+            <a href="mailto:alumni@adtu.in">alumni@adtu.in</a>
             <a href="mailto:student.grievance@adtu.in">Student grievance</a>
           </div>
         </div>
@@ -62,7 +71,10 @@ export default function SiteFooter() {
             &copy; 2026 Assam down town University Alumni Relations Office. All rights
             reserved.
           </span>
-          <span>Built by the Class of 2026.</span>
+          <span className="footer-bottom__right">
+            <span>Built by the Class of 2026.</span>
+            <ThemeToggle className="theme-toggle--light" />
+          </span>
         </div>
       </div>
     </footer>

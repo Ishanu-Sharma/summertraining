@@ -1,11 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Only public (unauthenticated) pages are listed. Everything past login is
-     member-only and has no value being indexed. -->
+     member-only and has no value being indexed.
+
+     Individual alumni stories at /stories/<slug> are not listed: they are
+     created from the admin panel at any time, and a static file cannot know
+     about them. The /stories index links every published one, which is enough
+     for a crawler to reach them. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://the-quad-web.onrender.com/</loc>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://the-quad-web.onrender.com/stories</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://the-quad-web.onrender.com/faq</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://the-quad-web.onrender.com/register</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://the-quad-web.onrender.com/contact</loc>
@@ -26,10 +46,5 @@
     <loc>https://the-quad-web.onrender.com/login</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://the-quad-web.onrender.com/register</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
   </url>
 </urlset>

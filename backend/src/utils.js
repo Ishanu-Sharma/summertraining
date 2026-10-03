@@ -147,7 +147,43 @@ function serializePost(row) {
   };
 }
 
+function serializeStory(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    slug: row.slug,
+    title: row.title,
+    subjectName: row.subject_name,
+    subjectRole: row.subject_role,
+    subjectUserId: row.subject_user_id,
+    gradYear: row.grad_year,
+    department: row.department,
+    summary: row.summary,
+    body: row.body,
+    outcome: row.outcome,
+    published: !!row.published,
+    publishedAt: row.published_at,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at
+  };
+}
+
+/**
+ * URL-safe slug for a story. Falls back to the id suffix if the title has no
+ * ASCII word characters at all (e.g. a title written entirely in Assamese),
+ * because an empty slug would collide on the UNIQUE index.
+ */
+function slugify(text, fallback) {
+  const slug = String(text || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 150);
+  return slug || fallback;
+}
+
 module.exports = {
   newId, randomAvatar, serializeUser, serializeUserSummary, serializeUserProfile,
-  serializeEvent, serializeJob, serializePost, parseJsonSafe, DEFAULT_AVATAR
+  serializeEvent, serializeJob, serializePost, serializeStory, slugify,
+  parseJsonSafe, DEFAULT_AVATAR
 };

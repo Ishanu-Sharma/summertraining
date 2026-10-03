@@ -60,7 +60,7 @@ export default function EventDetails() {
 
   if (notFound) {
     return (
-      <AppShell>
+      <AppShell breadcrumbs={[{ label: "Dashboard", to: "/dashboard" }, { label: "Events", to: "/events" }, { label: event.title }]}>
         <div className="empty-state"><i className="fa-solid fa-calendar-xmark"></i><h4>Event not found</h4><p>It may have been removed.</p></div>
       </AppShell>
     );

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
+import Breadcrumbs from "../components/Breadcrumbs";
 import { useDocumentTitle } from "../utils/useDocumentTitle";
 
 /**
@@ -15,16 +16,18 @@ import { useDocumentTitle } from "../utils/useDocumentTitle";
 export default function Privacy() {
   useDocumentTitle(
     "Privacy Policy",
-    "How The Quad collects, uses, stores, and shares personal data belonging to Assam Downtown University alumni and students."
+    "How The Quad collects, uses, stores, and shares personal data belonging to Assam down town University alumni and students."
   );
 
   return (
     <>
       <SiteHeader />
 
+      <main id="main" tabIndex={-1}>
       <section className="section-sm">
         <div className="container">
           <div className="legal-page">
+            <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Privacy Policy" }]} />
             <header className="legal-page__head">
               <h1>Privacy Policy</h1>
               <p className="legal-page__meta">Last updated 4 October 2026</p>
@@ -98,8 +101,43 @@ export default function Privacy() {
               Our server records standard request information, including IP addresses, for
               security and rate limiting. When you log in, we place a session token in your
               browser's local storage under the key <code>quad_token</code>. That token is
-              how the site knows it is you on your next visit. The Quad sets no cookies and
-              runs no analytics scripts, so there is no cookie banner to dismiss.
+              how the site knows it is you on your next visit, and it is strictly necessary:
+              the site cannot keep you logged in without it.
+            </p>
+            <p>
+              We also store two small preferences in your browser, both first-party and
+              neither shared with anyone: <code>quad_theme</code>, which remembers whether
+              you chose light or dark mode, and <code>quad_consent</code>, which remembers
+              your answer to the analytics question below so we stop asking.
+            </p>
+
+            <h3>Analytics, and the choice you are given</h3>
+            <p>
+              The Quad can use Google Analytics to count which pages get used and which
+              forms get abandoned. It is off until you accept it. When you first visit, a
+              banner asks; if you decline, no analytics script is loaded and no analytics
+              cookie is set, and the site works exactly the same. You can change your mind
+              by clearing this site's data in your browser, which makes the banner appear
+              again.
+            </p>
+            <p>
+              If you accept, Google receives the pages you view on The Quad, with IP
+              anonymisation enabled. We do not send Google your name, your email address,
+              or anything from your profile or messages. Google's handling of that data is
+              governed by{" "}
+              <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer noopener">
+                Google's own privacy policy
+              </a>.
+            </p>
+
+            <h3>Campaign attribution</h3>
+            <p>
+              If you arrive from a link that carries campaign tags in its address (the
+              <code>utm_source</code> family of parameters, or a <code>gclid</code>), we
+              store those tags once in your browser under <code>quad_attribution</code>, so
+              that if you later send us a message we can tell which announcement or poster
+              brought you here. It holds nothing about you personally, it is never shared,
+              and it is only ever read when you submit the contact form.
             </p>
 
             <h2>Who can see your information</h2>
@@ -218,6 +256,7 @@ export default function Privacy() {
           </div>
         </div>
       </section>
+      </main>
 
       <SiteFooter />
     </>

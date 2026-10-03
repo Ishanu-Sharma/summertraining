@@ -84,7 +84,7 @@ export default function Directory() {
 
   if (restricted) {
     return (
-      <AppShell>
+      <AppShell breadcrumbs={[{ label: "Dashboard", to: "/dashboard" }, { label: "Alumni Directory" }]}>
         <div className="empty-state">
           <i className="fa-solid fa-lock"></i>
           <h4>Directory access is limited right now</h4>

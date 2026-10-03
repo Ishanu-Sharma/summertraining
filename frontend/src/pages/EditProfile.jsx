@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AppShell from "../components/AppShell";
 import { useAuth } from "../context/AuthContext";
+import { useConfirm } from "../context/ConfirmContext";
 import { useToast } from "../context/ToastContext";
 import { useUsers } from "../context/UsersContext";
 import { api } from "../api/client";
@@ -16,6 +17,7 @@ export default function EditProfile() {
   useDocumentTitle("Settings");
   const { user, updateLocalUser, logout } = useAuth();
   const showToast = useToast();
+  const confirm = useConfirm();
   const navigate = useNavigate();
   const { refresh: refreshUsers } = useUsers();
 
@@ -103,7 +105,11 @@ export default function EditProfile() {
   }
 
   async function deactivate() {
-    const sure = window.confirm("Deactivate your profile? You can reactivate anytime by logging back in.");
+    const sure = await confirm({
+      title: "Deactivate your profile?",
+      body: "Your profile comes out of the directory and you will not be able to log in until you reactivate. Logging back in reactivates it, so nothing is lost.",
+      confirmLabel: "Deactivate my profile"
+    });
     if (!sure) return;
     await api.patch(`/users/${user.id}`, { privacy: { ...privacy, showInDirectory: false }, deactivated: true });
     showToast("Your profile has been deactivated.", "info");
@@ -112,7 +118,7 @@ export default function EditProfile() {
   }
 
   return (
-    <AppShell>
+    <AppShell breadcrumbs={[{ label: "Dashboard", to: "/dashboard" }, { label: "My Profile", to: "/profile" }, { label: "Settings" }]}>
       <div className="page-head">
         <h2>Settings</h2>
         <p className="text-soft">Keep your profile current. It's how the rest of your batch finds you.</p>

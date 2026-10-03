@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AppShell from "../components/AppShell";
+import StoriesPanel from "../components/StoriesPanel";
+import { useConfirm } from "../context/ConfirmContext";
 import { useSocket } from "../context/SocketContext";
 import { useToast } from "../context/ToastContext";
 import { useUsers } from "../context/UsersContext";
@@ -8,17 +10,19 @@ import { api } from "../api/client";
 import { formatFullDate, timeAgo, resolveAvatar } from "../utils/format";
 import { useDocumentTitle } from "../utils/useDocumentTitle";
 
-const TABS = [["overview", "Overview"], ["alumni", "Manage Alumni"], ["students", "Manage Students"], ["events", "Manage Events"], ["jobs", "Manage Jobs"], ["settings", "Settings"]];
+const TABS = [["overview", "Overview"], ["alumni", "Manage Alumni"], ["students", "Manage Students"], ["events", "Manage Events"], ["jobs", "Manage Jobs"], ["stories", "Alumni Stories"], ["settings", "Settings"]];
 
 export default function Admin() {
   useDocumentTitle("Admin Console");
   const { socket } = useSocket();
   const showToast = useToast();
+  const confirm = useConfirm();
   const navigate = useNavigate();
   const { users, refresh: refreshUsers } = useUsers();
 
   const [events, setEvents] = useState([]);
   const [jobs, setJobs] = useState([]);
+  const [stories, setStories] = useState([]);
   const [settings, setSettings] = useState(null);
   const [tab, setTab] = useState("overview");
   const [alumniSearch, setAlumniSearch] = useState("");
@@ -36,12 +40,16 @@ export default function Admin() {
   );
 
   async function loadAll() {
-    const [eventsRes, jobsRes, settingsRes] = await Promise.all([
-      api.get("/events"), api.get("/jobs"), api.get("/settings")
+    const [eventsRes, jobsRes, settingsRes, storiesRes] = await Promise.all([
+      api.get("/events"), api.get("/jobs"), api.get("/settings"),
+      // ?drafts=1 is admin-only on the server; unpublished stories are not
+      // visible to anyone else.
+      api.get("/stories?drafts=1")
     ]);
     setEvents(eventsRes.events);
     setJobs(jobsRes.jobs);
     setSettings(settingsRes.settings);
+    setStories(storiesRes.stories);
   }
 
   useEffect(() => { loadAll(); }, []);
@@ -81,7 +89,13 @@ export default function Admin() {
   }
 
   async function deleteEvent(id) {
-    if (!window.confirm("Delete this event? This can't be undone.")) return;
+    const ok = await confirm({
+      title: "Delete this event?",
+      body: "The event, its agenda, and every RSVP on it are removed. This cannot be undone.",
+      confirmLabel: "Delete event",
+      tone: "danger"
+    });
+    if (!ok) return;
     await api.del(`/events/${id}`);
     showToast("Event deleted.", "success");
     loadAll();
@@ -94,7 +108,13 @@ export default function Admin() {
   }
 
   async function removeJob(id) {
-    if (!window.confirm("Remove this job posting?")) return;
+    const ok = await confirm({
+      title: "Remove this job posting?",
+      body: "It comes off the board immediately. Anyone who saved it will no longer see it.",
+      confirmLabel: "Remove posting",
+      tone: "danger"
+    });
+    if (!ok) return;
     await api.del(`/jobs/${id}`);
     showToast("Job removed.", "success");
     loadAll();
@@ -102,17 +122,73 @@ export default function Admin() {
 
   async function toggleDeactivate(u) {
     const next = !u.deactivated;
-    if (!window.confirm(next ? `Deactivate ${u.fullName}'s account? They won't be able to log in.` : `Reactivate ${u.fullName}'s account?`)) return;
+    const ok = await confirm(next
+      ? {
+          title: `Deactivate ${u.fullName}'s account?`,
+          body: "They will not be able to log in, and their profile is hidden from the directory. You can reverse this at any time.",
+          confirmLabel: "Deactivate",
+          tone: "danger"
+        }
+      : {
+          title: `Reactivate ${u.fullName}'s account?`,
+          body: "They will be able to log in again and their profile returns to the directory.",
+          confirmLabel: "Reactivate"
+        });
+    if (!ok) return;
     await api.patch(`/users/${u.id}`, { deactivated: next });
     showToast(next ? "Account deactivated." : "Account reactivated.", "success");
     refreshUsers();
   }
 
   async function deleteUser(u) {
-    if (!window.confirm(`Permanently delete ${u.fullName}'s account? This can't be undone.`)) return;
+    const ok = await confirm({
+      title: `Permanently delete ${u.fullName}'s account?`,
+      body: "Their profile, posts, messages, and RSVPs are all removed. This cannot be undone. Deactivating instead is reversible.",
+      confirmLabel: "Delete permanently",
+      tone: "danger"
+    });
+    if (!ok) return;
     await api.del(`/users/${u.id}`);
     showToast("Account deleted.", "success");
     refreshUsers();
+  }
+
+  async function saveStory(payload, id) {
+    if (id) await api.patch(`/stories/${id}`, payload);
+    else await api.post("/stories", payload);
+    showToast(id ? "Story saved." : "Story created.", "success");
+    loadAll();
+  }
+
+  async function toggleStoryPublished(story) {
+    const ok = await confirm(story.published
+      ? {
+          title: "Unpublish this story?",
+          body: "It comes off the public stories page. The draft is kept, so you can publish it again later.",
+          confirmLabel: "Unpublish"
+        }
+      : {
+          title: "Publish this story?",
+          body: "It goes live on the public stories page straight away. Check you have the graduate's permission.",
+          confirmLabel: "Publish"
+        });
+    if (!ok) return;
+    await api.patch(`/stories/${story.id}`, { published: !story.published });
+    showToast(story.published ? "Story unpublished." : "Story published.", "success");
+    loadAll();
+  }
+
+  async function deleteStory(story) {
+    const ok = await confirm({
+      title: "Delete this story?",
+      body: `"${story.title}" is removed permanently. This cannot be undone.`,
+      confirmLabel: "Delete story",
+      tone: "danger"
+    });
+    if (!ok) return;
+    await api.del(`/stories/${story.id}`);
+    showToast("Story deleted.", "success");
+    loadAll();
   }
 
   async function saveSettings(patch) {
@@ -142,7 +218,7 @@ export default function Admin() {
   if (!settings) return <AppShell><p className="text-faint">Loading…</p></AppShell>;
 
   return (
-    <AppShell>
+    <AppShell breadcrumbs={[{ label: "Dashboard", to: "/dashboard" }, { label: "Admin Panel" }]}>
       <div className="page-head">
         <h2>Admin Panel</h2>
         <p className="text-soft">Manage alumni verification, events, and job listings across The Quad.</p>
@@ -158,7 +234,7 @@ export default function Admin() {
 
       <div className="tab-labels" style={{ display: "flex", gap: 8, margin: "24px 0 20px", flexWrap: "wrap" }}>
         {TABS.map(([key, label]) => (
-          <label key={key} onClick={() => setTab(key)} style={{ cursor: "pointer", padding: "8px 16px", borderRadius: 999, background: tab === key ? "var(--teal-700)" : "transparent", color: tab === key ? "#fff" : "inherit", fontWeight: 600 }}>
+          <label key={key} onClick={() => setTab(key)} className={"admin-tab" + (tab === key ? " is-active" : "")}>
             {label}
           </label>
         ))}
@@ -325,6 +401,16 @@ export default function Admin() {
             </table>
             </div>
           </div>
+        )}
+
+        {tab === "stories" && (
+          <StoriesPanel
+            stories={stories}
+            alumni={alumni}
+            onSave={saveStory}
+            onTogglePublished={toggleStoryPublished}
+            onDelete={deleteStory}
+          />
         )}
 
         {tab === "settings" && (

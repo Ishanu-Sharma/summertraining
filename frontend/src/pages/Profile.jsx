@@ -82,7 +82,9 @@ export default function Profile() {
   const mutualUsers = mutualIds.map(mid => usersById[mid]).filter(Boolean);
 
   return (
-    <AppShell>
+    <AppShell breadcrumbs={isOwn
+      ? [{ label: "Dashboard", to: "/dashboard" }, { label: "My Profile" }]
+      : [{ label: "Dashboard", to: "/dashboard" }, { label: "Directory", to: "/directory" }, { label: viewedUser.fullName }]}>
       <div className="profile-banner">
         <div className="profile-banner__cover"></div>
         <div className="profile-banner__body">
@@ -94,7 +96,7 @@ export default function Profile() {
                   <span>{viewedUser.fullName}</span>
                   <span className="class-ring class-ring--sm"><span className="class-ring__gem">{viewedUser.gradYear ? "'" + String(viewedUser.gradYear).slice(-2) : "•"}</span></span>
                 </h2>
-                <p className="text-soft">{viewedUser.headline || (viewedUser.role === "admin" ? "Assam Downtown University Alumni Relations Office" : [viewedUser.jobTitle, viewedUser.company && "at " + viewedUser.company].filter(Boolean).join(" "))}</p>
+                <p className="text-soft">{viewedUser.headline || (viewedUser.role === "admin" ? "Assam down town University Alumni Relations Office" : [viewedUser.jobTitle, viewedUser.company && "at " + viewedUser.company].filter(Boolean).join(" "))}</p>
               </div>
             </div>
             <div className="profile-banner__actions">

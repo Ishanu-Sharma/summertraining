@@ -86,7 +86,7 @@ export default function Events() {
   }
 
   return (
-    <AppShell>
+    <AppShell breadcrumbs={[{ label: "Dashboard", to: "/dashboard" }, { label: "Events" }]}>
       <div className="page-head">
         <h2>Events &amp; Reunions</h2>
         <p className="text-soft">Homecomings, chapter dinners, and the occasional webinar you'll actually attend.</p>

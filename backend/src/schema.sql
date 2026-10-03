@@ -222,3 +222,28 @@ CREATE TABLE IF NOT EXISTS settings (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT IGNORE INTO settings (id) VALUES (1);
+
+-- Alumni stories ("case studies"). Authored by the Alumni Relations Office from
+-- the admin panel; nothing here is seeded, so the public /stories page shows a
+-- real empty state until a real story is written.
+CREATE TABLE IF NOT EXISTS stories (
+  id              VARCHAR(64) PRIMARY KEY,
+  slug            VARCHAR(160) NOT NULL UNIQUE,
+  title           VARCHAR(200) NOT NULL,
+  subject_name    VARCHAR(150) NOT NULL,
+  subject_role    VARCHAR(200) NULL,
+  subject_user_id VARCHAR(64) NULL,
+  grad_year       INT NULL,
+  department      VARCHAR(120) NULL,
+  summary         VARCHAR(500) NOT NULL,
+  body            TEXT NOT NULL,
+  outcome         VARCHAR(200) NULL,
+  published       TINYINT(1) NOT NULL DEFAULT 0,
+  published_at    DATETIME NULL,
+  created_by      VARCHAR(64) NULL,
+  created_at      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_stories_published (published, published_at),
+  FOREIGN KEY (subject_user_id) REFERENCES users(id) ON DELETE SET NULL,
+  FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

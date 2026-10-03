@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BrandMark from "../components/BrandMark";
+import PasswordField from "../components/PasswordField";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
 import { useDocumentTitle } from "../utils/useDocumentTitle";
+import { trackFormError, trackFormSuccess } from "../utils/analytics";
 
 const YEARS_PAST = Array.from({ length: 20 }, (_, i) => 2026 - i);
 const YEARS_FUTURE = Array.from({ length: 6 }, (_, i) => 2026 + i);
@@ -36,7 +38,9 @@ export default function Register() {
     if (form.confirmPassword !== form.password) e.confirmPassword = "Passwords don't match.";
     if (!terms) { showToast("Please accept the Terms of Service to continue.", "error"); e.terms = true; }
     setErrors(e);
-    return Object.keys(e).length === 0;
+    const ok = Object.keys(e).length === 0;
+    if (!ok) trackFormError("register", Object.keys(e)[0]);
+    return ok;
   }
 
   async function handleSubmit(ev) {
@@ -53,8 +57,12 @@ export default function Register() {
         role
       });
       showToast(role === "student" ? "Welcome to The Quad!" : "Welcome to The Quad! Your profile is pending verification.", "success");
-      navigate("/dashboard");
+      trackFormSuccess("register", { role });
+      // A dedicated confirmation URL, so the signup is countable and the next
+      // steps are spelled out before the dashboard's firehose.
+      navigate("/thank-you?from=register");
     } catch (err) {
+      trackFormError("register", err.message);
       setErrors({ email: err.message });
     } finally {
       setLoading(false);
@@ -75,10 +83,10 @@ export default function Register() {
           </Link>
           <p className="auth-visual__pitch">Your profile is how your batch finds you again. It takes a few minutes to set up.</p>
         </div>
-        <p style={{ position: "relative", zIndex: 1, color: "rgba(251,246,238,.6)", fontSize: ".85rem" }}>Assam Downtown University Alumni Relations Office</p>
+        <p style={{ position: "relative", zIndex: 1, color: "rgba(251,246,238,.6)", fontSize: ".85rem" }}>Assam down town University Alumni Relations Office</p>
       </div>
 
-      <div className="auth-form-side">
+      <main className="auth-form-side" id="main" tabIndex={-1}>
         <div className="auth-card animate-in" style={{ maxWidth: 460 }}>
           <h1>Create your profile</h1>
           <p className="lede">Free for every AdtU graduate. Takes about four minutes.</p>
@@ -131,16 +139,26 @@ export default function Register() {
             </div>
 
             <div className="field-row">
-              <div className={"field" + (errors.password ? " has-error" : "")}>
-                <label htmlFor="regPassword">Password</label>
-                <input type="password" id="regPassword" value={form.password} onChange={e => set("password", e.target.value)} placeholder="Create a password" />
-                {errors.password && <span className="field-error"><i className="fa-solid fa-circle-exclamation"></i> {errors.password}</span>}
-              </div>
-              <div className={"field" + (errors.confirmPassword ? " has-error" : "")}>
-                <label htmlFor="confirmPassword">Confirm password</label>
-                <input type="password" id="confirmPassword" value={form.confirmPassword} onChange={e => set("confirmPassword", e.target.value)} placeholder="Re-enter password" />
-                {errors.confirmPassword && <span className="field-error"><i className="fa-solid fa-circle-exclamation"></i> {errors.confirmPassword}</span>}
-              </div>
+              <PasswordField
+                id="regPassword"
+                label="Password"
+                value={form.password}
+                onChange={e => set("password", e.target.value)}
+                placeholder="Create a password"
+                autoComplete="new-password"
+                hint="At least 6 characters."
+                error={errors.password}
+              />
+              <PasswordField
+                id="confirmPassword"
+                label="Confirm password"
+                value={form.confirmPassword}
+                onChange={e => set("confirmPassword", e.target.value)}
+                placeholder="Re-enter password"
+                autoComplete="new-password"
+                icon="fa-lock-open"
+                error={errors.confirmPassword}
+              />
             </div>
 
             <label className="checkbox-row" style={{ marginBottom: 26 }}>
@@ -154,8 +172,11 @@ export default function Register() {
           </form>
 
           <p className="auth-footer-link">Already have an account? <Link to="/login">Log in</Link></p>
+          <p className="auth-footer-link">
+            <Link to="/faq">How verification works</Link> · <Link to="/">Back to the home page</Link>
+          </p>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

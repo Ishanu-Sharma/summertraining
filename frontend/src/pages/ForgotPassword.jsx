@@ -2,8 +2,10 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import BrandMark from "../components/BrandMark";
 import { api } from "../api/client";
+import { useDocumentTitle } from "../utils/useDocumentTitle";
 
 export default function ForgotPassword() {
+  useDocumentTitle("Reset Your Password", "Request a password reset link for your account on The Quad.");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -39,10 +41,10 @@ export default function ForgotPassword() {
           </Link>
           <p className="auth-visual__pitch">Reset your password and pick up where you left off.</p>
         </div>
-        <p style={{ position: "relative", zIndex: 1, color: "rgba(251,246,238,.6)", fontSize: ".85rem" }}>Assam Downtown University Alumni Relations Office</p>
+        <p style={{ position: "relative", zIndex: 1, color: "rgba(251,246,238,.6)", fontSize: ".85rem" }}>Assam down town University Alumni Relations Office</p>
       </div>
 
-      <div className="auth-form-side">
+      <main className="auth-form-side" id="main" tabIndex={-1}>
         <div className="auth-card animate-in">
           {sent ? (
             <>
@@ -73,7 +75,7 @@ export default function ForgotPassword() {
             </>
           )}
         </div>
-      </div>
+      </main>
     </div>
   );
 }

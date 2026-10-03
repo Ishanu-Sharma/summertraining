@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /$
+Allow: /stories
+Allow: /faq
 Allow: /contact
 Allow: /privacy
 Allow: /terms
@@ -15,5 +17,9 @@ Disallow: /settings
 Disallow: /admin
 Disallow: /forgot-password
 Disallow: /reset-password
+# Search result pages and the post-form confirmation are per-visitor and have
+# no standalone value in an index.
+Disallow: /search
+Disallow: /thank-you
 
 Sitemap: https://the-quad-web.onrender.com/sitemap.xml
