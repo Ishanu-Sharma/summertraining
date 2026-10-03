@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
 import Accordion from "../components/Accordion";
+import HeroBoundary from "../components/HeroFallback";
 import { useDocumentTitle } from "../utils/useDocumentTitle";
 
 // three.js is the largest single dependency and nothing above the fold depends
@@ -130,9 +131,11 @@ export default function Home() {
                 </p>
               </div>
 
-              <Suspense fallback={<div className="hero__scene is-loading" aria-hidden="true" />}>
-                <HeroScene />
-              </Suspense>
+              <HeroBoundary>
+                <Suspense fallback={<div className="hero__scene is-loading" aria-hidden="true" />}>
+                  <HeroScene />
+                </Suspense>
+              </HeroBoundary>
             </div>
           </div>
         </section>

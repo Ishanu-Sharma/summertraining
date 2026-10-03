@@ -1,5 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import { HeroMark } from "./HeroFallback";
 
 /**
  * The hero's 3D scene: The Quad's brand mark built as a real object, and the
@@ -90,8 +91,44 @@ function fibonacciSphere(count, radius) {
   return points;
 }
 
+/**
+ * Builds a renderer, stepping down through progressively cheaper options.
+ *
+ * A desktop with hardware acceleration disabled, an outdated or blocklisted
+ * driver, or hybrid graphics can refuse a context that a phone grants without
+ * complaint, and `powerPreference: "high-performance"` plus MSAA is the exact
+ * combination most likely to be refused. Asking once and giving up is what
+ * makes a scene that works everywhere else silently vanish on one machine.
+ *
+ * Returns null only when every option fails, which means WebGL really is
+ * unavailable and the static fallback should be shown instead.
+ */
+function createRenderer(isSmall) {
+  const attempts = [
+    { alpha: true, antialias: !isSmall, powerPreference: "high-performance" },
+    { alpha: true, antialias: !isSmall },
+    { alpha: true, antialias: false },
+    { alpha: true, antialias: false, failIfMajorPerformanceCaveat: false }
+  ];
+
+  for (const options of attempts) {
+    try {
+      const renderer = new THREE.WebGLRenderer(options);
+      // three.js can hand back a renderer whose context never actually came
+      // up; this is the check that catches that case rather than failing
+      // later on the first draw call.
+      if (renderer.getContext()) return renderer;
+      renderer.dispose();
+    } catch { /* try the next, cheaper set of options */ }
+  }
+  return null;
+}
+
 export default function HeroScene() {
   const mountRef = useRef(null);
+  // Drives the static fallback below. Only ever set once, and only when every
+  // attempt at a WebGL context has failed.
+  const [webglFailed, setWebglFailed] = useState(false);
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -100,15 +137,18 @@ export default function HeroScene() {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const isSmall = window.innerWidth < 760;
 
-    let renderer;
-    try {
-      renderer = new THREE.WebGLRenderer({
-        alpha: true,
-        antialias: !isSmall,
-        powerPreference: "high-performance"
-      });
-    } catch {
-      return; // No WebGL. The CSS backdrop on .hero__scene is the fallback.
+    const renderer = createRenderer(isSmall);
+    if (!renderer) {
+      // Left in deliberately: this is the one failure a user can see but
+      // cannot explain, and it is the first thing to ask them to check.
+      console.warn(
+        "[The Quad] WebGL is unavailable in this browser, so the hero is " +
+        "showing its static fallback. Usually this means hardware " +
+        "acceleration is switched off, or the graphics driver is blocklisted. " +
+        "Check chrome://gpu."
+      );
+      setWebglFailed(true);
+      return;
     }
 
     const width = mount.clientWidth || 1;
@@ -125,19 +165,27 @@ export default function HeroScene() {
     mount.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
-    const envMap = buildEnvironment(renderer);
-    scene.environment = envMap;
+    // PMREM needs half-float render targets. They are everywhere now, but an
+    // old driver or a software rasteriser can still refuse, and losing the
+    // reflections is far better than losing the whole scene.
+    let envMap = null;
+    try {
+      envMap = buildEnvironment(renderer);
+      scene.environment = envMap;
+    } catch {
+      console.warn("[The Quad] Could not build the hero's environment map; falling back to direct lighting only.");
+    }
 
     const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 100);
     camera.position.set(0, 0.2, 13);
     camera.lookAt(0, 0, 0);
 
-    const disposables = [envMap];
+    const disposables = envMap ? [envMap] : [];
     const track = (item) => { disposables.push(item); return item; };
 
     // Lights on top of the environment: the env map does the reflection work,
     // these shape the form and put an edge on the silhouette.
-    scene.add(new THREE.AmbientLight(CREAM, 0.45));
+    scene.add(new THREE.AmbientLight(CREAM, envMap ? 0.45 : 1.4));
 
     const key = new THREE.DirectionalLight(0xffffff, 2.1);
     key.position.set(-5, 6, 7);
@@ -398,6 +446,10 @@ export default function HeroScene() {
       if (canvas.parentNode === mount) mount.removeChild(canvas);
     };
   }, []);
+
+  // Every WebGL context option was refused: show the same static mark the
+  // error boundary uses, rather than two near-identical copies of the SVG.
+  if (webglFailed) return <HeroMark />;
 
   return <div className="hero__scene" ref={mountRef} aria-hidden="true" />;
 }
