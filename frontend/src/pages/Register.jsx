@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import BrandMark from "../components/BrandMark";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
 import { useDocumentTitle } from "../utils/useDocumentTitle";
@@ -64,16 +65,15 @@ export default function Register() {
     <div className="auth-shell">
       <div className="auth-visual">
         <div className="rings-deco">
-          <div className="class-ring class-ring--lg" style={{ top: "12%", left: "18%" }}><div className="class-ring__gem">'21</div></div>
-          <div className="class-ring" style={{ top: "60%", left: "70%" }}><div className="class-ring__gem">'09</div></div>
-          <div className="class-ring class-ring--sm" style={{ top: "78%", left: "26%" }}><div className="class-ring__gem">'17</div></div>
+          <div className="class-ring class-ring--lg" style={{ top: "44%", left: "60%" }}><div className="class-ring__gem">'21</div></div>
+          <div className="class-ring" style={{ top: "66%", left: "22%" }}><div className="class-ring__gem">'09</div></div>
+          <div className="class-ring class-ring--sm" style={{ top: "82%", left: "70%" }}><div className="class-ring__gem">'17</div></div>
         </div>
         <div className="auth-visual__content">
           <Link to="/" className="logo" style={{ color: "#fff", marginBottom: 60, display: "inline-flex" }}>
-            <span className="logo-mark"><span>🎓</span></span> The Quad
+            <BrandMark tone="light" /> The Quad
           </Link>
-          <blockquote>&ldquo;Setting up my profile took four minutes. Getting a referral out of it took four days.&rdquo;</blockquote>
-          <p className="attribution">— An AdtU alum, Class of 2020</p>
+          <p className="auth-visual__pitch">Your profile is how your batch finds you again. It takes a few minutes to set up.</p>
         </div>
         <p style={{ position: "relative", zIndex: 1, color: "rgba(251,246,238,.6)", fontSize: ".85rem" }}>Assam Downtown University Alumni Relations Office</p>
       </div>
@@ -118,7 +118,7 @@ export default function Register() {
                 <input type="email" id="regEmail" value={form.email} onChange={e => set("email", e.target.value)} placeholder="you@adtu.in" />
               </div>
               {errors.email ? <span className="field-error"><i className="fa-solid fa-circle-exclamation"></i> {errors.email}</span>
-                : <span className="hint">Use your AdtU email if you have it — it speeds up verification.</span>}
+                : <span className="hint">Use your AdtU email if you have it. It speeds up verification.</span>}
             </div>
 
             <div className={"field" + (errors.department ? " has-error" : "")}>
@@ -145,7 +145,7 @@ export default function Register() {
 
             <label className="checkbox-row" style={{ marginBottom: 26 }}>
               <input type="checkbox" checked={terms} onChange={e => setTerms(e.target.checked)} />
-              I agree to the <a href="#" style={{ color: "var(--teal-700)", fontWeight: 600 }}>Terms of Service</a> and <a href="#" style={{ color: "var(--teal-700)", fontWeight: 600 }}>Privacy Policy</a>
+              I agree to the <Link to="/terms" target="_blank" style={{ color: "var(--teal-700)", fontWeight: 600 }}>Terms and Conditions</Link> and <Link to="/privacy" target="_blank" style={{ color: "var(--teal-700)", fontWeight: 600 }}>Privacy Policy</Link>
             </label>
 
             <button type="submit" className={"btn btn-primary btn-block btn-lg" + (loading ? " is-loading" : "")} disabled={loading}>

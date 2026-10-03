@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import BrandMark from "./BrandMark";
 import { useAuth } from "../context/AuthContext";
 
 export default function SiteHeader() {
@@ -10,8 +11,11 @@ export default function SiteHeader() {
     <header className="site-header">
       <div className="container site-header__inner">
         <Link to="/" className="logo">
-          <span className="logo-mark"><span>🎓</span></span>
-          The Quad <small>Assam Downtown University Alumni Network</small>
+          <BrandMark />
+          <span className="logo__text">
+            The Quad
+            <small>Assam Downtown University Alumni Network</small>
+          </span>
         </Link>
         <input type="checkbox" id="navToggle" className="nav-toggle-checkbox" />
         <label htmlFor="navToggle" className="nav-toggle-label"><i className="fa-solid fa-bars"></i></label>

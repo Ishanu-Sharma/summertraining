@@ -131,7 +131,7 @@ export default function Dashboard() {
               <img src={resolveAvatar(user.avatar)} alt="" />
               <div style={{ flex: 1 }}>
                 <textarea
-                  placeholder="Share an update with your network — a new role, a milestone, a question..."
+                  placeholder="Share an update with your network: a new role, a milestone, a question..."
                   value={composerText}
                   onChange={e => setComposerText(e.target.value)}
                 ></textarea>
@@ -151,7 +151,7 @@ export default function Dashboard() {
 
           <div id="feedList">
             {posts.map(p => <FeedCard key={p.id} post={p} usersById={usersById} />)}
-            {!posts.length && <p className="text-faint">Nothing in the feed yet — be the first to post.</p>}
+            {!posts.length && <p className="text-faint">Nothing in the feed yet. Be the first to post.</p>}
             {postsHasMore && (
               <button type="button" className="btn btn-secondary btn-block btn-sm" style={{ marginTop: 8 }} onClick={loadMorePosts} disabled={loadingMore}>
                 {loadingMore ? "Loading…" : "Load more posts"}

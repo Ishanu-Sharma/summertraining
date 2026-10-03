@@ -12,13 +12,13 @@ const DEFAULT_DESCRIPTION = "The Quad connects Assam Downtown University alumni 
  * Note: this only helps clients that execute JavaScript (browsers, and
  * crawlers like Googlebot that render JS). It does NOT produce per-route
  * Open Graph tags for link-preview unfurlers (Slack, iMessage, Twitter/X),
- * since those fetch raw HTML without running JS — true per-page social
+ * since those fetch raw HTML without running JS. True per-page social
  * previews would require server-side rendering or prerendering.
  */
 export function useDocumentTitle(title, description) {
   useEffect(() => {
     const previousTitle = document.title;
-    document.title = title ? `${title} — ${SITE_NAME}` : SITE_NAME;
+    document.title = title ? `${title} | ${SITE_NAME}` : SITE_NAME;
 
     const meta = document.querySelector('meta[name="description"]');
     const previousDescription = meta ? meta.getAttribute("content") : null;

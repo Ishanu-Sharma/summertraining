@@ -115,7 +115,7 @@ export default function EditProfile() {
     <AppShell>
       <div className="page-head">
         <h2>Settings</h2>
-        <p className="text-soft">Keep your profile current — it's how the rest of your batch finds you.</p>
+        <p className="text-soft">Keep your profile current. It's how the rest of your batch finds you.</p>
       </div>
 
       <div className="profile-layout">
@@ -132,7 +132,7 @@ export default function EditProfile() {
                 <button type="button" className="btn btn-ghost btn-sm" onClick={removePhoto} disabled={uploadingPhoto}>Remove</button>
               </div>
             </div>
-            <span className="hint" style={{ display: "block", marginTop: 10 }}>JPEG, PNG, WEBP, or GIF — up to 3MB. Saved immediately.</span>
+            <span className="hint" style={{ display: "block", marginTop: 10 }}>JPEG, PNG, WEBP, or GIF, up to 3MB. Saved immediately.</span>
           </div>
 
           <div className="card card--pad-lg" style={{ marginBottom: 24 }}>

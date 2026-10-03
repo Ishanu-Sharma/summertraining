@@ -5,6 +5,7 @@ import { useSocket } from "../context/SocketContext";
 import { useToast } from "../context/ToastContext";
 import { api } from "../api/client";
 import { resolveAvatar } from "../utils/format";
+import BrandMark from "./BrandMark";
 
 const NAV_ITEMS = [
   { to: "/dashboard", icon: "fa-house", label: "Dashboard" },
@@ -61,8 +62,11 @@ export default function AppShell({ children, searchable = true }) {
       <input type="checkbox" id="sidebarToggle" className="sidebar-toggle-checkbox" />
       <aside className="app-sidebar">
         <Link to="/dashboard" className="logo">
-          <span className="logo-mark"><span>🎓</span></span>
-          The Quad <small>Assam Downtown University</small>
+          <BrandMark tone="light" />
+          <span className="logo__text">
+            The Quad
+            <small>Assam Downtown University</small>
+          </span>
         </Link>
         <nav className="side-nav">
           {NAV_ITEMS.map(item => (
@@ -70,7 +74,6 @@ export default function AppShell({ children, searchable = true }) {
               <i className={"fa-solid " + item.icon}></i> {item.label}
             </Link>
           ))}
-          <a href="#"><i className="fa-solid fa-handshake-angle"></i> Mentorship</a>
 
           <div className="nav-label">Account</div>
           <Link to="/profile" className={location.pathname === "/profile" ? "active" : ""}>
@@ -95,9 +98,9 @@ export default function AppShell({ children, searchable = true }) {
             <div className="name">{user.fullName}</div>
             <div className="role">{roleLabel(user)}</div>
           </div>
-          <a href="#" onClick={handleLogout} style={{ marginLeft: "auto", color: "rgba(251,246,238,.6)" }} title="Log out">
+          <button type="button" onClick={handleLogout} style={{ marginLeft: "auto", color: "rgba(251,246,238,.6)" }} title="Log out" aria-label="Log out">
             <i className="fa-solid fa-arrow-right-from-bracket"></i>
-          </a>
+          </button>
         </div>
       </aside>
 
@@ -111,7 +114,7 @@ export default function AppShell({ children, searchable = true }) {
             </div>
           )}
           <div className="topbar-actions">
-            <button className="icon-btn" aria-label="Notifications" onClick={() => showToast("You're all caught up — no new notifications.", "info")}>
+            <button className="icon-btn" aria-label="Notifications" onClick={() => showToast("You're all caught up. No new notifications.", "info")}>
               <i className="fa-solid fa-bell"></i><span className="badge-dot"></span>
             </button>
             <Link to="/messages" className="icon-btn" aria-label="Messages">

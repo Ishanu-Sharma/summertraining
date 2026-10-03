@@ -175,7 +175,7 @@ export default function Admin() {
                 {recentSignups.map(u => (
                   <tr key={u.id}>
                     <td className="cell-user"><img src={resolveAvatar(u.avatar)} alt="" /> {u.fullName}</td>
-                    <td>{u.gradYear || "—"}</td><td>{u.department || "—"}</td>
+                    <td>{u.gradYear || "Not listed"}</td><td>{u.department || "Not listed"}</td>
                     <td>{new Date(u.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</td>
                     <td><span className={"status-pill " + (u.verified ? "approved" : "pending")}>{u.verified ? "Verified" : "Pending"}</span></td>
                   </tr>
@@ -208,7 +208,7 @@ export default function Admin() {
                 {filteredAlumni.map(u => (
                   <tr key={u.id}>
                     <td className="cell-user"><img src={resolveAvatar(u.avatar)} alt="" /> {u.fullName}</td>
-                    <td>{u.gradYear || "—"}</td><td>{u.email}</td>
+                    <td>{u.gradYear || "Not listed"}</td><td>{u.email}</td>
                     <td><span className={"status-pill " + (u.deactivated ? "pending" : (u.verified ? "approved" : "pending"))}>{u.deactivated ? "Deactivated" : (u.verified ? "Verified" : "Pending")}</span></td>
                     <td className="table-actions">
                       {!u.verified && <button type="button" title="Approve" onClick={() => approveUser(u.id)}><i className="fa-solid fa-check"></i></button>}
@@ -253,8 +253,8 @@ export default function Admin() {
                 {filteredStudents.map(u => (
                   <tr key={u.id}>
                     <td className="cell-user"><img src={resolveAvatar(u.avatar)} alt="" /> {u.fullName}</td>
-                    <td>{u.gradYear || "—"}</td>
-                    <td>{u.department || "—"}</td>
+                    <td>{u.gradYear || "Not listed"}</td>
+                    <td>{u.department || "Not listed"}</td>
                     <td>{u.email}</td>
                     <td><span className={"status-pill " + (u.deactivated ? "pending" : "approved")}>{u.deactivated ? "Deactivated" : "Active"}</span></td>
                     <td className="table-actions">
@@ -311,7 +311,7 @@ export default function Admin() {
                   const poster = usersById[j.postedBy];
                   return (
                     <tr key={j.id}>
-                      <td>{j.title}</td><td>{j.company}</td><td>{poster ? poster.fullName : "—"}</td>
+                      <td>{j.title}</td><td>{j.company}</td><td>{poster ? poster.fullName : "Not listed"}</td>
                       <td><span className={"status-pill " + (j.status === "approved" ? "approved" : "pending")}>{j.status === "approved" ? "Approved" : "Pending Review"}</span></td>
                       <td className="table-actions">
                         {j.status !== "approved" && <button type="button" title="Approve" onClick={() => approveJob(j.id)}><i className="fa-solid fa-check"></i></button>}

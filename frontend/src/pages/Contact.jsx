@@ -41,7 +41,7 @@ export default function Contact() {
       await api.post("/contact", form, { auth: false });
       setSent(true);
       setForm({ name: user?.fullName || "", email: user?.email || "", subject: "", message: "" });
-      showToast("Thanks — the Alumni Office will get back to you within 2 business days.", "success");
+      showToast("Thanks. The Alumni Office will get back to you within 2 business days.", "success");
       setTimeout(() => setSent(false), 2500);
     } catch (err) {
       showToast(err.message, "error");
@@ -112,7 +112,7 @@ export default function Contact() {
               </div>
               <div className="contact-info-card">
                 <i className="fa-solid fa-clock"></i>
-                <div><h4 style={{ fontSize: "1rem" }}>Office Hours</h4><p className="text-soft">Monday – Friday, 10:00 AM – 6:00 PM IST</p></div>
+                <div><h4 style={{ fontSize: "1rem" }}>Office Hours</h4><p className="text-soft">Monday to Friday, 10:00 AM to 6:00 PM IST</p></div>
               </div>
             </div>
           </div>

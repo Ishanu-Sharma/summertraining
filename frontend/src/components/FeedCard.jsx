@@ -98,7 +98,7 @@ export default function FeedCard({ post, usersById }) {
         <div className="replies-wrap">
           {replies.map(r => {
             const ru = usersById[r.userId] || { fullName: "Someone" };
-            return <div className="reply-item" key={r.id}><strong>{ru.fullName}</strong> — {r.text}</div>;
+            return <div className="reply-item" key={r.id}><strong>{ru.fullName}</strong>: {r.text}</div>;
           })}
           <form className="inline-reply" onSubmit={submitReply}>
             <input type="text" placeholder="Write a comment..." maxLength={240} value={replyText} onChange={e => setReplyText(e.target.value)} />

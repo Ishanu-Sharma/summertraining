@@ -15,7 +15,7 @@ export default function Directory() {
 
   // Directory eligibility (showInDirectory, deactivated, and the
   // "allow students to browse" setting) is enforced server-side by
-  // GET /api/users/directory now — this page just renders what comes back,
+  // GET /api/users/directory now. This page just renders what comes back,
   // rather than filtering the full cross-app user list itself.
   const [alumni, setAlumni] = useState([]);
   const [restricted, setRestricted] = useState(false);
@@ -102,7 +102,7 @@ export default function Directory() {
         <div className="flex-between">
           <div>
             <h2>Alumni Directory</h2>
-            <p className="text-soft">{alumni.length} graduates on The Quad — find someone worth reconnecting with.</p>
+            <p className="text-soft">{alumni.length} graduates on The Quad. Find someone worth reconnecting with.</p>
           </div>
         </div>
       </div>
@@ -170,7 +170,7 @@ export default function Directory() {
                   <div className="class-ring"><div className="class-ring__gem">{yearShort}</div></div>
                   <h4>{u.fullName}</h4>
                   <div className="role">{u.jobTitle || ""}{u.company ? ", " + u.company : ""}</div>
-                  <div className="loc"><i className="fa-solid fa-location-dot"></i> {u.location || "—"}</div>
+                  <div className="loc"><i className="fa-solid fa-location-dot"></i> {u.location || "Not listed"}</div>
                   <div className="actions">
                     <Link to={`/profile/${u.id}`} className="btn btn-secondary btn-sm">View Profile</Link>
                     {connected

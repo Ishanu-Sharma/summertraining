@@ -109,9 +109,9 @@ export default function Profile() {
             </div>
           </div>
           <div className="profile-banner__meta">
-            <span><i className="fa-solid fa-location-dot"></i> {viewedUser.location || "—"}</span>
-            <span><i className="fa-solid fa-graduation-cap"></i> {viewedUser.role === "admin" ? "University Administration" : `${viewedUser.department || "—"}, Class of ${viewedUser.gradYear || "—"}`}</span>
-            <span><i className="fa-solid fa-briefcase"></i> {viewedUser.company || "—"}</span>
+            <span><i className="fa-solid fa-location-dot"></i> {viewedUser.location || "Not listed"}</span>
+            <span><i className="fa-solid fa-graduation-cap"></i> {viewedUser.role === "admin" ? "University Administration" : `${viewedUser.department || "Not listed"}, Class of ${viewedUser.gradYear || "Not listed"}`}</span>
+            <span><i className="fa-solid fa-briefcase"></i> {viewedUser.company || "Not listed"}</span>
             <span><i className="fa-solid fa-calendar-plus"></i> Joined The Quad in {new Date(viewedUser.createdAt).getFullYear()}</span>
           </div>
           <div className="skill-tag-row">
@@ -196,7 +196,7 @@ export default function Profile() {
 
         <div>
           <div className="widget">
-            <h4>Batchmates · Class of {viewedUser.gradYear || "—"}</h4>
+            <h4>Batchmates · Class of {viewedUser.gradYear || "Not listed"}</h4>
             {batchmates.map(u => (
               <Link key={u.id} to={`/profile/${u.id}`} className="widget-list-item" style={{ textDecoration: "none" }}>
                 <img src={resolveAvatar(u.avatar)} alt="" />
@@ -214,7 +214,7 @@ export default function Profile() {
             </div>
             <p className="text-faint" style={{ fontSize: ".82rem" }}>
               {isOwn
-                ? (myConnections.length ? `Connected with ${myConnections.length} alum${myConnections.length === 1 ? "" : "i"}.` : "You haven't connected with anyone yet — try the Directory.")
+                ? (myConnections.length ? `Connected with ${myConnections.length} alum${myConnections.length === 1 ? "" : "i"}.` : "You haven't connected with anyone yet. Try the Directory.")
                 : (mutualUsers.length ? `Including ${mutualUsers.slice(0, 2).map(u => u.fullName).join(" and ")}${mutualUsers.length > 2 ? `, and ${mutualUsers.length - 2} more` : ""}.` : "No mutual connections yet.")}
             </p>
           </div>

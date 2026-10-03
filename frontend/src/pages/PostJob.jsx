@@ -118,7 +118,7 @@ export default function PostJob() {
 
             <div className="field">
               <label htmlFor="pjNote">A note from you <span className="text-faint" style={{ fontWeight: 400 }}>(optional)</span></label>
-              <textarea id="pjNote" value={form.referralNote} onChange={e => set("referralNote", e.target.value)} placeholder="e.g. Happy to refer directly — just message me first."></textarea>
+              <textarea id="pjNote" value={form.referralNote} onChange={e => set("referralNote", e.target.value)} placeholder="e.g. Happy to refer directly, just message me first."></textarea>
             </div>
 
             <div className="flex gap-sm">
@@ -133,7 +133,7 @@ export default function PostJob() {
         <div className="widget">
           <h4>Tips for a Great Job Post</h4>
           <ul className="tips-list">
-            <li><i className="fa-solid fa-circle-check"></i> Be specific about the role — "Backend Engineer, Payments team" beats "Engineer wanted."</li>
+            <li><i className="fa-solid fa-circle-check"></i> Be specific about the role. "Backend Engineer, Payments team" beats "Engineer wanted."</li>
             <li><i className="fa-solid fa-circle-check"></i> Mention if you can personally refer applicants.</li>
             <li><i className="fa-solid fa-circle-check"></i> Include a real application link or email, not just "DM me."</li>
             <li><i className="fa-solid fa-circle-check"></i> Add the expected experience level to save everyone's time.</li>

@@ -6,7 +6,7 @@ import { useAuth } from "./AuthContext";
 // (Dashboard, Directory, Jobs, Messages, Profile, Admin...) doesn't refetch
 // and re-render the entire user list from scratch every time. Pages that
 // need something else alongside it (posts, events, etc.) can still fire
-// those requests in parallel — only /users itself is deduplicated.
+// those requests in parallel. Only /users itself is deduplicated.
 const UsersContext = createContext(null);
 
 export function UsersProvider({ children }) {

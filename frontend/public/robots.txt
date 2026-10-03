@@ -1,6 +1,8 @@
 User-agent: *
 Allow: /$
 Allow: /contact
+Allow: /privacy
+Allow: /terms
 Allow: /login
 Allow: /register
 Disallow: /dashboard
@@ -14,5 +16,4 @@ Disallow: /admin
 Disallow: /forgot-password
 Disallow: /reset-password
 
-# TODO: replace with your real production domain once deployed.
-Sitemap: https://REPLACE-WITH-YOUR-DOMAIN.com/sitemap.xml
+Sitemap: https://the-quad-web.onrender.com/sitemap.xml

@@ -76,7 +76,7 @@ export default function EventDetails() {
     await api.post(`/events/${id}/rsvp`, { status: selected });
     setMyStatus(selected);
     const msg = selected === "going" ? "You're going! See you there."
-      : selected === "interested" ? "Marked as interested." : "No worries — maybe next time.";
+      : selected === "interested" ? "Marked as interested." : "No worries. Maybe next time.";
     showToast(msg, "success");
   }
 
@@ -153,7 +153,7 @@ export default function EventDetails() {
                   </div>
                 );
               })}
-              {!(event.comments || []).length && <p className="text-faint" style={{ marginBottom: 16 }}>No comments yet — be the first.</p>}
+              {!(event.comments || []).length && <p className="text-faint" style={{ marginBottom: 16 }}>No comments yet. Be the first.</p>}
             </div>
             <form style={{ display: "flex", gap: 12, marginTop: 20 }} onSubmit={submitComment}>
               <img src={resolveAvatar(user.avatar)} alt="" style={{ width: 40, height: 40, borderRadius: "50%", objectFit: "cover" }} />

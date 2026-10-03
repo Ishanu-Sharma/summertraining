@@ -142,7 +142,7 @@ export default function Jobs() {
         <div className="flex-between">
           <div>
             <h2>Jobs Board</h2>
-            <p className="text-soft">Roles posted by alumni who are hiring — and happy to be asked about it.</p>
+            <p className="text-soft">Roles posted by alumni who are hiring, and happy to be asked about it.</p>
           </div>
           {user.role !== "student" && (
             <Link to="/jobs/new" className="btn btn-primary"><i className="fa-solid fa-plus"></i> Post a Job</Link>

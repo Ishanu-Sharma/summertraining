@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import BrandMark from "../components/BrandMark";
 import { api } from "../api/client";
 
 export default function ForgotPassword() {
@@ -28,16 +29,15 @@ export default function ForgotPassword() {
     <div className="auth-shell">
       <div className="auth-visual">
         <div className="rings-deco">
-          <div className="class-ring class-ring--lg" style={{ top: "8%", left: "12%" }}><div className="class-ring__gem">'14</div></div>
-          <div className="class-ring" style={{ top: "55%", left: "65%" }}><div className="class-ring__gem">'19</div></div>
-          <div className="class-ring class-ring--sm" style={{ top: "75%", left: "20%" }}><div className="class-ring__gem">'22</div></div>
+          <div className="class-ring class-ring--lg" style={{ top: "40%", left: "58%" }}><div className="class-ring__gem">'14</div></div>
+          <div className="class-ring" style={{ top: "63%", left: "20%" }}><div className="class-ring__gem">'19</div></div>
+          <div className="class-ring class-ring--sm" style={{ top: "80%", left: "68%" }}><div className="class-ring__gem">'22</div></div>
         </div>
         <div className="auth-visual__content">
           <Link to="/" className="logo" style={{ color: "#fff", marginBottom: 60, display: "inline-flex" }}>
-            <span className="logo-mark"><span>🎓</span></span> The Quad
+            <BrandMark tone="light" /> The Quad
           </Link>
-          <blockquote>&ldquo;Came back for one reunion RSVP and ended up finding my current job.&rdquo;</blockquote>
-          <p className="attribution">— An AdtU alum, on reconnecting through The Quad</p>
+          <p className="auth-visual__pitch">Reset your password and pick up where you left off.</p>
         </div>
         <p style={{ position: "relative", zIndex: 1, color: "rgba(251,246,238,.6)", fontSize: ".85rem" }}>Assam Downtown University Alumni Relations Office</p>
       </div>

@@ -7,6 +7,8 @@ import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Contact from "./pages/Contact";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
 import Dashboard from "./pages/Dashboard";
 import Directory from "./pages/Directory";
 import Events from "./pages/Events";
@@ -24,6 +26,8 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/privacy" element={<Privacy />} />
+      <Route path="/terms" element={<Terms />} />
       <Route path="/login" element={<GuestOnlyRoute><Login /></GuestOnlyRoute>} />
       <Route path="/register" element={<GuestOnlyRoute><Register /></GuestOnlyRoute>} />
       <Route path="/forgot-password" element={<GuestOnlyRoute><ForgotPassword /></GuestOnlyRoute>} />

@@ -30,7 +30,7 @@ export function initials(name) {
 
 const API_URL = import.meta.env.VITE_API_URL || "";
 
-/** Neutral default avatar (no random per-user images) — mirrors backend/src/utils.js's DEFAULT_AVATAR. */
+/** Neutral default avatar (no random per-user images). Mirrors backend/src/utils.js's DEFAULT_AVATAR. */
 export const DEFAULT_AVATAR =
   "data:image/svg+xml;utf8," +
   encodeURIComponent(
