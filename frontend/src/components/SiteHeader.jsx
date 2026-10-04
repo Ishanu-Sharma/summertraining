@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import BrandMark from "./BrandMark";
+import { CloseIcon, MenuIcon } from "./NavIcons";
 import SiteSearch from "./SiteSearch";
 import ThemeToggle from "./ThemeToggle";
 import { useAuth } from "../context/AuthContext";
@@ -71,7 +72,7 @@ export default function SiteHeader() {
           onClick={() => setMenuOpen((open) => !open)}
           ref={toggleRef}
         >
-          <i className={"fa-solid " + (menuOpen ? "fa-xmark" : "fa-bars")} aria-hidden="true"></i>
+          {menuOpen ? <CloseIcon /> : <MenuIcon />}
         </button>
 
         <nav

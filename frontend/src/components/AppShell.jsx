@@ -6,6 +6,7 @@ import { useToast } from "../context/ToastContext";
 import { api } from "../api/client";
 import { resolveAvatar } from "../utils/format";
 import BrandMark from "./BrandMark";
+import { CloseIcon, MenuIcon } from "./NavIcons";
 import SiteSearch from "./SiteSearch";
 import ThemeToggle from "./ThemeToggle";
 import Breadcrumbs from "./Breadcrumbs";
@@ -159,7 +160,7 @@ export default function AppShell({ children, searchable = true, breadcrumbs }) {
             onClick={() => setSidebarOpen((open) => !open)}
             ref={toggleRef}
           >
-            <i className={"fa-solid " + (sidebarOpen ? "fa-xmark" : "fa-bars")} aria-hidden="true"></i>
+            {sidebarOpen ? <CloseIcon /> : <MenuIcon />}
           </button>
 
           {searchable && (
